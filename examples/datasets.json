@@ -1,0 +1,28 @@
+{
+    "datasets": [
+        {
+            "_id": "DAT:0000001",
+            "id": "DAT:0000001",
+            "title": "Dataset 1",
+            "description": "Dataset generated from STU:0000001",
+            "type": "genomic",
+            "files": [
+                "a34e4793-c343-4930-973f-a45196289017",
+                "9e9d1ec1-aadc-4f45-a8e8-90d1e66f827f"
+            ],
+            "has_study": "STU:0000001"
+        },
+        {
+            "_id": "DAT:0000002",
+            "id": "DAT:0000002",
+            "title": "Dataset 2",
+            "description": "Dataset generated from STU:0000002",
+            "type": "genomic",
+            "files": [
+                "e1645654-695e-4f52-8e5b-23debd73a678",
+                "05ba3e4f-5cc6-4f70-a21d-7ca902d97f8c"
+            ],
+            "has_study": "STU:0000002"
+        }
+    ]
+}
