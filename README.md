@@ -9,20 +9,22 @@ Metadata Service that provides an API access layer on top of GHGA metadata.
 - [ ] Add `config.yaml`
 - [ ] Add `Dockerfile`
 
-## Installation
+## Setting up the dev environment
 
-### Set up a virtual environment
+A `Dockerfile` (and `docker-compose.yaml`) for a container corresponding to a development environment has been configured and made available in the `.devcontainer` folder.
 
-```sh
-python3 -m venv env
-source env/bin/activate
-```
+You can use the configurations in `.devcontainer` to run VS Code in a Docker container via the [Remote Container extension for VS Code](https://code.visualstudio.com/docs/remote/containers-tutorial).
 
-### Install dependencies
+Alternatively, you can also run the container directly from your command line as follows:
 
 ```sh
-pip install -r requirements.txt
+# build the image first
+docker build -t sandbox-metadata:dev -f .devcontainer/Dockerfile .
+
+# run the container
+docker run --rm -it -u vscode -v "${PWD}:/workspace" sandbox-metadata:dev bash
 ```
+
 
 ## Running the application
 
