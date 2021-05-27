@@ -3,8 +3,8 @@ from typing import List
 import motor.motor_asyncio
 from fastapi import APIRouter, HTTPException
 
-from metadataservice.schemas.file import File
-from metadataservice.routers import DB_NAME, MONGODB_URL
+from metadata_service.schemas.file import File
+from metadata_service.routers import DB_NAME, MONGODB_URL
 
 FILE_COLLECTION = "files"
 

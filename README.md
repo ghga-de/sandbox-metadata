@@ -29,7 +29,7 @@ docker run --rm -it -u vscode -v "${PWD}:/workspace" sandbox-metadata:dev bash
 ## Running the application
 
 ```sh
-uvicorn metadataservice.main:app --reload
+uvicorn metadata_service.main:app --reload
 ```
 
 You can visit the API by navigating to [http://localhost:8000/docs]()
