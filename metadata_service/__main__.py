@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Metadata Service API"""
+"""Entrypoint of the package"""
 
-__version__ = "0.1.0"
+from typing import Optional
+import typer
+
+
+def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
+    """Starts backend server"""
+    print(f"To be implemented.")
+
+
+def run_cli():
+    """Run the command line interface"""
+    typer.run(run)
+
+
+if __name__ == "__main__":
+    run_cli()

@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Metadata Service API"""
+from fastapi import FastAPI
+from metadata_service.routes.studies import studies_router
+from metadata_service.routes.datasets import dataset_router
+from metadata_service.routes.publications import publication_router
+from metadata_service.routes.experiments import experiment_router
+from metadata_service.routes.files import file_router
+from metadata_service import __version__
 
-__version__ = "0.1.0"
+app = FastAPI(
+    title="Metadata Service API",
+    version=__version__,
+)
+
+app.include_router(studies_router)
+app.include_router(dataset_router)
+app.include_router(experiment_router)
+app.include_router(file_router)
+app.include_router(publication_router)
