@@ -12,3 +12,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import motor.motor_asyncio
+
+MONGO_DETAILS = "mongodb://localhost:27017"
+DB_NAME = "metadata"
+
+client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
+
+db = client.metadata
+
+def get_collection(name):
+    """Get a collection"""
+    collection = db.get_collection(name)
+    return collection

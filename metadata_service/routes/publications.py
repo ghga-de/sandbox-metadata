@@ -13,44 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from metadata_service.dao.publication import get_publication, retrieve_publications, add_publication, update_publication
 from typing import List
 
 import motor.motor_asyncio
 from fastapi import APIRouter, HTTPException
 
 from metadata_service.models import Publication
-from metadata_service.routes import DB_NAME, MONGODB_URL
 
-PUBLICATION_COLLECTION = "publications"
 
 publication_router = APIRouter()
 
 
 @publication_router.get("/publications", response_model=List[str])
 async def get_all_publications():
-    client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URL)
-    collection = client[DB_NAME][PUBLICATION_COLLECTION]
-    publications = await collection.distinct('id')
+    publications = await retrieve_publications()
     return publications
 
 
 @publication_router.get("/publications/{publication_id}", response_model=Publication)
 async def get_publications(publication_id):
-    client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URL)
-    collection = client[DB_NAME][PUBLICATION_COLLECTION]
-    publication = await collection.find_one({'id': publication_id})
-    if not publication:
-        raise HTTPException(status_code=404, detail=f"Publication with id '{publication_id}' not found")
+    publication = await get_publication(publication_id)
     return publication
 
 
 @publication_router.put("/publications/{publication_id}", response_model=Publication)
 async def update_publications(publication_id, data: dict):
-    client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URL)
-    collection = client[DB_NAME][PUBLICATION_COLLECTION]
-    publication = await collection.find_one({'id': publication_id})
-    if not publication:
-        raise HTTPException(status_code=404, detail=f"Publication with id '{publication_id}' not found")
-    publication.update(**data)
+    publication = await update_publication(publication_id, data)
     return publication
 
