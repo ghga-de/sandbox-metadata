@@ -36,7 +36,9 @@ async def get_study(study_id):
 
 async def add_study(data: Dict):
     collection = get_collection(COLLECTION_NAME)
-    study = await collection.insert_one(data)
+    study_id = data['id']
+    r = await collection.insert_one(data)
+    study = await get_study(study_id)
     return study
 
 

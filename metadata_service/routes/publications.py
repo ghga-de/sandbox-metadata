@@ -14,7 +14,7 @@
 # limitations under the License.
 
 from metadata_service.dao.publication import get_publication, retrieve_publications, add_publication, update_publication
-from typing import List
+from typing import List, Dict
 
 import motor.motor_asyncio
 from fastapi import APIRouter, HTTPException
@@ -34,6 +34,12 @@ async def get_all_publications():
 @publication_router.get("/publications/{publication_id}", response_model=Publication)
 async def get_publications(publication_id):
     publication = await get_publication(publication_id)
+    return publication
+
+
+@publication_router.post("/publications", response_model=Publication)
+async def add_publications(data: Dict):
+    publication = await add_publication(data)
     return publication
 
 

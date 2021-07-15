@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.experiment import retrieve_experiments, get_experiment, update_experiment
-from typing import List
+from metadata_service.dao.experiment import add_experiment, retrieve_experiments, get_experiment, update_experiment
+from typing import List, Dict
 
 import motor.motor_asyncio
 from fastapi import APIRouter, HTTPException
@@ -34,6 +34,12 @@ async def get_all_experiments():
 @experiment_router.get("/experiments/{experiment_id}", response_model=Experiment)
 async def get_experiments(experiment_id):
     experiment = await get_experiment(experiment_id)
+    return experiment
+
+
+@experiment_router.post("/experiments", response_model=Experiment)
+async def add_experiments(data: Dict):
+    experiment = await add_experiment(data)
     return experiment
 
 

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.file import retrieve_files, get_file, update_file
-from typing import List
+from metadata_service.dao.file import retrieve_files, get_file, add_file, update_file
+from typing import List, Dict
 
 import motor.motor_asyncio
 from fastapi import APIRouter, HTTPException
@@ -35,6 +35,12 @@ async def get_all_files():
 async def get_files(file_id: str):
     file = await get_file(file_id)
     return file
+
+
+@file_router.post("/files", response_model=File)
+async def add_files(data: Dict):
+    experiment = await add_file(data)
+    return experiment
 
 
 @file_router.put("/files/{file_id}", response_model=File)

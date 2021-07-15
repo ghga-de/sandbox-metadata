@@ -34,6 +34,13 @@ async def get_all_datasets():
 @dataset_router.get("/datasets/{dataset_id}", response_model=Dataset)
 async def get_datasets(dataset_id):
     dataset = await get_dataset(dataset_id)
+    return dataset
+
+
+@dataset_router.post("/datasets", response_model=Dataset)
+async def add_datasets(data: Dict):
+    dataset = await add_dataset(data)
+    return dataset
 
 
 @dataset_router.put("/datasets/{dataset_id}", response_model=Dataset)

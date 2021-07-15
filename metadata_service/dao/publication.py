@@ -36,7 +36,9 @@ async def get_publication(publication_id):
 
 async def add_publication(data: Dict):
     collection = get_collection(COLLECTION_NAME)
-    publication = await collection.insert_one(data)
+    publication_id = data['id']
+    r = await collection.insert_one(data)
+    publication = await get_publication(publication_id)
     return publication
 
 

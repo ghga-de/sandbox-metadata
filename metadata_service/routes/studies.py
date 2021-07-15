@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.study import get_study, retrieve_studies, update_study
-from typing import List
+from metadata_service.dao.study import add_study, get_study, retrieve_studies, update_study
+from typing import List, Dict
 
 import motor.motor_asyncio
 from fastapi import APIRouter, HTTPException
@@ -34,6 +34,12 @@ async def get_all_studies():
 @studies_router.get("/studies/{study_id}", response_model=Study)
 async def get_studies(study_id):
     study = await get_study(study_id)
+    return study
+
+
+@studies_router.post("/studies", response_model=Study)
+async def add_studies(data: Dict):
+    study = await add_study(data)
     return study
 
 

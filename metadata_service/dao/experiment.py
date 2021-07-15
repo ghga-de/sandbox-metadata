@@ -36,8 +36,18 @@ async def get_experiment(experiment_id):
 
 async def add_experiment(data: Dict):
     collection = get_collection(COLLECTION_NAME)
-    experiment = await collection.insert_one(data)
+    experiment_id = data['id']
+    r = await collection.insert_one(data)
+    experiment = await get_experiment(experiment_id)
     return experiment
+
+
+async def add_dataset(data: Dict):
+    collection = get_collection(COLLECTION_NAME)
+    dataset_id = data['id']
+    r = await collection.insert_one(data)
+    dataset = await get_dataset(dataset_id)
+    return dataset
 
 
 async def update_experiment(experiment_id: str, data: Dict):
