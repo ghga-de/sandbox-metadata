@@ -17,7 +17,7 @@ from typing import Dict
 from fastapi.exceptions import HTTPException
 from metadata_service.database import get_collection
 
-COLLECTION_NAME = "datasets"
+COLLECTION_NAME = "dataset"
 
 
 async def retrieve_datasets():

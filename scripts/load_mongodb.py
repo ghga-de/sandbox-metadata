@@ -1,3 +1,18 @@
+# Copyright 2021 Universität Tübingen, DKFZ and EMBL
+# for the German Human Genome-Phenome Archive (GHGA)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import asyncio
 import json
 import motor.motor_asyncio
@@ -31,21 +46,21 @@ experiment_records = json.load(open('examples/experiments.json'))
 file_records = json.load(open('examples/files.json'))
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(delete_all_records(DB_NAME, 'studies'))
-loop.run_until_complete(delete_all_records(DB_NAME, 'publications'))
-loop.run_until_complete(delete_all_records(DB_NAME, 'datasets'))
-loop.run_until_complete(delete_all_records(DB_NAME, 'experiments'))
-loop.run_until_complete(delete_all_records(DB_NAME, 'files'))
+loop.run_until_complete(delete_all_records(DB_NAME, 'study'))
+loop.run_until_complete(delete_all_records(DB_NAME, 'publication'))
+loop.run_until_complete(delete_all_records(DB_NAME, 'dataset'))
+loop.run_until_complete(delete_all_records(DB_NAME, 'experiment'))
+loop.run_until_complete(delete_all_records(DB_NAME, 'file'))
 
 
-loop.run_until_complete(insert_records(DB_NAME, 'studies', study_records['studies']))
-loop.run_until_complete(insert_records(DB_NAME, 'publications', publication_records['publications']))
-loop.run_until_complete(insert_records(DB_NAME, 'datasets', dataset_records['datasets']))
-loop.run_until_complete(insert_records(DB_NAME, 'experiments', experiment_records['experiments']))
-loop.run_until_complete(insert_records(DB_NAME, 'files', file_records['files']))
+loop.run_until_complete(insert_records(DB_NAME, 'study', study_records['studies']))
+loop.run_until_complete(insert_records(DB_NAME, 'publication', publication_records['publications']))
+loop.run_until_complete(insert_records(DB_NAME, 'dataset', dataset_records['datasets']))
+loop.run_until_complete(insert_records(DB_NAME, 'experiment', experiment_records['experiments']))
+loop.run_until_complete(insert_records(DB_NAME, 'file', file_records['files']))
 
-print(loop.run_until_complete(get_collection(DB_NAME, 'studies')))
-print(loop.run_until_complete(get_collection(DB_NAME, 'publications')))
-print(loop.run_until_complete(get_collection(DB_NAME, 'datasets')))
-print(loop.run_until_complete(get_collection(DB_NAME, 'experiments')))
-print(loop.run_until_complete(get_collection(DB_NAME, 'files')))
+print(loop.run_until_complete(get_collection(DB_NAME, 'study')))
+print(loop.run_until_complete(get_collection(DB_NAME, 'publication')))
+print(loop.run_until_complete(get_collection(DB_NAME, 'dataset')))
+print(loop.run_until_complete(get_collection(DB_NAME, 'experiment')))
+print(loop.run_until_complete(get_collection(DB_NAME, 'file')))
