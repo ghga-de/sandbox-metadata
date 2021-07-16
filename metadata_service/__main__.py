@@ -17,11 +17,16 @@
 
 from typing import Optional
 import typer
+import uvicorn
+from metadata_service.api import app
 
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
-    print(f"To be implemented.")
+    # TODO: implement config
+    uvicorn.run(
+        app
+    )
 
 
 def run_cli():
