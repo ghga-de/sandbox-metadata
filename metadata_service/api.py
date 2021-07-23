@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from metadata_service.database import get_db, close_db
 from fastapi import FastAPI
 from metadata_service.routes.studies import studies_router
 from metadata_service.routes.datasets import dataset_router
@@ -31,3 +32,5 @@ app.include_router(dataset_router)
 app.include_router(experiment_router)
 app.include_router(file_router)
 app.include_router(publication_router)
+app.add_event_handler("startup", get_db)
+app.add_event_handler("shutdown", close_db)
