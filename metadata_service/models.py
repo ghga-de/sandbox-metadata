@@ -25,11 +25,13 @@ class Dataset(BaseModel):
     files: Optional[List[str]] = None
     has_study: Optional[str] = None
 
+
 class Experiment(BaseModel):
     id: str
     name: Optional[str] = None
     has_study: Optional[str] = None
     instrument_model: Optional[str] = None
+
 
 class File(BaseModel):
     id: str
@@ -37,12 +39,14 @@ class File(BaseModel):
     format: Optional[str]
     type: Optional[str]
     size: Optional[str]
-    md5sum: Optional[str]
+    checksum: Optional[str]
     category: Optional[str]
+
 
 class Publication(BaseModel):
     id: str
     title: Optional[str] = None
+
 
 class Study(BaseModel):
     id: str
