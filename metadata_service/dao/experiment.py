@@ -21,13 +21,13 @@ COLLECTION_NAME = "experiment"
 
 
 async def retrieve_experiments():
-    collection = get_collection(COLLECTION_NAME)
+    collection = await get_collection(COLLECTION_NAME)
     experiments = await collection.distinct('id')
     return experiments
 
 
 async def get_experiment(experiment_id):
-    collection = get_collection(COLLECTION_NAME)
+    collection = await get_collection(COLLECTION_NAME)
     experiment = await collection.find_one({'id': experiment_id})
     if not experiment:
         raise HTTPException(status_code=404, detail=f"Experiment with id '{experiment_id}' not found")
@@ -35,19 +35,19 @@ async def get_experiment(experiment_id):
 
 
 async def add_experiment(data: Dict):
-    collection = get_collection(COLLECTION_NAME)
+    collection = await get_collection(COLLECTION_NAME)
     experiment_id = data['id']
     r = await collection.insert_one(data)
     experiment = await get_experiment(experiment_id)
     return experiment
 
 
-async def add_dataset(data: Dict):
-    collection = get_collection(COLLECTION_NAME)
-    dataset_id = data['id']
+async def add_experiment(data: Dict):
+    collection = await get_collection(COLLECTION_NAME)
+    experiment_id = data['id']
     r = await collection.insert_one(data)
-    dataset = await get_dataset(dataset_id)
-    return dataset
+    experiment = await get_experiment(experiment_id)
+    return experiment
 
 
 async def update_experiment(experiment_id: str, data: Dict):

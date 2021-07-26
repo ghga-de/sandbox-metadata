@@ -21,13 +21,13 @@ COLLECTION_NAME = "publication"
 
 
 async def retrieve_publications():
-    collection = get_collection(COLLECTION_NAME)
+    collection = await get_collection(COLLECTION_NAME)
     publications = await collection.distinct('id')
     return publications
 
 
 async def get_publication(publication_id):
-    collection = get_collection(COLLECTION_NAME)
+    collection = await get_collection(COLLECTION_NAME)
     publication = await collection.find_one({'id': publication_id})
     if not publication:
         raise HTTPException(status_code=404, detail=f"Publication with id '{publication_id}' not found")
@@ -35,7 +35,7 @@ async def get_publication(publication_id):
 
 
 async def add_publication(data: Dict):
-    collection = get_collection(COLLECTION_NAME)
+    collection = await get_collection(COLLECTION_NAME)
     publication_id = data['id']
     r = await collection.insert_one(data)
     publication = await get_publication(publication_id)
