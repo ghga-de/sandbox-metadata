@@ -1,7 +1,6 @@
 {
     "datasets": [
         {
-            "_id": "DAT:0000001",
             "id": "DAT:0000001",
             "title": "Dataset 1",
             "description": "Dataset generated from STU:0000001",
@@ -13,7 +12,6 @@
             "has_study": "STU:0000001"
         },
         {
-            "_id": "DAT:0000002",
             "id": "DAT:0000002",
             "title": "Dataset 2",
             "description": "Dataset generated from STU:0000002",

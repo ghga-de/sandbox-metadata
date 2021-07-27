@@ -1,7 +1,6 @@
 {
     "files": [
         {
-            "_id": "a34e4793-c343-4930-973f-a45196289017",
             "id": "a34e4793-c343-4930-973f-a45196289017",
             "name": "dataset1_file1.fastq",
             "format": "FASTQ",
@@ -11,7 +10,6 @@
             "category": "Whole Genome Sequencing"
         },
         {
-            "_id": "9e9d1ec1-aadc-4f45-a8e8-90d1e66f827f",
             "id": "9e9d1ec1-aadc-4f45-a8e8-90d1e66f827f",
             "name": "dataset1_file2.fastq",
             "format": "FASTQ",
@@ -21,7 +19,6 @@
             "category": "Whole Genome Sequencing"
         },
         {
-            "_id": "e1645654-695e-4f52-8e5b-23debd73a678",
             "id": "e1645654-695e-4f52-8e5b-23debd73a678",
             "name": "dataset2_file1.bam",
             "format": "BAM",
@@ -31,7 +28,6 @@
             "category": "Whole Exome Sequencing"
         },
         {
-            "_id": "05ba3e4f-5cc6-4f70-a21d-7ca902d97f8c",
             "id": "05ba3e4f-5cc6-4f70-a21d-7ca902d97f8c",
             "name": "dataset2_file1.bai",
             "format": "BAI",
