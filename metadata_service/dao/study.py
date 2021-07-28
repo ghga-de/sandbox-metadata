@@ -22,22 +22,24 @@ COLLECTION_NAME = "study"
 
 async def retrieve_studies():
     collection = await get_collection(COLLECTION_NAME)
-    studies = await collection.distinct('id')
+    studies = await collection.distinct("id")
     return studies
 
 
 async def get_study(study_id):
     collection = await get_collection(COLLECTION_NAME)
-    study = await collection.find_one({'id': study_id})
+    study = await collection.find_one({"id": study_id})
     if not study:
-        raise HTTPException(status_code=404, detail=f"Study with id '{study_id}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"Study with id '{study_id}' not found"
+        )
     return study
 
 
 async def add_study(data: Dict):
     collection = await get_collection(COLLECTION_NAME)
-    study_id = data['id']
-    r = await collection.insert_one(data)
+    study_id = data["id"]
+    await collection.insert_one(data)
     study = await get_study(study_id)
     return study
 

@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.database import get_db, close_db
 from fastapi import FastAPI
+
+from metadata_service.database import get_db, close_db
 from metadata_service.routes.studies import studies_router
 from metadata_service.routes.datasets import dataset_router
 from metadata_service.routes.publications import publication_router

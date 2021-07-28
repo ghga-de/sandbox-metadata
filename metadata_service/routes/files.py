@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.file import retrieve_files, get_file, add_file, update_file
 from typing import List, Dict
+from fastapi import APIRouter
 
-import motor.motor_asyncio
-from fastapi import APIRouter, HTTPException
-
+from metadata_service.dao.file import retrieve_files, get_file, add_file, update_file
 from metadata_service.models import File
 
 

@@ -22,22 +22,24 @@ COLLECTION_NAME = "dataset"
 
 async def retrieve_datasets():
     collection = await get_collection(COLLECTION_NAME)
-    datasets = await collection.distinct('id')
+    datasets = await collection.distinct("id")
     return datasets
 
 
 async def get_dataset(dataset_id):
     collection = await get_collection(COLLECTION_NAME)
-    dataset = await collection.find_one({'id': dataset_id})
+    dataset = await collection.find_one({"id": dataset_id})
     if not dataset:
-        raise HTTPException(status_code=404, detail=f"Dataset with id '{dataset_id}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"Dataset with id '{dataset_id}' not found"
+        )
     return dataset
 
 
 async def add_dataset(data: Dict):
     collection = await get_collection(COLLECTION_NAME)
-    dataset_id = data['id']
-    r = await collection.insert_one(data)
+    dataset_id = data["id"]
+    await collection.insert_one(data)
     dataset = await get_dataset(dataset_id)
     return dataset
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 #
@@ -19,4 +17,3 @@ import setuptools
 
 if __name__ == "__main__":
     setuptools.setup()
-

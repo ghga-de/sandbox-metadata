@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.study import add_study, get_study, retrieve_studies, update_study
 from typing import List, Dict
+from fastapi import APIRouter
 
-import motor.motor_asyncio
-from fastapi import APIRouter, HTTPException
-
+from metadata_service.dao.study import (
+    add_study,
+    get_study,
+    retrieve_studies,
+    update_study,
+)
 from metadata_service.models import Study
 
 

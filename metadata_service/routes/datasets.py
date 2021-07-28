@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.dataset import get_dataset, add_dataset, update_dataset, retrieve_datasets
 from typing import List, Dict
+from fastapi import APIRouter
 
-import motor.motor_asyncio
-from fastapi import APIRouter, HTTPException
-
+from metadata_service.dao.dataset import (
+    get_dataset,
+    add_dataset,
+    update_dataset,
+    retrieve_datasets,
+)
 from metadata_service.models import Dataset
 
 

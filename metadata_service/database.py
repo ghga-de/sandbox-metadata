@@ -17,26 +17,25 @@ import motor.motor_asyncio
 
 DB_URL = "mongodb://localhost:27017"
 DB_NAME = "metadata"
-
-client = None
+CLIENT = None
 
 
 async def get_db():
     """Return database client instance."""
-    global client
-    if not client:
-        client = motor.motor_asyncio.AsyncIOMotorClient(DB_URL)
-    return client
+    global CLIENT
+    if not CLIENT:
+        CLIENT = motor.motor_asyncio.AsyncIOMotorClient(DB_URL)
+    return CLIENT
 
 
 async def close_db():
     """Close database connection."""
-    global client
-    client.close()
+    global CLIENT
+    CLIENT.close()
 
 
 async def get_collection(name):
     """Get a collection"""
-    global client
-    collection = client.metadata.get_collection(name)
+    global CLIENT
+    collection = CLIENT.metadata.get_collection(name)
     return collection

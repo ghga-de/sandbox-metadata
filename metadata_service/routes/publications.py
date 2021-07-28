@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from metadata_service.dao.publication import get_publication, retrieve_publications, add_publication, update_publication
 from typing import List, Dict
+from fastapi import APIRouter
 
-import motor.motor_asyncio
-from fastapi import APIRouter, HTTPException
-
+from metadata_service.dao.publication import (
+    get_publication,
+    retrieve_publications,
+    add_publication,
+    update_publication,
+)
 from metadata_service.models import Publication
 
 
@@ -47,4 +50,3 @@ async def add_publications(data: Dict):
 async def update_publications(publication_id, data: dict):
     publication = await update_publication(publication_id, data)
     return publication
-

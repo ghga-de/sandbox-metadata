@@ -22,22 +22,24 @@ COLLECTION_NAME = "file"
 
 async def retrieve_files():
     collection = await get_collection(COLLECTION_NAME)
-    files = await collection.distinct('id')
+    files = await collection.distinct("id")
     return files
 
 
 async def get_file(file_id):
     collection = await get_collection(COLLECTION_NAME)
-    file = await collection.find_one({'id': file_id})
+    file = await collection.find_one({"id": file_id})
     if not file:
-        raise HTTPException(status_code=404, detail=f"File with id '{file_id}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"File with id '{file_id}' not found"
+        )
     return file
 
 
 async def add_file(data: Dict):
     collection = await get_collection(COLLECTION_NAME)
-    file_id = data['id']
-    r = await collection.insert_one(data)
+    file_id = data["id"]
+    await collection.insert_one(data)
     file = await get_file(file_id)
     return file
 
