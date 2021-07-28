@@ -1,14 +1,12 @@
 {
     "experiments": [
         {
-            "_id": "EXP:0000001",
             "id": "EXP:0000001",
             "name": "Experiment 1",
             "has_study": "STU:0000001",
             "instrument_model": "Illumina HiSeq"
         },
         {
-            "_id": "EXP:0000002",
             "id": "EXP:0000002",
             "name": "Experiment 2",
             "has_study": "STU:0000002",

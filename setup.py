@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Metadata Service API"""
+import setuptools
 
-__version__ = "0.1.0"
+if __name__ == "__main__":
+    setuptools.setup()

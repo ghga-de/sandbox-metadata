@@ -13,6 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Metadata Service API"""
+import motor.motor_asyncio
 
-__version__ = "0.1.0"
+DB_URL = "mongodb://localhost:27017"
+DB_NAME = "metadata"
+CLIENT = None
+
+
+async def get_db():
+    """Return database client instance."""
+    global CLIENT
+    if not CLIENT:
+        CLIENT = motor.motor_asyncio.AsyncIOMotorClient(DB_URL)
+    return CLIENT
+
+
+async def close_db():
+    """Close database connection."""
+    global CLIENT
+    CLIENT.close()
+
+
+async def get_collection(name):
+    """Get a collection"""
+    global CLIENT
+    collection = CLIENT.metadata.get_collection(name)
+    return collection

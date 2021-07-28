@@ -1,0 +1,2 @@
+#!/bin/bash
+uvicorn metadata_service.api:app --reload

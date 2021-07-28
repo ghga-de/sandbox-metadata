@@ -1,6 +1,6 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.166.1/containers/python-3-postgres
-// Update the VARIANT arg in docker-compose.yml to pick a Python version: 3, 3.8, 3.7, 3.6 
+// Update the VARIANT arg in docker-compose.yml to pick a Python version: 3, 3.8, 3.7, 3.6
 {
 	"name": "Python 3 & MongoDB",
 	"dockerComposeFile": "docker-compose.yml",
@@ -8,7 +8,7 @@
 	"workspaceFolder": "/workspace",
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
 		// "sqltools.connections": [{
 		// 	"name": "Container database",
@@ -54,7 +54,7 @@
 	"forwardPorts": [27017],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install --user -r requirements.txt && python load_mongodb.py",
+	"postCreateCommand": "pip install --user -r requirements.txt && python scripts/load_mongodb.py",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
