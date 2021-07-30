@@ -15,9 +15,13 @@
 
 from typing import Dict
 from fastapi.exceptions import HTTPException
+
+from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 
 COLLECTION_NAME = "publication"
+
+_denormalize_fields_ = {}
 
 
 async def retrieve_publications():
@@ -26,13 +30,15 @@ async def retrieve_publications():
     return publications
 
 
-async def get_publication(publication_id):
+async def get_publication(publication_id, embedded: bool = False):
     collection = await get_collection(COLLECTION_NAME)
     publication = await collection.find_one({"id": publication_id})
     if not publication:
         raise HTTPException(
             status_code=404, detail=f"Publication with id '{publication_id}' not found"
         )
+    if embedded:
+        publication = await embed_references(publication, _denormalize_fields_)
     return publication
 
 

@@ -35,8 +35,8 @@ async def get_all_experiments():
 
 
 @experiment_router.get("/experiments/{experiment_id}", response_model=Experiment)
-async def get_experiments(experiment_id):
-    experiment = await get_experiment(experiment_id)
+async def get_experiments(experiment_id, embedded: bool = False):
+    experiment = await get_experiment(experiment_id, embedded)
     return experiment
 
 

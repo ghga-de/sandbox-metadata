@@ -30,8 +30,8 @@ async def get_all_files():
 
 
 @file_router.get("/files/{file_id}", response_model=File)
-async def get_files(file_id: str):
-    file = await get_file(file_id)
+async def get_files(file_id: str, embedded: bool = False):
+    file = await get_file(file_id, embedded)
     return file
 
 

@@ -35,8 +35,8 @@ async def get_all_publications():
 
 
 @publication_router.get("/publications/{publication_id}", response_model=Publication)
-async def get_publications(publication_id):
-    publication = await get_publication(publication_id)
+async def get_publications(publication_id, embedded: bool = False):
+    publication = await get_publication(publication_id, embedded)
     return publication
 
 

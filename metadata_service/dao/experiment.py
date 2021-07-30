@@ -15,9 +15,13 @@
 
 from typing import Dict
 from fastapi.exceptions import HTTPException
+
+from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 
 COLLECTION_NAME = "experiment"
+
+_denormalize_fields_ = {("has_study", "study")}
 
 
 async def retrieve_experiments():
@@ -26,13 +30,15 @@ async def retrieve_experiments():
     return experiments
 
 
-async def get_experiment(experiment_id):
+async def get_experiment(experiment_id, embedded: bool = False):
     collection = await get_collection(COLLECTION_NAME)
     experiment = await collection.find_one({"id": experiment_id})
     if not experiment:
         raise HTTPException(
             status_code=404, detail=f"Experiment with id '{experiment_id}' not found"
         )
+    if embedded:
+        experiment = await embed_references(experiment, _denormalize_fields_)
     return experiment
 
 

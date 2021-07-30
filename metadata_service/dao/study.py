@@ -15,9 +15,13 @@
 
 from typing import Dict
 from fastapi.exceptions import HTTPException
+
+from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 
 COLLECTION_NAME = "study"
+
+_denormalize_fields_ = {("publications", "publication")}
 
 
 async def retrieve_studies():
@@ -26,13 +30,15 @@ async def retrieve_studies():
     return studies
 
 
-async def get_study(study_id):
+async def get_study(study_id, embedded: bool = False):
     collection = await get_collection(COLLECTION_NAME)
     study = await collection.find_one({"id": study_id})
     if not study:
         raise HTTPException(
             status_code=404, detail=f"Study with id '{study_id}' not found"
         )
+    if embedded:
+        study = await embed_references(study, _denormalize_fields_)
     return study
 
 

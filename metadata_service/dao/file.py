@@ -15,9 +15,13 @@
 
 from typing import Dict
 from fastapi.exceptions import HTTPException
+
+from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 
 COLLECTION_NAME = "file"
+
+_denormalize_fields_ = {}
 
 
 async def retrieve_files():
@@ -26,13 +30,15 @@ async def retrieve_files():
     return files
 
 
-async def get_file(file_id):
+async def get_file(file_id, embedded: bool = False):
     collection = await get_collection(COLLECTION_NAME)
     file = await collection.find_one({"id": file_id})
     if not file:
         raise HTTPException(
             status_code=404, detail=f"File with id '{file_id}' not found"
         )
+    if embedded:
+        file = await embed_references(file, _denormalize_fields_)
     return file
 
 

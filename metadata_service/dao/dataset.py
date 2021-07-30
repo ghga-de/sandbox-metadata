@@ -15,9 +15,13 @@
 
 from typing import Dict
 from fastapi.exceptions import HTTPException
+
+from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 
 COLLECTION_NAME = "dataset"
+
+_denormalize_fields_ = {("has_study", "study")}
 
 
 async def retrieve_datasets():
@@ -26,13 +30,15 @@ async def retrieve_datasets():
     return datasets
 
 
-async def get_dataset(dataset_id):
+async def get_dataset(dataset_id, embedded = False):
     collection = await get_collection(COLLECTION_NAME)
     dataset = await collection.find_one({"id": dataset_id})
     if not dataset:
         raise HTTPException(
             status_code=404, detail=f"Dataset with id '{dataset_id}' not found"
         )
+    if embedded:
+        dataset = await embed_references(dataset, _denormalize_fields_)
     return dataset
 
 

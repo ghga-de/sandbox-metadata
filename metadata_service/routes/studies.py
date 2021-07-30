@@ -35,8 +35,8 @@ async def get_all_studies():
 
 
 @studies_router.get("/studies/{study_id}", response_model=Study)
-async def get_studies(study_id):
-    study = await get_study(study_id)
+async def get_studies(study_id, embedded: bool = False):
+    study = await get_study(study_id, embedded)
     return study
 
 

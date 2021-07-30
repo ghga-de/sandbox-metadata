@@ -35,8 +35,8 @@ async def get_all_datasets():
 
 
 @dataset_router.get("/datasets/{dataset_id}", response_model=Dataset)
-async def get_datasets(dataset_id):
-    dataset = await get_dataset(dataset_id)
+async def get_datasets(dataset_id, embedded: bool = False):
+    dataset = await get_dataset(dataset_id, embedded)
     return dataset
 
 
