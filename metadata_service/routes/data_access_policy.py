@@ -28,25 +28,29 @@ from metadata_service.models import DataAccessPolicy
 data_access_policy_router = APIRouter()
 
 
-@data_access_policy_router.get("/data_access_policies", response_model=List[str])
+@data_access_policy_router.get("/data_access_policies", response_model=List[str], summary="Get all DAP IDs")
 async def get_all_daps():
+    """Retrieve a list of DAP IDs from metadata store."""
     daps = await retrieve_daps()
     return daps
 
 
-@data_access_policy_router.get("/data_access_policies/{dap_id}", response_model=DataAccessPolicy)
-async def get_daps(dap_id, embedded: bool = False):
-    dap = await get_dap(dap_id, embedded)
+@data_access_policy_router.get("/data_access_policies/{data_access_policy_id}", response_model=DataAccessPolicy, summary="Get a DAP")
+async def get_daps(data_access_policy_id: str, embedded: bool = False):
+    """Given a DAP ID, get the DAP from metadata store."""
+    dap = await get_dap(data_access_policy_id, embedded)
     return dap
 
 
-@data_access_policy_router.post("/data_access_policies", response_model=DataAccessPolicy)
+@data_access_policy_router.post("/data_access_policies", response_model=DataAccessPolicy, summary="Add a DAP")
 async def add_daps(data: Dict):
+    """Add a DAP to the metadata store."""
     dap = await add_dap(data)
     return dap
 
 
-@data_access_policy_router.put("/data_access_policies/{dap_id}", response_model=DataAccessPolicy)
-async def update_daps(dap_id, data: Dict):
-    dap = await update_dap(dap_id, data)
+@data_access_policy_router.put("/data_access_policies/{data_access_policy_id}", response_model=DataAccessPolicy, summary="Update a DAP")
+async def update_daps(data_access_policy_id: str, data: Dict):
+    """Given a DAP ID and data, update the DAP in metadata store."""
+    dap = await update_dap(data_access_policy_id, data)
     return dap

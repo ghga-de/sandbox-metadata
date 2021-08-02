@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict
+from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -23,13 +23,29 @@ from metadata_service.models import DataAccessPolicy
 COLLECTION_NAME = DataAccessPolicy.__collection__
 
 
-async def retrieve_daps():
+async def retrieve_daps() -> List[str]:
+    """Retrieve a list of DAPs from metadata store.
+
+    Returns:
+      A list of DAP IDs.
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     daps = await collection.distinct("id")
     return daps
 
 
-async def get_dap(dap_id, embedded = False):
+async def get_dap(dap_id: str, embedded = False) -> Dict:
+    """Given a DAP ID, get the DAP object from metadata store.
+
+    Args:
+        dap_id: The DAP ID
+        embedded: Whether or not to embed references. ``False``, by default.
+
+    Returns:
+      The DAP object
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     dap = await collection.find_one({"id": dap_id})
     if not dap:
@@ -41,7 +57,16 @@ async def get_dap(dap_id, embedded = False):
     return dap
 
 
-async def add_dap(data: Dict):
+async def add_dap(data: Dict) -> Dict:
+    """Add a DAP object to the metadata store.
+
+    Args:
+        data: The DAP object
+
+    Returns:
+      The added DAP object
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     dap_id = data["id"]
     await collection.insert_one(data)
@@ -49,7 +74,17 @@ async def add_dap(data: Dict):
     return dap
 
 
-async def update_dap(dap_id: str, data: Dict):
+async def update_dap(dap_id: str, data: Dict) -> Dict:
+    """Given a DAP ID and data, update the DAP in metadata store.
+
+    Args:
+        DAP_id: The DAP ID
+        data: The DAP object
+
+    Returns:
+      The updated DAP object
+
+    """
     dap = await get_dap(dap_id)
     dap.update(**data)
     return dap

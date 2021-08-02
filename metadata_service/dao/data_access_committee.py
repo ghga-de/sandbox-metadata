@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict
+from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -23,13 +23,29 @@ from metadata_service.models import DataAccessCommittee
 COLLECTION_NAME = DataAccessCommittee.__collection__
 
 
-async def retrieve_dacs():
+async def retrieve_dacs() -> List[str]:
+    """Retrieve a list of DACs from metadata store.
+
+    Returns:
+      A list of DAC IDs.
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     dacs = await collection.distinct("id")
     return dacs
 
 
-async def get_dac(dac_id, embedded = False):
+async def get_dac(dac_id: str, embedded = False) -> Dict:
+    """Given a DAC ID, get the DAC object from metadata store.
+
+    Args:
+        dac_id: The DAC ID
+        embedded: Whether or not to embed references. ``False``, by default.
+
+    Returns:
+      The DAC object
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     dac = await collection.find_one({"id": dac_id})
     if not dac:
@@ -41,7 +57,16 @@ async def get_dac(dac_id, embedded = False):
     return dac
 
 
-async def add_dac(data: Dict):
+async def add_dac(data: Dict) -> Dict:
+    """Add a DAC object to the metadata store.
+
+    Args:
+        data: The DAC object
+
+    Returns:
+      The added DAC object
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     dac_id = data["id"]
     await collection.insert_one(data)
@@ -49,7 +74,17 @@ async def add_dac(data: Dict):
     return dac
 
 
-async def update_dac(dac_id: str, data: Dict):
+async def update_dac(dac_id: str, data: Dict) -> Dict:
+    """Given a DAC ID and data, update the DAC in metadata store.
+
+    Args:
+        dac_id: The DAC ID
+        data: The DAC object
+
+    Returns:
+      The updated DAC object
+
+    """
     dac = await get_dac(dac_id)
     dac.update(**data)
     return dac

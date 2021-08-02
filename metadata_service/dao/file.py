@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict
+from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -23,13 +23,29 @@ from metadata_service.models import File
 COLLECTION_NAME = File.__collection__
 
 
-async def retrieve_files():
+async def retrieve_files() -> List[str]:
+    """Retrieve a list of File IDs from metadata store.
+
+    Returns:
+      A list of File IDs.
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     files = await collection.distinct("id")
     return files
 
 
-async def get_file(file_id, embedded: bool = False):
+async def get_file(file_id: str, embedded: bool = False) -> Dict:
+    """Given a File ID, get the File object from metadata store.
+
+    Args:
+        file_id: The File ID
+        embedded: Whether or not to embed references. ``False``, by default.
+
+    Returns:
+      The File object
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     file = await collection.find_one({"id": file_id})
     if not file:
@@ -41,7 +57,16 @@ async def get_file(file_id, embedded: bool = False):
     return file
 
 
-async def add_file(data: Dict):
+async def add_file(data: Dict) -> Dict:
+    """Add a File object to the metadata store.
+
+    Args:
+        data: The File object
+
+    Returns:
+      The added File object
+
+    """
     collection = await get_collection(COLLECTION_NAME)
     file_id = data["id"]
     await collection.insert_one(data)
@@ -49,7 +74,17 @@ async def add_file(data: Dict):
     return file
 
 
-async def update_file(file_id: str, data: Dict):
+async def update_file(file_id: str, data: Dict) -> Dict:
+    """Given a File ID and data, update the File in metadata store.
+
+    Args:
+        file_id: The File ID
+        data: The File object
+
+    Returns:
+      The updated File object
+
+    """
     file = await get_file(file_id)
     file.update(**data)
     return file

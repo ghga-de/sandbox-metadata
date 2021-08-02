@@ -28,25 +28,29 @@ from metadata_service.models import Experiment
 experiment_router = APIRouter()
 
 
-@experiment_router.get("/experiments", response_model=List[str])
+@experiment_router.get("/experiments", response_model=List[str], summary="Get all Experiment IDs")
 async def get_all_experiments():
+    """Retrieve a list of Experiment IDs from metadata store."""
     experiments = await retrieve_experiments()
     return experiments
 
 
-@experiment_router.get("/experiments/{experiment_id}", response_model=Experiment)
-async def get_experiments(experiment_id, embedded: bool = False):
+@experiment_router.get("/experiments/{experiment_id}", response_model=Experiment, summary="Get an Experiment")
+async def get_experiments(experiment_id: str, embedded: bool = False):
+    """Given an Experiment ID, get the Experiment from metadata store."""
     experiment = await get_experiment(experiment_id, embedded)
     return experiment
 
 
-@experiment_router.post("/experiments", response_model=Experiment)
+@experiment_router.post("/experiments", response_model=Experiment, summary="Add an Experiment")
 async def add_experiments(data: Dict):
+    """Add an Experiment to the metadata store."""
     experiment = await add_experiment(data)
     return experiment
 
 
-@experiment_router.put("/experiments/{experiment_id}", response_model=Experiment)
-async def update_experiments(experiment_id, data: dict):
+@experiment_router.put("/experiments/{experiment_id}", response_model=Experiment, summary="Update an Experiment")
+async def update_experiments(experiment_id: str, data: dict):
+    """Given an Experiment ID and data, update the Experiment in metadata store."""
     experiment = await update_experiment(experiment_id, data)
     return experiment

@@ -13,31 +13,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
+from typing import Dict
+from pydantic import BaseModel
 from metadata_service.database import get_collection
 
 
-async def _get_reference(object_id, collection_name):
+async def _get_reference(document_id: str, collection_name: str) -> Dict:
+    """Given a document ID and a collection name, query the metadata store
+    and return the document.
+
+    Args:
+        document_id: The ID of the document
+        collection_name: The collection in the metadata store that has the document
+
+    Returns
+        The document corresponding to ``document_id``
+
+    """
     collection = await get_collection(collection_name)
-    doc = await collection.find_one({"id": object_id})
+    doc = await collection.find_one({"id": document_id})
     if not doc:
-        logging.warning(f"Reference with ID {object_id} not found in collection {collection_name}")
+        logging.warning(f"Reference with ID {document_id} not found in collection {collection_name}")
     return doc
 
 
-async def embed_references(parent_object, object_type):
-    for field, referenced_obj in object_type.__references__:
-        if field in parent_object and parent_object[field]:
-            if isinstance(parent_object[field], str):
-                referenced_doc = await _get_reference(parent_object[field], referenced_obj.__collection__)
-                referenced_doc2 = await embed_references(referenced_doc, referenced_obj)
-                parent_object[field] = referenced_doc2
-            elif isinstance(parent_object[field], (list, set, tuple)):
+async def embed_references(parent_document: Dict, document_type: BaseModel) -> Dict:
+    """Given a document and a document type, identify the references in ``parent_document``
+    and query the metadata store. After retrieving the referenced objects, embed them in place
+    of the reference in the parent document.
+
+    Args:
+        parent_document: The parent document that has one or more references
+        document_type: An instance of ``pydantic.BaseModel``
+
+    Returns
+        The denormalize/embedded document
+
+    """
+    for field, referenced_obj in document_type.__references__:
+        if field in parent_document and parent_document[field]:
+            if isinstance(parent_document[field], str):
+                referenced_doc = await _get_reference(parent_document[field], referenced_obj.__collection__)
+                referenced_doc = await embed_references(referenced_doc, referenced_obj)
+                parent_document[field] = referenced_doc
+            elif isinstance(parent_document[field], (list, set, tuple)):
                 docs = []
-                for ref in parent_object[field]:
+                for ref in parent_document[field]:
                     referenced_doc = await _get_reference(ref, referenced_obj.__collection__)
-                    referenced_doc2 = await embed_references(referenced_doc, referenced_obj)
-                    docs.append(referenced_doc2)
-                parent_object[field] = docs
+                    referenced_doc = await embed_references(referenced_doc, referenced_obj)
+                    docs.append(referenced_doc)
+                parent_document[field] = docs
             else:
-                raise ValueError(f"Unexpected value type for field {field} in parent object {parent_object}")
-    return parent_object
+                raise ValueError(f"Unexpected value type for field {field} in parent object {parent_document}")
+    return parent_document

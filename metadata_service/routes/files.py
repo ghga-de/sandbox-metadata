@@ -23,25 +23,29 @@ from metadata_service.models import File
 file_router = APIRouter()
 
 
-@file_router.get("/files", response_model=List[str])
+@file_router.get("/files", response_model=List[str], summary="Get all File IDs")
 async def get_all_files():
+    """Retrieve a list of File IDs from metadata store."""
     files = await retrieve_files()
     return files
 
 
-@file_router.get("/files/{file_id}", response_model=File)
+@file_router.get("/files/{file_id}", response_model=File, summary="Get a File")
 async def get_files(file_id: str, embedded: bool = False):
+    """Given a File ID, get the File object from metadata store."""
     file = await get_file(file_id, embedded)
     return file
 
 
-@file_router.post("/files", response_model=File)
+@file_router.post("/files", response_model=File, summary="Add a File")
 async def add_files(data: Dict):
+    """Add a File to the metadata store."""
     experiment = await add_file(data)
     return experiment
 
 
-@file_router.put("/files/{file_id}", response_model=File)
+@file_router.put("/files/{file_id}", response_model=File, summary="Update a File")
 async def update_files(file_id: str, data: dict):
+    """Given a File ID and data, update the File object in metadata store."""
     file = await update_file(file_id, data)
     return file
