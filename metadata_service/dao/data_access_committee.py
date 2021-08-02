@@ -18,39 +18,38 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
+from metadata_service.models import DataAccessCommittee
 
-COLLECTION_NAME = "data_access_committee"
-
-_denormalize_fields_ = {}
+COLLECTION_NAME = DataAccessCommittee.__collection__
 
 
-async def retrieve_datasets():
+async def retrieve_dacs():
     collection = await get_collection(COLLECTION_NAME)
-    datasets = await collection.distinct("id")
-    return datasets
+    dacs = await collection.distinct("id")
+    return dacs
 
 
-async def get_dataset(dataset_id, embedded = False):
+async def get_dac(dac_id, embedded = False):
     collection = await get_collection(COLLECTION_NAME)
-    dataset = await collection.find_one({"id": dataset_id})
-    if not dataset:
+    dac = await collection.find_one({"id": dac_id})
+    if not dac:
         raise HTTPException(
-            status_code=404, detail=f"Dataset with id '{dataset_id}' not found"
+            status_code=404, detail=f"{DataAccessCommittee.__name__} with id '{dac_id}' not found"
         )
     if embedded:
-        dataset = await embed_references(dataset, _denormalize_fields_)
-    return dataset
+        dac = await embed_references(dac, DataAccessCommittee)
+    return dac
 
 
-async def add_dataset(data: Dict):
+async def add_dac(data: Dict):
     collection = await get_collection(COLLECTION_NAME)
-    dataset_id = data["id"]
+    dac_id = data["id"]
     await collection.insert_one(data)
-    dataset = await get_dataset(dataset_id)
-    return dataset
+    dac = await get_dac(dac_id)
+    return dac
 
 
-async def update_dataset(dataset_id: str, data: Dict):
-    dataset = await get_dataset(dataset_id)
-    dataset.update(**data)
-    return dataset
+async def update_dac(dac_id: str, data: Dict):
+    dac = await get_dac(dac_id)
+    dac.update(**data)
+    return dac

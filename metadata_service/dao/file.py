@@ -20,9 +20,7 @@ from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 from metadata_service.models import File
 
-COLLECTION_NAME = "file"
-
-_denormalize_fields_ = {}
+COLLECTION_NAME = File.__collection__
 
 
 async def retrieve_files():
@@ -36,7 +34,7 @@ async def get_file(file_id, embedded: bool = False):
     file = await collection.find_one({"id": file_id})
     if not file:
         raise HTTPException(
-            status_code=404, detail=f"File with id '{file_id}' not found"
+            status_code=404, detail=f"{File.__name__} with id '{file_id}' not found"
         )
     if embedded:
         file = await embed_references(file, File)

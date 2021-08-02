@@ -20,7 +20,7 @@ from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 from metadata_service.models import Dataset
 
-COLLECTION_NAME = "dataset"
+COLLECTION_NAME = Dataset.__collection__
 
 
 async def retrieve_datasets():
@@ -34,7 +34,7 @@ async def get_dataset(dataset_id, embedded = False):
     dataset = await collection.find_one({"id": dataset_id})
     if not dataset:
         raise HTTPException(
-            status_code=404, detail=f"Dataset with id '{dataset_id}' not found"
+            status_code=404, detail=f"{Dataset.__name__} with id '{dataset_id}' not found"
         )
     if embedded:
         dataset = await embed_references(dataset, Dataset)

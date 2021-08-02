@@ -20,7 +20,7 @@ from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 from metadata_service.models import Study
 
-COLLECTION_NAME = "study"
+COLLECTION_NAME = Study.__collection__
 
 
 async def retrieve_studies():
@@ -34,7 +34,7 @@ async def get_study(study_id, embedded: bool = False):
     study = await collection.find_one({"id": study_id})
     if not study:
         raise HTTPException(
-            status_code=404, detail=f"Study with id '{study_id}' not found"
+            status_code=404, detail=f"{Study.__name__} with id '{study_id}' not found"
         )
     if embedded:
         study = await embed_references(study, Study)

@@ -20,7 +20,7 @@ from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
 from metadata_service.models import Experiment
 
-COLLECTION_NAME = "experiment"
+COLLECTION_NAME = Experiment.__collection__
 
 
 async def retrieve_experiments():
@@ -34,7 +34,7 @@ async def get_experiment(experiment_id, embedded: bool = False):
     experiment = await collection.find_one({"id": experiment_id})
     if not experiment:
         raise HTTPException(
-            status_code=404, detail=f"Experiment with id '{experiment_id}' not found"
+            status_code=404, detail=f"{Experiment.__name__} with id '{experiment_id}' not found"
         )
     if embedded:
         experiment = await embed_references(experiment, Experiment)

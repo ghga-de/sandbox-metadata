@@ -18,38 +18,38 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
-from metadata_service.models import Publication
+from metadata_service.models import DataAccessPolicy
 
-COLLECTION_NAME = Publication.__collection__
+COLLECTION_NAME = DataAccessPolicy.__collection__
 
 
-async def retrieve_publications():
+async def retrieve_daps():
     collection = await get_collection(COLLECTION_NAME)
-    publications = await collection.distinct("id")
-    return publications
+    daps = await collection.distinct("id")
+    return daps
 
 
-async def get_publication(publication_id, embedded: bool = False):
+async def get_dap(dap_id, embedded = False):
     collection = await get_collection(COLLECTION_NAME)
-    publication = await collection.find_one({"id": publication_id})
-    if not publication:
+    dap = await collection.find_one({"id": dap_id})
+    if not dap:
         raise HTTPException(
-            status_code=404, detail=f"{Publication.__name__} with id '{publication_id}' not found"
+            status_code=404, detail=f"{DataAccessPolicy.__name__} with id '{dap_id}' not found"
         )
     if embedded:
-        publication = await embed_references(publication, Publication)
-    return publication
+        dap = await embed_references(dap, DataAccessPolicy)
+    return dap
 
 
-async def add_publication(data: Dict):
+async def add_dap(data: Dict):
     collection = await get_collection(COLLECTION_NAME)
-    publication_id = data["id"]
+    dap_id = data["id"]
     await collection.insert_one(data)
-    publication = await get_publication(publication_id)
-    return publication
+    dap = await get_dap(dap_id)
+    return dap
 
 
-async def update_publication(publication_id: str, data: Dict):
-    publication = await get_publication(publication_id)
-    publication.update(**data)
-    return publication
+async def update_dap(dap_id: str, data: Dict):
+    dap = await get_dap(dap_id)
+    dap.update(**data)
+    return dap
