@@ -18,10 +18,9 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
+from metadata_service.models import Study
 
 COLLECTION_NAME = "study"
-
-_denormalize_fields_ = {("publications", "publication")}
 
 
 async def retrieve_studies():
@@ -38,7 +37,7 @@ async def get_study(study_id, embedded: bool = False):
             status_code=404, detail=f"Study with id '{study_id}' not found"
         )
     if embedded:
-        study = await embed_references(study, _denormalize_fields_)
+        study = await embed_references(study, Study)
     return study
 
 

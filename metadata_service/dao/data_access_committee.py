@@ -18,40 +18,39 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
-from metadata_service.models import File
 
-COLLECTION_NAME = "file"
+COLLECTION_NAME = "data_access_committee"
 
 _denormalize_fields_ = {}
 
 
-async def retrieve_files():
+async def retrieve_datasets():
     collection = await get_collection(COLLECTION_NAME)
-    files = await collection.distinct("id")
-    return files
+    datasets = await collection.distinct("id")
+    return datasets
 
 
-async def get_file(file_id, embedded: bool = False):
+async def get_dataset(dataset_id, embedded = False):
     collection = await get_collection(COLLECTION_NAME)
-    file = await collection.find_one({"id": file_id})
-    if not file:
+    dataset = await collection.find_one({"id": dataset_id})
+    if not dataset:
         raise HTTPException(
-            status_code=404, detail=f"File with id '{file_id}' not found"
+            status_code=404, detail=f"Dataset with id '{dataset_id}' not found"
         )
     if embedded:
-        file = await embed_references(file, File)
-    return file
+        dataset = await embed_references(dataset, _denormalize_fields_)
+    return dataset
 
 
-async def add_file(data: Dict):
+async def add_dataset(data: Dict):
     collection = await get_collection(COLLECTION_NAME)
-    file_id = data["id"]
+    dataset_id = data["id"]
     await collection.insert_one(data)
-    file = await get_file(file_id)
-    return file
+    dataset = await get_dataset(dataset_id)
+    return dataset
 
 
-async def update_file(file_id: str, data: Dict):
-    file = await get_file(file_id)
-    file.update(**data)
-    return file
+async def update_dataset(dataset_id: str, data: Dict):
+    dataset = await get_dataset(dataset_id)
+    dataset.update(**data)
+    return dataset

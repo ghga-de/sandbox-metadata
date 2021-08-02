@@ -18,10 +18,9 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
+from metadata_service.models import Dataset
 
 COLLECTION_NAME = "dataset"
-
-_denormalize_fields_ = {("has_study", "study")}
 
 
 async def retrieve_datasets():
@@ -38,7 +37,7 @@ async def get_dataset(dataset_id, embedded = False):
             status_code=404, detail=f"Dataset with id '{dataset_id}' not found"
         )
     if embedded:
-        dataset = await embed_references(dataset, _denormalize_fields_)
+        dataset = await embed_references(dataset, Dataset)
     return dataset
 
 

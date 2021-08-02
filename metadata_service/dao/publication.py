@@ -18,6 +18,7 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
+from metadata_service.models import Publication
 
 COLLECTION_NAME = "publication"
 
@@ -38,7 +39,7 @@ async def get_publication(publication_id, embedded: bool = False):
             status_code=404, detail=f"Publication with id '{publication_id}' not found"
         )
     if embedded:
-        publication = await embed_references(publication, _denormalize_fields_)
+        publication = await embed_references(publication, Publication)
     return publication
 
 
