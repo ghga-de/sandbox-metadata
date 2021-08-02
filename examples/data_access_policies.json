@@ -1,0 +1,16 @@
+{
+    "data_access_policies": [
+        {
+            "id": "DAP:0000001",
+            "description": "Data Access Policy 1",
+            "policy_text": "This data access policy grants users the rights to use genomic data for research",
+            "has_data_access_committee": "DAC:0000001"
+        },
+        {
+            "id": "DAP:0000002",
+            "description": "Data Access Policy 2",
+            "policy_text": "This data access policy grants users the rights to use genomic data for non-profits",
+            "has_data_access_committee": "DAC:0000002"
+        }
+    ]
+}

@@ -44,6 +44,8 @@ publication_records = json.load(open("examples/publications.json"))
 dataset_records = json.load(open("examples/datasets.json"))
 experiment_records = json.load(open("examples/experiments.json"))
 file_records = json.load(open("examples/files.json"))
+dap_records = json.load(open("examples/data_access_policies.json"))
+dac_records = json.load(open("examples/data_access_committees.json"))
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(delete_all_records(DB_NAME, "study"))
@@ -51,6 +53,8 @@ loop.run_until_complete(delete_all_records(DB_NAME, "publication"))
 loop.run_until_complete(delete_all_records(DB_NAME, "dataset"))
 loop.run_until_complete(delete_all_records(DB_NAME, "experiment"))
 loop.run_until_complete(delete_all_records(DB_NAME, "file"))
+loop.run_until_complete(delete_all_records(DB_NAME, "data_access_policy"))
+loop.run_until_complete(delete_all_records(DB_NAME, "data_access_committee"))
 
 
 loop.run_until_complete(insert_records(DB_NAME, "study", study_records["studies"]))
@@ -62,9 +66,17 @@ loop.run_until_complete(
     insert_records(DB_NAME, "experiment", experiment_records["experiments"])
 )
 loop.run_until_complete(insert_records(DB_NAME, "file", file_records["files"]))
+loop.run_until_complete(
+    insert_records(DB_NAME, "data_access_policy", dap_records["data_access_policies"])
+)
+loop.run_until_complete(
+    insert_records(DB_NAME, "data_access_committee", dac_records["data_access_committees"])
+)
 
 print(loop.run_until_complete(get_collection(DB_NAME, "study")))
 print(loop.run_until_complete(get_collection(DB_NAME, "publication")))
 print(loop.run_until_complete(get_collection(DB_NAME, "dataset")))
 print(loop.run_until_complete(get_collection(DB_NAME, "experiment")))
 print(loop.run_until_complete(get_collection(DB_NAME, "file")))
+print(loop.run_until_complete(get_collection(DB_NAME, "data_access_policy")))
+print(loop.run_until_complete(get_collection(DB_NAME, "data_access_committee")))
