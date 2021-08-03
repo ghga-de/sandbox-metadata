@@ -35,7 +35,7 @@ async def retrieve_daps() -> List[str]:
     return daps
 
 
-async def get_dap(dap_id: str, embedded = False) -> Dict:
+async def get_dap(dap_id: str, embedded=False) -> Dict:
     """Given a DAP ID, get the DAP object from metadata store.
 
     Args:
@@ -50,7 +50,8 @@ async def get_dap(dap_id: str, embedded = False) -> Dict:
     dap = await collection.find_one({"id": dap_id})
     if not dap:
         raise HTTPException(
-            status_code=404, detail=f"{DataAccessPolicy.__name__} with id '{dap_id}' not found"
+            status_code=404,
+            detail=f"{DataAccessPolicy.__name__} with id '{dap_id}' not found",
         )
     if embedded:
         dap = await embed_references(dap, DataAccessPolicy)

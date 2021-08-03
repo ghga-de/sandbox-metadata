@@ -50,7 +50,8 @@ async def get_publication(publication_id: str, embedded: bool = False) -> Dict:
     publication = await collection.find_one({"id": publication_id})
     if not publication:
         raise HTTPException(
-            status_code=404, detail=f"{Publication.__name__} with id '{publication_id}' not found"
+            status_code=404,
+            detail=f"{Publication.__name__} with id '{publication_id}' not found",
         )
     if embedded:
         publication = await embed_references(publication, Publication)

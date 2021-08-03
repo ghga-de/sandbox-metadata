@@ -35,7 +35,7 @@ async def retrieve_dacs() -> List[str]:
     return dacs
 
 
-async def get_dac(dac_id: str, embedded = False) -> Dict:
+async def get_dac(dac_id: str, embedded=False) -> Dict:
     """Given a DAC ID, get the DAC object from metadata store.
 
     Args:
@@ -50,7 +50,8 @@ async def get_dac(dac_id: str, embedded = False) -> Dict:
     dac = await collection.find_one({"id": dac_id})
     if not dac:
         raise HTTPException(
-            status_code=404, detail=f"{DataAccessCommittee.__name__} with id '{dac_id}' not found"
+            status_code=404,
+            detail=f"{DataAccessCommittee.__name__} with id '{dac_id}' not found",
         )
     if embedded:
         dac = await embed_references(dac, DataAccessCommittee)

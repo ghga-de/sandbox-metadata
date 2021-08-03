@@ -28,28 +28,40 @@ from metadata_service.models import DataAccessCommittee
 data_access_committee_router = APIRouter()
 
 
-@data_access_committee_router.get("/data_access_committees", response_model=List[str], summary="Get all DAC IDs")
+@data_access_committee_router.get(
+    "/data_access_committees", response_model=List[str], summary="Get all DAC IDs"
+)
 async def get_all_dacs():
     """Retrieve a list of DAC IDs from metadata store."""
     dacs = await retrieve_dacs()
     return dacs
 
 
-@data_access_committee_router.get("/data_access_committees/{data_access_committee_id}", response_model=DataAccessCommittee, summary="Get a DAC")
+@data_access_committee_router.get(
+    "/data_access_committees/{data_access_committee_id}",
+    response_model=DataAccessCommittee,
+    summary="Get a DAC",
+)
 async def get_dacs(data_access_committee_id: str, embedded: bool = False):
     """Given a DAC ID, get the DAC from metadata store."""
     dac = await get_dac(data_access_committee_id, embedded)
     return dac
 
 
-@data_access_committee_router.post("/data_access_committees", response_model=DataAccessCommittee, summary="Add a DAC")
+@data_access_committee_router.post(
+    "/data_access_committees", response_model=DataAccessCommittee, summary="Add a DAC"
+)
 async def add_dacs(data: Dict):
     """Add a DAC to the metadata store."""
     dac = await add_dac(data)
     return dac
 
 
-@data_access_committee_router.put("/data_access_committees/{data_access_committee_id}", response_model=DataAccessCommittee, summary="Update a DAC")
+@data_access_committee_router.put(
+    "/data_access_committees/{data_access_committee_id}",
+    response_model=DataAccessCommittee,
+    summary="Update a DAC",
+)
 async def update_dacs(data_access_committee_id: str, data: Dict):
     """Given a DAC ID and data, update the DAC in metadata store."""
     dac = await update_dac(data_access_committee_id, data)

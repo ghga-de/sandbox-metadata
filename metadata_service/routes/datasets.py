@@ -28,14 +28,18 @@ from metadata_service.models import Dataset
 dataset_router = APIRouter()
 
 
-@dataset_router.get("/datasets", response_model=List[str], summary="Get all Dataset IDs")
+@dataset_router.get(
+    "/datasets", response_model=List[str], summary="Get all Dataset IDs"
+)
 async def get_all_datasets():
     """Retrieve a list of Dataset IDs from metadata store."""
     datasets = await retrieve_datasets()
     return datasets
 
 
-@dataset_router.get("/datasets/{dataset_id}", response_model=Dataset, summary="Get a Dataset")
+@dataset_router.get(
+    "/datasets/{dataset_id}", response_model=Dataset, summary="Get a Dataset"
+)
 async def get_datasets(dataset_id: str, embedded: bool = False):
     """Given a Dataset ID, get the Dataset from metadata store."""
     dataset = await get_dataset(dataset_id, embedded)
@@ -49,7 +53,9 @@ async def add_datasets(data: Dict):
     return dataset
 
 
-@dataset_router.put("/datasets/{dataset_id}", response_model=Dataset, summary="Update a Dataset")
+@dataset_router.put(
+    "/datasets/{dataset_id}", response_model=Dataset, summary="Update a Dataset"
+)
 async def update_datasets(dataset_id, data: Dict):
     """Given a Dataset ID and data, update the Dataset in metadata store."""
     dataset = await update_dataset(dataset_id, data)

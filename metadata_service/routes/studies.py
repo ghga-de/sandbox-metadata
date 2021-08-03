@@ -49,7 +49,9 @@ async def add_studies(data: Dict):
     return study
 
 
-@studies_router.put("/studies/{study_id}", response_model=Study, summary="Update a Study")
+@studies_router.put(
+    "/studies/{study_id}", response_model=Study, summary="Update a Study"
+)
 async def update_studies(study_id, data: dict):
     """Given a Study ID and data, update the Study in metadata store."""
     study = await update_study(study_id, data)

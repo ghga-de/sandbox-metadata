@@ -33,7 +33,9 @@ async def _get_reference(document_id: str, collection_name: str) -> Dict:
     collection = await get_collection(collection_name)
     doc = await collection.find_one({"id": document_id})
     if not doc:
-        logging.warning(f"Reference with ID {document_id} not found in collection {collection_name}")
+        logging.warning(
+            f"Reference with ID {document_id} not found in collection {collection_name}"
+        )
     return doc
 
 
@@ -53,16 +55,24 @@ async def embed_references(parent_document: Dict, document_type: BaseModel) -> D
     for field, referenced_obj in document_type.__references__:
         if field in parent_document and parent_document[field]:
             if isinstance(parent_document[field], str):
-                referenced_doc = await _get_reference(parent_document[field], referenced_obj.__collection__)
+                referenced_doc = await _get_reference(
+                    parent_document[field], referenced_obj.__collection__
+                )
                 referenced_doc = await embed_references(referenced_doc, referenced_obj)
                 parent_document[field] = referenced_doc
             elif isinstance(parent_document[field], (list, set, tuple)):
                 docs = []
                 for ref in parent_document[field]:
-                    referenced_doc = await _get_reference(ref, referenced_obj.__collection__)
-                    referenced_doc = await embed_references(referenced_doc, referenced_obj)
+                    referenced_doc = await _get_reference(
+                        ref, referenced_obj.__collection__
+                    )
+                    referenced_doc = await embed_references(
+                        referenced_doc, referenced_obj
+                    )
                     docs.append(referenced_doc)
                 parent_document[field] = docs
             else:
-                raise ValueError(f"Unexpected value type for field {field} in parent object {parent_document}")
+                raise ValueError(
+                    f"Unexpected value type for field {field} in parent object {parent_document}"
+                )
     return parent_document

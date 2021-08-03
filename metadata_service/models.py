@@ -13,28 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Optional, Union
+from typing import Set, List, Optional, Union
 from pydantic import BaseModel
 
 
 class Publication(BaseModel):
-    __references__ = set()
-    __collection__ = "publication"
+    __references__: Set = set()
+    __collection__: str = "publication"
     id: str
     title: Optional[str] = None
 
 
 class Experiment(BaseModel):
-    __references__ = set()
-    __collection__ = "experiment"
+    __references__: Set = set()
+    __collection__: str = "experiment"
     id: str
     name: Optional[str] = None
     instrument_model: Optional[str] = None
 
 
 class Study(BaseModel):
-    __references__ = {("publications", Publication), ("has_experiment", Experiment)}
-    __collection__ = "study"
+    __references__: Set = {
+        ("publications", Publication),
+        ("has_experiment", Experiment),
+    }
+    __collection__: str = "study"
     id: str
     title: Optional[str] = None
     type: Optional[str] = None
@@ -44,8 +47,8 @@ class Study(BaseModel):
 
 
 class File(BaseModel):
-    __references__ = set()
-    __collection__ = "file"
+    __references__: Set = set()
+    __collection__: str = "file"
     id: str
     name: Optional[str]
     format: Optional[str]
@@ -56,8 +59,8 @@ class File(BaseModel):
 
 
 class DataAccessCommittee(BaseModel):
-    __references__ = set()
-    __collection__ = "data_access_committee"
+    __references__: Set = set()
+    __collection__: str = "data_access_committee"
     id: str
     title: Optional[str] = None
     description: Optional[str] = None
@@ -66,21 +69,22 @@ class DataAccessCommittee(BaseModel):
 
 
 class DataAccessPolicy(BaseModel):
-    __references__ = {("has_data_access_committee", DataAccessCommittee)}
-    __collection__ = "data_access_policy"
+    __references__: Set = {("has_data_access_committee", DataAccessCommittee)}
+    __collection__: str = "data_access_policy"
     id: str
-    description: str = None
-    policy_text: str = None
+    description: Optional[str] = None
+    policy_text: Optional[str] = None
     policy_url: Optional[str] = None
     has_data_access_committee: Optional[Union[str, DataAccessCommittee]] = None
 
 
 class Dataset(BaseModel):
-    __references__ = {
-        ("files", File), ("has_study", Study),
-        ("has_data_access_policy", DataAccessPolicy)
+    __references__: Set = {
+        ("files", File),
+        ("has_study", Study),
+        ("has_data_access_policy", DataAccessPolicy),
     }
-    __collection__ = "dataset"
+    __collection__: str = "dataset"
     id: str
     title: Optional[str] = None
     description: Optional[str] = None

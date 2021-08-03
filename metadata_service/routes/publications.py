@@ -28,28 +28,40 @@ from metadata_service.models import Publication
 publication_router = APIRouter()
 
 
-@publication_router.get("/publications", response_model=List[str], summary="Get all Publication IDs")
+@publication_router.get(
+    "/publications", response_model=List[str], summary="Get all Publication IDs"
+)
 async def get_all_publications():
     """Retrieve a list of Publication IDs from metadata store."""
     publications = await retrieve_publications()
     return publications
 
 
-@publication_router.get("/publications/{publication_id}", response_model=Publication, summary="Get a Publication")
+@publication_router.get(
+    "/publications/{publication_id}",
+    response_model=Publication,
+    summary="Get a Publication",
+)
 async def get_publications(publication_id: str, embedded: bool = False):
     """Given a Publication ID, get the Publication from metadata store."""
     publication = await get_publication(publication_id, embedded)
     return publication
 
 
-@publication_router.post("/publications", response_model=Publication, summary="Add a Publication")
+@publication_router.post(
+    "/publications", response_model=Publication, summary="Add a Publication"
+)
 async def add_publications(data: Dict):
     """Add a Publication to the metadata store."""
     publication = await add_publication(data)
     return publication
 
 
-@publication_router.put("/publications/{publication_id}", response_model=Publication, summary="Update a Publication")
+@publication_router.put(
+    "/publications/{publication_id}",
+    response_model=Publication,
+    summary="Update a Publication",
+)
 async def update_publications(publication_id: str, data: dict):
     """Given a Publication ID and data, update the Publication in metadata store."""
     publication = await update_publication(publication_id, data)

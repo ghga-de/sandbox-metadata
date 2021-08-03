@@ -50,7 +50,8 @@ async def get_experiment(experiment_id: str, embedded: bool = False) -> Dict:
     experiment = await collection.find_one({"id": experiment_id})
     if not experiment:
         raise HTTPException(
-            status_code=404, detail=f"{Experiment.__name__} with id '{experiment_id}' not found"
+            status_code=404,
+            detail=f"{Experiment.__name__} with id '{experiment_id}' not found",
         )
     if embedded:
         experiment = await embed_references(experiment, Experiment)

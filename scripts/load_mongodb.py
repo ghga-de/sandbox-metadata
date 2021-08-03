@@ -70,7 +70,9 @@ loop.run_until_complete(
     insert_records(DB_NAME, "data_access_policy", dap_records["data_access_policies"])
 )
 loop.run_until_complete(
-    insert_records(DB_NAME, "data_access_committee", dac_records["data_access_committees"])
+    insert_records(
+        DB_NAME, "data_access_committee", dac_records["data_access_committees"]
+    )
 )
 
 print(loop.run_until_complete(get_collection(DB_NAME, "study")))

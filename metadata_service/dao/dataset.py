@@ -35,7 +35,7 @@ async def retrieve_datasets() -> List[str]:
     return datasets
 
 
-async def get_dataset(dataset_id: str, embedded = False) -> Dict:
+async def get_dataset(dataset_id: str, embedded=False) -> Dict:
     """Given a Datset ID, get the Dataset object from metadata store.
 
     Args:
@@ -50,7 +50,8 @@ async def get_dataset(dataset_id: str, embedded = False) -> Dict:
     dataset = await collection.find_one({"id": dataset_id})
     if not dataset:
         raise HTTPException(
-            status_code=404, detail=f"{Dataset.__name__} with id '{dataset_id}' not found"
+            status_code=404,
+            detail=f"{Dataset.__name__} with id '{dataset_id}' not found",
         )
     if embedded:
         dataset = await embed_references(dataset, Dataset)
