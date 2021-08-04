@@ -45,6 +45,7 @@ async def add_dataset(data: Dict):
 
 
 async def update_dataset(dataset_id: str, data: Dict):
+    collection = await get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": dataset_id}, {"$set": data})
     dataset = await get_dataset(dataset_id)
-    dataset.update(**data)
     return dataset
