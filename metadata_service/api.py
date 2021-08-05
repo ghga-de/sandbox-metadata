@@ -21,7 +21,9 @@ from metadata_service.routes.datasets import dataset_router
 from metadata_service.routes.publications import publication_router
 from metadata_service.routes.experiments import experiment_router
 from metadata_service.routes.files import file_router
+from metadata_service.config import get_config
 from metadata_service import __version__
+
 
 app = FastAPI(
     title="Metadata Service API",

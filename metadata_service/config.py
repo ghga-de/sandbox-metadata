@@ -12,27 +12,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""Entrypoint of the package"""
-
-from typing import Optional
-import typer
-import uvicorn
-from ghga_service_chassis_lib.api import run_server
-from metadata_service.config import get_config
-from metadata_service.api import app
+from functools import lru_cache
+from ghga_service_chassis_lib.config import config_from_yaml
+from ghga_service_chassis_lib.api import ApiConfigBase
 
 
-def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
-    """Starts backend server"""
-    #uvicorn.run(app)
-    run_server(app="metadata_service.__main__:app", config=get_config())
+@config_from_yaml(prefix="metadata_service")
+class Config(ApiConfigBase):
+    """Config parameters and their defaults."""
+
+    # config parameter needed for the api server
+    # are inherited from ApiConfigBase
+    host: str = "127.0.0.1"
+    port: int = 8000
+    log_level: str = "info"
+    db_url: str = "mongodb://localhost:27017"
+    db_name: str = "metadata"
 
 
-def run_cli():
-    """Run the command line interface"""
-    typer.run(run)
-
-
-if __name__ == "__main__":
-    run_cli()
+@lru_cache
+def get_config():
+    """Get config parameter."""
+    return Config()
