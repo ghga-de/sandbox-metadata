@@ -17,7 +17,7 @@ FROM python:3.9.6-buster
 
 COPY . /service
 WORKDIR /service
-RUN pip install -r requirements.txt
+RUN python setup.py install
 
 # create new user and execute as that user
 RUN useradd --create-home appuser
@@ -26,4 +26,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "metadata_service.api:app"]
+ENTRYPOINT [ "metadata-service" ]
