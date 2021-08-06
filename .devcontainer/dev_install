@@ -4,7 +4,7 @@
 cd /workspace
 
 # install in edit mode
-pip install -e .
+pip install -e ".[all]"
 
 # install pre-commit hooks to git:
 pre-commit install
