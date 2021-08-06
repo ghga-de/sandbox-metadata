@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 #
@@ -12,28 +14,46 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import typer
+
+"""Delete all records for all collection types from the database"""
+
 import asyncio
-import json
+from typing import Literal, get_args
+import typer
 import motor.motor_asyncio
 
+CollectionTypes = Literal[
+    "study",
+    "publication",
+    "dataset",
+    "file",
+    "data_access_policy",
+    "data_access_committee",
+]
 
-async def delete_all_records(db_url, db_name, collection_name):
+
+async def delete_all_records(
+    db_url: str, db_name: str, collection_name: CollectionTypes
+):
+    """Delete all records for a specific collection type from the database"""
+
     client = motor.motor_asyncio.AsyncIOMotorClient(db_url)
     collection = client[db_name][collection_name]
     await collection.delete_many({})
 
 
 def main(db_url: str = "mongodb://localhost:27017", db_name: str = "metadata"):
-    typer.echo(f"Deleting all records from db {db_name} at URL {db_url}")
+    """Delete all records for all collection types from the database"""
+
+    typer.echo(f"Deleting all records from db {db_name} at URL {db_url}.")
+
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(delete_all_records(db_url, db_name, "study"))
-    loop.run_until_complete(delete_all_records(db_url, db_name, "publication"))
-    loop.run_until_complete(delete_all_records(db_url, db_name, "dataset"))
-    loop.run_until_complete(delete_all_records(db_url, db_name, "experiment"))
-    loop.run_until_complete(delete_all_records(db_url, db_name, "file"))
-    loop.run_until_complete(delete_all_records(db_url, db_name, "data_access_policy"))
-    loop.run_until_complete(delete_all_records(db_url, db_name, "data_access_committee"))
+    collections = get_args(CollectionTypes)
+    for collection in collections:
+        typer.echo(f'  - deleting records of collection: "{collection}"')
+        loop.run_until_complete(delete_all_records(db_url, db_name, collection))
+
+    typer.echo("Done.")
 
 
 if __name__ == "__main__":

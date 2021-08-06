@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 #
@@ -12,60 +14,57 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import typer
+
+"""Populates the database with example data for each record type"""
+
 import json
+from typing import Literal, get_args
 import requests
+from requests.models import Response
+import typer
+
+RecordTypes = Literal[
+    "studies",
+    "publications",
+    "datasets",
+    "files",
+    "data_access_policies",
+    "data_access_committees",
+]
 
 
-def _check_response(response):
-    if response.status_code != 200:
-        print(response.json())
-        exit()
+def populate_record(
+    base_url: str, record_type: RecordTypes, exit_on_error: bool = True
+) -> Response:
+    """Populate the database with data for a specific record type"""
+
+    with open(f"examples/{record_type}.json") as records_file:
+        records = json.load(records_file)
+
+    route = f"{base_url}/{record_type}"
+    for record in records[record_type]:
+        response = requests.post(route, json=record)
+        if exit_on_error:
+            # If non-2xx status code, will raise an exception:
+            response.raise_for_status()
+
+    return response
 
 
-def main(url: str = "http://localhost:8000"):
-    study_records = json.load(open("examples/studies.json"))
-    publication_records = json.load(open("examples/publications.json"))
-    dataset_records = json.load(open("examples/datasets.json"))
-    experiment_records = json.load(open("examples/experiments.json"))
-    file_records = json.load(open("examples/files.json"))
-    dap_records = json.load(open("examples/data_access_policies.json"))
-    dac_records = json.load(open("examples/data_access_committees.json"))
+def main(base_url: str = "http://localhost:8000", exit_on_error: bool = True):
+    """Populate the database with examples for all record types"""
 
-    for study in study_records["studies"]:
-        route = f"{url}/studies"
-        response = requests.post(route, json=study)
-        _check_response(response)
+    typer.echo("This will populate the database with examples for all record types.")
 
-    for publication in publication_records["publications"]:
-        route = f"{url}/publications"
-        response = requests.post(route, json=publication)
-        _check_response(response)
+    record_types = get_args(RecordTypes)
+    for record_type in record_types:
+        typer.echo(f"  - working on record type: {record_type}")
+        response = populate_record(
+            base_url=base_url, record_type=record_type, exit_on_error=exit_on_error
+        )
+        typer.echo(f"  - done with status code: {response.status_code}")
 
-    for dataset in dataset_records["datasets"]:
-        route = f"{url}/datasets"
-        response = requests.post(route, json=dataset)
-        _check_response(response)
-
-    for experiment in experiment_records["experiments"]:
-        route = f"{url}/experiments"
-        response = requests.post(route, json=experiment)
-        _check_response(response)
-
-    for file in file_records["files"]:
-        route = f"{url}/files"
-        response = requests.post(route, json=file)
-        _check_response(response)
-
-    for dap in dap_records["data_access_policies"]:
-        route = f"{url}/data_access_policies"
-        response = requests.post(route, json=dap)
-        _check_response(response)
-
-    for dac in dac_records["data_access_committees"]:
-        route = f"{url}/data_access_committees"
-        response = requests.post(route, json=dac)
-        _check_response(response)
+    typer.echo("Done.")
 
 
 if __name__ == "__main__":
