@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2021 Universität Tübingen, DKFZ and EMBL
 # for the German Human Genome-Phenome Archive (GHGA)
 #
@@ -12,15 +14,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""Generate openapi yaml from FastAPI server"""
+
 import typer
 import yaml
 import requests
 
 
 def main(url: str = "http://localhost:8000/openapi.json", output: str = "openapi.yaml"):
+    """Generate openapi yaml from FastAPI server"""
+
     response = requests.get(url)
     json_data = response.json()
-    yaml.dump(json_data, open(output, "w"))
+
+    with open(output, "w") as json_file:
+        yaml.dump(json_data, json_file)
 
 
 if __name__ == "__main__":
