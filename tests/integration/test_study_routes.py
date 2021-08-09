@@ -2,7 +2,6 @@ import pytest
 from tests.fixtures import initialize_test_db, api_client
 
 
-@pytest.mark.skip()
 def test_get_study_route(initialize_test_db, api_client):
     """Test fetching study records from metadata store"""
     response = api_client.get('/studies')
@@ -20,7 +19,6 @@ def test_get_study_route(initialize_test_db, api_client):
         assert 'publications' in study and study['publications'] is not None
 
 
-@pytest.mark.skip()
 def test_add_study_route(initialize_test_db, api_client):
     """Test adding study records to metadata store"""
     response = api_client.post('/studies', json={"id": "STU:1234567", "title": "Test study"})
@@ -34,7 +32,6 @@ def test_add_study_route(initialize_test_db, api_client):
     assert study["title"] == "Test study"
 
 
-@pytest.mark.skip()
 def test_update_study_route(initialize_test_db, api_client):
     """Test update study records to metadata store"""
     response = api_client.put('/studies/STU:0000002', json={"id": "STU:0000002", "title": "Modified Study 2"})

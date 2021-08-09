@@ -2,7 +2,6 @@ import pytest
 from tests.fixtures import initialize_test_db, api_client
 
 
-@pytest.mark.skip()
 def test_get_dataset_route(initialize_test_db, api_client):
     """Test fetching dataset records from metadata store"""
     response = api_client.get('/datasets')
@@ -21,7 +20,6 @@ def test_get_dataset_route(initialize_test_db, api_client):
         assert 'has_study' in dataset and dataset['has_study'] is not None
 
 
-@pytest.mark.skip()
 def test_add_dataset_route(initialize_test_db, api_client):
     """Test adding a dataset record to metadata store"""
     response = api_client.post('/datasets', json={"id": "DAT:1234567", "title": "Test Dataset"})
@@ -35,7 +33,6 @@ def test_add_dataset_route(initialize_test_db, api_client):
     assert dataset["title"] == "Test Dataset"
 
 
-@pytest.mark.skip()
 def test_update_dataset_route(initialize_test_db, api_client):
     """Test updating a dataset record to metadata store"""
     response = api_client.put('/datasets/DAT:0000002', json={"id": "DAT:0000002", "title": "Modified Dataset 2"})

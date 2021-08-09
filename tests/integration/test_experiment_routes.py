@@ -2,7 +2,6 @@ import pytest
 from tests.fixtures import initialize_test_db, api_client
 
 
-@pytest.mark.skip()
 def test_get_experiment_route(initialize_test_db, api_client):
     """Test fetching experiment records from metadata store"""
     response = api_client.get('/experiments')
@@ -19,7 +18,6 @@ def test_get_experiment_route(initialize_test_db, api_client):
         assert experiment['id'] in experiment_list
 
 
-@pytest.mark.skip()
 def test_add_experiment_route(initialize_test_db, api_client):
     """Test adding an experiment record to metadata store"""
     response = api_client.post('/experiments', json={"id": "EXP:1234567", "name": "Test Experiment"})
@@ -33,7 +31,6 @@ def test_add_experiment_route(initialize_test_db, api_client):
     assert study["name"] == "Test Experiment"
 
 
-@pytest.mark.skip()
 def test_update_experiment_route(initialize_test_db, api_client):
     """Test update experiment records to metadata store"""
     response = api_client.put('/experiments/EXP:0000002', json={"id": "EXP:0000002", "name": "Modified Experiment 2"})
