@@ -2,14 +2,16 @@ import os
 import pymongo
 import json
 import pytest
+import mongomock
 from fastapi.testclient import TestClient
 from metadata_service.api import app
-import mongomock
+
 
 
 @pytest.fixture(scope="session")
 @mongomock.patch(servers=(('localhost', 28017),))
 def initialize_test_db():
+    """Initialize a test metadata store using mongomock"""
     curr_dir = os.path.dirname(__file__)
     json_files = [
         ("datasets.json", "dataset"),
