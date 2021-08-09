@@ -25,7 +25,6 @@ from metadata_service.api import app
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
-    #uvicorn.run(app)
     run_server(app="metadata_service.__main__:app", config=get_config())
 
 
