@@ -45,6 +45,7 @@ async def add_file(data: Dict):
 
 
 async def update_file(file_id: str, data: Dict):
+    collection = await get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": file_id}, {"$set": data})
     file = await get_file(file_id)
-    file.update(**data)
     return file

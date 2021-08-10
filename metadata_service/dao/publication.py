@@ -45,6 +45,7 @@ async def add_publication(data: Dict):
 
 
 async def update_publication(publication_id: str, data: Dict):
+    collection = await get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": publication_id}, {"$set": data})
     publication = await get_publication(publication_id)
-    publication.update(**data)
     return publication

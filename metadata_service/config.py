@@ -12,18 +12,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from functools import lru_cache
+from ghga_service_chassis_lib.config import config_from_yaml
+from ghga_service_chassis_lib.api import ApiConfigBase
 
-FROM python:3.9.6-buster
 
-COPY . /service
-WORKDIR /service
-RUN pip install .
+@config_from_yaml(prefix="metadata_service")
+class Config(ApiConfigBase):
+    """Config parameters and their defaults."""
 
-# create new user and execute as that user
-RUN useradd --create-home appuser
-WORKDIR /home/appuser
-USER appuser
+    # config parameter needed for the api server
+    # are inherited from ApiConfigBase
+    host: str = "127.0.0.1"
+    port: int = 8000
+    log_level: str = "info"
+    db_url: str = "mongodb://localhost:27017"
+    db_name: str = "metadata"
 
-EXPOSE 8000
 
-ENTRYPOINT [ "metadata-service" ]
+@lru_cache
+def get_config():
+    """Get config parameter."""
+    return Config()

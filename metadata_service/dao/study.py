@@ -45,6 +45,7 @@ async def add_study(data: Dict):
 
 
 async def update_study(study_id: str, data: Dict):
+    collection = await get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": study_id}, {"$set": data})
     study = await get_study(study_id)
-    study.update(**data)
     return study
