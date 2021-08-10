@@ -86,6 +86,7 @@ async def update_experiment(experiment_id: str, data: Dict) -> Dict:
       The updated Experiment object
 
     """
+    collection = await get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": experiment_id}, {"$set": data})
     experiment = await get_experiment(experiment_id)
-    experiment.update(**data)
     return experiment

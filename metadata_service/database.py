@@ -14,17 +14,17 @@
 # limitations under the License.
 
 import motor.motor_asyncio
+from metadata_service.config import get_config
 
-DB_URL = "mongodb://localhost:27017"
-DB_NAME = "metadata"
 CLIENT = None
 
 
 async def get_db():
     """Return database client instance."""
+    config = get_config()
     global CLIENT
     if not CLIENT:
-        CLIENT = motor.motor_asyncio.AsyncIOMotorClient(DB_URL)
+        CLIENT = motor.motor_asyncio.AsyncIOMotorClient(config.db_url)
     return CLIENT
 
 
@@ -36,6 +36,7 @@ async def close_db():
 
 async def get_collection(name):
     """Get a collection"""
-    global CLIENT
-    collection = CLIENT.metadata.get_collection(name)
+    config = get_config()
+    client = await get_db()
+    collection = client[config.db_name].get_collection(name)
     return collection

@@ -23,7 +23,9 @@ from metadata_service.routes.experiments import experiment_router
 from metadata_service.routes.files import file_router
 from metadata_service.routes.data_access_policy import data_access_policy_router
 from metadata_service.routes.data_access_committee import data_access_committee_router
+from metadata_service.config import get_config
 from metadata_service import __version__
+
 
 app = FastAPI(
     title="Metadata Service API",
