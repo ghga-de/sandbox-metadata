@@ -28,25 +28,31 @@ from metadata_service.models import Study
 studies_router = APIRouter()
 
 
-@studies_router.get("/studies", response_model=List[str])
+@studies_router.get("/studies", response_model=List[str], summary="Get all Study IDs")
 async def get_all_studies():
+    """Retrieve a list of Study IDs from metadata store."""
     studies = await retrieve_studies()
     return studies
 
 
-@studies_router.get("/studies/{study_id}", response_model=Study)
-async def get_studies(study_id):
-    study = await get_study(study_id)
+@studies_router.get("/studies/{study_id}", response_model=Study, summary="Get a Study")
+async def get_studies(study_id: str, embedded: bool = False):
+    """Given a Study ID, get the DAP from metadata store."""
+    study = await get_study(study_id, embedded)
     return study
 
 
-@studies_router.post("/studies", response_model=Study)
+@studies_router.post("/studies", response_model=Study, summary="Add a Study")
 async def add_studies(data: Dict):
+    """Add a Study to the metadata store."""
     study = await add_study(data)
     return study
 
 
-@studies_router.put("/studies/{study_id}", response_model=Study)
+@studies_router.put(
+    "/studies/{study_id}", response_model=Study, summary="Update a Study"
+)
 async def update_studies(study_id, data: dict):
+    """Given a Study ID and data, update the Study in metadata store."""
     study = await update_study(study_id, data)
     return study

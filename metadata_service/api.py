@@ -21,6 +21,8 @@ from metadata_service.routes.datasets import dataset_router
 from metadata_service.routes.publications import publication_router
 from metadata_service.routes.experiments import experiment_router
 from metadata_service.routes.files import file_router
+from metadata_service.routes.data_access_policy import data_access_policy_router
+from metadata_service.routes.data_access_committee import data_access_committee_router
 from metadata_service.config import get_config
 from metadata_service import __version__
 
@@ -35,5 +37,8 @@ app.include_router(dataset_router)
 app.include_router(experiment_router)
 app.include_router(file_router)
 app.include_router(publication_router)
+app.include_router(publication_router)
+app.include_router(data_access_policy_router)
+app.include_router(data_access_committee_router)
 app.add_event_handler("startup", get_db)
 app.add_event_handler("shutdown", close_db)

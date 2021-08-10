@@ -18,74 +18,74 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
-from metadata_service.models import File
+from metadata_service.models import DataAccessPolicy
 
-COLLECTION_NAME = File.__collection__
+COLLECTION_NAME = DataAccessPolicy.__collection__
 
 
-async def retrieve_files() -> List[str]:
-    """Retrieve a list of File IDs from metadata store.
+async def retrieve_daps() -> List[str]:
+    """Retrieve a list of DAPs from metadata store.
 
     Returns:
-      A list of File IDs.
+      A list of DAP IDs.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    files = await collection.distinct("id")
-    return files
+    daps = await collection.distinct("id")
+    return daps
 
 
-async def get_file(file_id: str, embedded: bool = False) -> Dict:
-    """Given a File ID, get the File object from metadata store.
+async def get_dap(dap_id: str, embedded=False) -> Dict:
+    """Given a DAP ID, get the DAP object from metadata store.
 
     Args:
-        file_id: The File ID
+        dap_id: The DAP ID
         embedded: Whether or not to embed references. ``False``, by default.
 
     Returns:
-      The File object
+      The DAP object
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    file = await collection.find_one({"id": file_id})
-    if not file:
+    dap = await collection.find_one({"id": dap_id})
+    if not dap:
         raise HTTPException(
-            status_code=404, detail=f"{File.__name__} with id '{file_id}' not found"
+            status_code=404,
+            detail=f"{DataAccessPolicy.__name__} with id '{dap_id}' not found",
         )
     if embedded:
-        file = await embed_references(file, File)
-    return file
+        dap = await embed_references(dap, DataAccessPolicy)
+    return dap
 
 
-async def add_file(data: Dict) -> Dict:
-    """Add a File object to the metadata store.
+async def add_dap(data: Dict) -> Dict:
+    """Add a DAP object to the metadata store.
 
     Args:
-        data: The File object
+        data: The DAP object
 
     Returns:
-      The added File object
+      The added DAP object
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    file_id = data["id"]
+    dap_id = data["id"]
     await collection.insert_one(data)
-    file = await get_file(file_id)
-    return file
+    dap = await get_dap(dap_id)
+    return dap
 
 
-async def update_file(file_id: str, data: Dict) -> Dict:
-    """Given a File ID and data, update the File in metadata store.
+async def update_dap(dap_id: str, data: Dict) -> Dict:
+    """Given a DAP ID and data, update the DAP in metadata store.
 
     Args:
-        file_id: The File ID
-        data: The File object
+        DAP_id: The DAP ID
+        data: The DAP object
 
     Returns:
-      The updated File object
+      The updated DAP object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": file_id}, {"$set": data})
-    file = await get_file(file_id)
-    return file
+    dap = await get_dap(dap_id)
+    dap.update(**data)
+    return dap

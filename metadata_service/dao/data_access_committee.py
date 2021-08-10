@@ -18,74 +18,74 @@ from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
 from metadata_service.database import get_collection
-from metadata_service.models import File
+from metadata_service.models import DataAccessCommittee
 
-COLLECTION_NAME = File.__collection__
+COLLECTION_NAME = DataAccessCommittee.__collection__
 
 
-async def retrieve_files() -> List[str]:
-    """Retrieve a list of File IDs from metadata store.
+async def retrieve_dacs() -> List[str]:
+    """Retrieve a list of DACs from metadata store.
 
     Returns:
-      A list of File IDs.
+      A list of DAC IDs.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    files = await collection.distinct("id")
-    return files
+    dacs = await collection.distinct("id")
+    return dacs
 
 
-async def get_file(file_id: str, embedded: bool = False) -> Dict:
-    """Given a File ID, get the File object from metadata store.
+async def get_dac(dac_id: str, embedded=False) -> Dict:
+    """Given a DAC ID, get the DAC object from metadata store.
 
     Args:
-        file_id: The File ID
+        dac_id: The DAC ID
         embedded: Whether or not to embed references. ``False``, by default.
 
     Returns:
-      The File object
+      The DAC object
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    file = await collection.find_one({"id": file_id})
-    if not file:
+    dac = await collection.find_one({"id": dac_id})
+    if not dac:
         raise HTTPException(
-            status_code=404, detail=f"{File.__name__} with id '{file_id}' not found"
+            status_code=404,
+            detail=f"{DataAccessCommittee.__name__} with id '{dac_id}' not found",
         )
     if embedded:
-        file = await embed_references(file, File)
-    return file
+        dac = await embed_references(dac, DataAccessCommittee)
+    return dac
 
 
-async def add_file(data: Dict) -> Dict:
-    """Add a File object to the metadata store.
+async def add_dac(data: Dict) -> Dict:
+    """Add a DAC object to the metadata store.
 
     Args:
-        data: The File object
+        data: The DAC object
 
     Returns:
-      The added File object
+      The added DAC object
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    file_id = data["id"]
+    dac_id = data["id"]
     await collection.insert_one(data)
-    file = await get_file(file_id)
-    return file
+    dac = await get_dac(dac_id)
+    return dac
 
 
-async def update_file(file_id: str, data: Dict) -> Dict:
-    """Given a File ID and data, update the File in metadata store.
+async def update_dac(dac_id: str, data: Dict) -> Dict:
+    """Given a DAC ID and data, update the DAC in metadata store.
 
     Args:
-        file_id: The File ID
-        data: The File object
+        dac_id: The DAC ID
+        data: The DAC object
 
     Returns:
-      The updated File object
+      The updated DAC object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": file_id}, {"$set": data})
-    file = await get_file(file_id)
-    return file
+    dac = await get_dac(dac_id)
+    dac.update(**data)
+    return dac

@@ -8,7 +8,8 @@
             "publications": [
                 "PMID:0000001",
                 "PMID:0000002"
-            ]
+            ],
+            "has_experiment": "EXP:0000001"
         },
         {
             "id": "STU:0000002",
@@ -18,7 +19,8 @@
             "publications": [
                 "PMID:0000003",
                 "DOI:00001234"
-            ]
+            ],
+            "has_experiment": "EXP:0000002"
         }
     ]
 }
