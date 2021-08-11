@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Defines API endpoints."""
+
 from fastapi import FastAPI
 
 from metadata_service.database import get_db, close_db
@@ -23,7 +25,7 @@ from metadata_service.routes.experiments import experiment_router
 from metadata_service.routes.files import file_router
 from metadata_service.routes.data_access_policy import data_access_policy_router
 from metadata_service.routes.data_access_committee import data_access_committee_router
-from metadata_service.config import get_config
+from metadata_service.routes.health import health_router
 from metadata_service import __version__
 
 
@@ -40,5 +42,6 @@ app.include_router(publication_router)
 app.include_router(publication_router)
 app.include_router(data_access_policy_router)
 app.include_router(data_access_committee_router)
+app.include_router(health_router)
 app.add_event_handler("startup", get_db)
 app.add_event_handler("shutdown", close_db)
