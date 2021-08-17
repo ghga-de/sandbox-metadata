@@ -51,7 +51,7 @@ def populate_record(
     return response
 
 
-def main(base_url: str = "http://localhost:8000", exit_on_error: bool = True):
+def main(base_url: str = "http://localhost:8080", exit_on_error: bool = True):
     """Populate the database with examples for all record types"""
 
     typer.echo("This will populate the database with examples for all record types.")
