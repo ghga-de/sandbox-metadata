@@ -41,7 +41,9 @@ def populate_record(
 ) -> Response:
     """Populate the database with data for a specific record type"""
 
-    with open(HERE / "examples" / f"{record_type}.json") as records_file:
+    with open(
+        HERE.parent.resolve() / "examples" / f"{record_type}.json"
+    ) as records_file:
         records = json.load(records_file)
 
     route = f"{base_url}/{record_type}"
