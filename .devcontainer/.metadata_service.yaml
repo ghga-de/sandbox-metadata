@@ -1,0 +1,7 @@
+
+port: 8080
+log_level: debug
+auto_reload: true
+db_url: mongodb://db:27017
+db_name: metadata
+cors_allowed_origins: ["*"]
