@@ -16,7 +16,7 @@
 """Defines API endpoints."""
 
 from fastapi import FastAPI
-from ghga_service_chassis_lib.api import configure_cors
+from ghga_service_chassis_lib.api import configure_app
 
 from metadata_service.database import get_db, close_db
 from metadata_service.config import get_config
@@ -35,7 +35,7 @@ app = FastAPI(
     title="Metadata Service API",
     version=__version__,
 )
-configure_cors(app, config=get_config())
+configure_app(app, config=get_config())
 
 app.include_router(studies_router)
 app.include_router(dataset_router)
