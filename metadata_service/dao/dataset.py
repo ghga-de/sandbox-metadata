@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Convenience methods for adding, updating, and retrieving Dataset objects"""
+
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
@@ -23,15 +25,15 @@ from metadata_service.models import Dataset
 COLLECTION_NAME = Dataset.__collection__
 
 
-async def retrieve_datasets() -> List[str]:
+async def retrieve_datasets() -> List[Dict]:
     """Retrieve a list of Datasets from metadata store.
 
     Returns:
-      A list of Dataset IDs.
+      A list of Dataset objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    datasets = await collection.distinct("id")
+    datasets = await collection.find().to_list(None)
     return datasets
 
 

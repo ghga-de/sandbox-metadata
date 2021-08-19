@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Routes for Experiment objects"""
 
 from typing import List, Dict
 from fastapi import APIRouter
@@ -29,7 +30,7 @@ experiment_router = APIRouter()
 
 
 @experiment_router.get(
-    "/experiments", response_model=List[str], summary="Get all Experiment IDs"
+    "/experiments", response_model=List[Experiment], summary="Get all Experiments"
 )
 async def get_all_experiments():
     """Retrieve a list of Experiment IDs from metadata store."""

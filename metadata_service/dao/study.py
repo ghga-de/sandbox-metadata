@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Convenience methods for adding, updating, and retrieving Study objects"""
+
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
@@ -23,15 +25,15 @@ from metadata_service.models import Study
 COLLECTION_NAME = Study.__collection__
 
 
-async def retrieve_studies() -> List[str]:
+async def retrieve_studies() -> List[Dict]:
     """Retrieve a list of Studies from metadata store.
 
     Returns:
-      A list of Study IDs.
+      A list of Study objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    studies = await collection.distinct("id")
+    studies = await collection.find().to_list(None)
     return studies
 
 

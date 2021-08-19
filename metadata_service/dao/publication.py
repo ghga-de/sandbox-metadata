@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Convenience methods for adding, updating, and retrieving Publication objects"""
 
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
@@ -23,15 +24,15 @@ from metadata_service.models import Publication
 COLLECTION_NAME = Publication.__collection__
 
 
-async def retrieve_publications() -> List[str]:
+async def retrieve_publications() -> List[Dict]:
     """Retrieve a list of Publications from metadata store.
 
     Returns:
-      A list of Publication IDs.
+      A list of Publication objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    publications = await collection.distinct("id")
+    publications = await collection.find().to_list(None)
     return publications
 
 

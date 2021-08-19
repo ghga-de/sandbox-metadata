@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Routes for Dataset objects"""
 
 from typing import List, Dict
 from fastapi import APIRouter
@@ -29,7 +30,7 @@ dataset_router = APIRouter()
 
 
 @dataset_router.get(
-    "/datasets", response_model=List[str], summary="Get all Dataset IDs"
+    "/datasets", response_model=List[Dataset], summary="Get all Datasets"
 )
 async def get_all_datasets():
     """Retrieve a list of Dataset IDs from metadata store."""

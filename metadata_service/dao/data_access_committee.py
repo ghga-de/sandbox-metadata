@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Convenience methods for adding, updating, and retrieving Data Access Committee objects"""
+
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
@@ -23,15 +25,15 @@ from metadata_service.models import DataAccessCommittee
 COLLECTION_NAME = DataAccessCommittee.__collection__
 
 
-async def retrieve_dacs() -> List[str]:
+async def retrieve_dacs() -> List[Dict]:
     """Retrieve a list of DACs from metadata store.
 
     Returns:
-      A list of DAC IDs.
+      A list of DAC objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    dacs = await collection.distinct("id")
+    dacs = await collection.find().to_list(None)
     return dacs
 
 

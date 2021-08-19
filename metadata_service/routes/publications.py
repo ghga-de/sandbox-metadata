@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Routes for Publication objects"""
+
 from typing import List, Dict
 from fastapi import APIRouter
 
@@ -29,7 +31,7 @@ publication_router = APIRouter()
 
 
 @publication_router.get(
-    "/publications", response_model=List[str], summary="Get all Publication IDs"
+    "/publications", response_model=List[Publication], summary="Get all Publications"
 )
 async def get_all_publications():
     """Retrieve a list of Publication IDs from metadata store."""
