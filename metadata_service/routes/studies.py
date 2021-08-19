@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Routes for Study objects"""
+
 from typing import List, Dict
 from fastapi import APIRouter
 
@@ -28,7 +30,7 @@ from metadata_service.models import Study
 studies_router = APIRouter()
 
 
-@studies_router.get("/studies", response_model=List[str], summary="Get all Study IDs")
+@studies_router.get("/studies", response_model=List[Study], summary="Get all Studies")
 async def get_all_studies():
     """Retrieve a list of Study IDs from metadata store."""
     studies = await retrieve_studies()

@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Convenience methods for adding, updating, and retrieving Experiment objects"""
 
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
@@ -23,15 +24,15 @@ from metadata_service.models import Experiment
 COLLECTION_NAME = Experiment.__collection__
 
 
-async def retrieve_experiments() -> List[str]:
+async def retrieve_experiments() -> List[Dict]:
     """Retrieve a list of Experiments from metadata store.
 
     Returns:
-      A list of Experiment IDs.
+      A list of Experiment objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    experiments = await collection.distinct("id")
+    experiments = await collection.find().to_list(None)
     return experiments
 
 

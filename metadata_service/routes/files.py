@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Routes for File objects"""
 
 from typing import List, Dict
 from fastapi import APIRouter
@@ -23,7 +24,7 @@ from metadata_service.models import File
 file_router = APIRouter()
 
 
-@file_router.get("/files", response_model=List[str], summary="Get all File IDs")
+@file_router.get("/files", response_model=List[File], summary="Get all Files")
 async def get_all_files():
     """Retrieve a list of File IDs from metadata store."""
     files = await retrieve_files()

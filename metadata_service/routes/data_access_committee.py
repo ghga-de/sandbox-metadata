@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Routes for Data Access Committee objects"""
+
 from typing import List, Dict
 from fastapi import APIRouter
 
@@ -29,7 +31,9 @@ data_access_committee_router = APIRouter()
 
 
 @data_access_committee_router.get(
-    "/data_access_committees", response_model=List[str], summary="Get all DAC IDs"
+    "/data_access_committees",
+    response_model=List[DataAccessCommittee],
+    summary="Get all DACs",
 )
 async def get_all_dacs():
     """Retrieve a list of DAC IDs from metadata store."""

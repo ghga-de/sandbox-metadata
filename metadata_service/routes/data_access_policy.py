@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Routes for Data Access Policy objects"""
 
 from typing import List, Dict
 from fastapi import APIRouter
@@ -29,7 +30,9 @@ data_access_policy_router = APIRouter()
 
 
 @data_access_policy_router.get(
-    "/data_access_policies", response_model=List[str], summary="Get all DAP IDs"
+    "/data_access_policies",
+    response_model=List[DataAccessPolicy],
+    summary="Get all DAPs",
 )
 async def get_all_daps():
     """Retrieve a list of DAP IDs from metadata store."""

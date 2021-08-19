@@ -6,13 +6,13 @@ def test_get_dataset_route(initialize_test_db, api_client):
     """Test fetching dataset records from metadata store"""
     response = api_client.get('/datasets')
     assert response.status_code == 200
-    dataset_list = response.json()
+    dataset_list = [x['id'] for x in response.json()]
     assert isinstance(dataset_list, list)
     assert 'DAT:0000001' in dataset_list
     assert 'DAT:0000002' in dataset_list
 
-    for dataset_id in dataset_list:
-        response = api_client.get(f'/datasets/{dataset_id}')
+    for d in dataset_list:
+        response = api_client.get(f"/datasets/{d['id']}")
         assert response.status_code == 200
         dataset = response.json()
         assert dataset['id'] in dataset_list
