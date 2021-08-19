@@ -26,9 +26,6 @@ class Config(ApiConfigBase):
 
     # config parameter needed for the api server
     # are inherited from ApiConfigBase
-    host: str = "127.0.0.1"
-    port: int = 8080
-    log_level: str = "info"
     db_url: str = "mongodb://localhost:27017"
     db_name: str = "metadata"
 
