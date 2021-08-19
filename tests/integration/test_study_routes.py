@@ -6,13 +6,13 @@ def test_get_study_route(initialize_test_db, api_client):
     """Test fetching study records from metadata store"""
     response = api_client.get('/studies')
     assert response.status_code == 200
-    study_list = response.json()
+    study_list = [x['id'] for x in response.json()]
     assert isinstance(study_list, list)
     assert 'STU:0000001' in study_list
     assert 'STU:0000002' in study_list
 
-    for study_id in study_list:
-        response = api_client.get(f'/studies/{study_id}')
+    for s in study_list:
+        response = api_client.get(f"/studies/{s['id']}")
         assert response.status_code == 200
         study = response.json()
         assert study['id'] in study_list

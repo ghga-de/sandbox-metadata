@@ -6,13 +6,13 @@ def test_get_experiment_route(initialize_test_db, api_client):
     """Test fetching experiment records from metadata store"""
     response = api_client.get('/experiments')
     assert response.status_code == 200
-    experiment_list = response.json()
+    experiment_list = [x['id'] for x in response.json()]
     assert isinstance(experiment_list, list)
     assert 'EXP:0000001' in experiment_list
     assert 'EXP:0000002' in experiment_list
 
-    for exp_id in experiment_list:
-        response = api_client.get(f'/experiments/{exp_id}')
+    for e in experiment_list:
+        response = api_client.get(f"/experiments/{e['id']}")
         assert response.status_code == 200
         experiment = response.json()
         assert experiment['id'] in experiment_list
