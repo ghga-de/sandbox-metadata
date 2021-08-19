@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Health endpoint"""
 
 from fastapi import APIRouter
@@ -21,6 +20,6 @@ health_router = APIRouter()
 
 
 @health_router.get("/health", summary="Check health of service")
-async def get_all_datasets():
+async def get_health():
     """Check health of service."""
     return {"status": "OK"}

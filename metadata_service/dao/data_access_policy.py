@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Convenience methods for adding, updating, and retrieving Data Access Policy objects"""
 
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
@@ -23,15 +24,15 @@ from metadata_service.models import DataAccessPolicy
 COLLECTION_NAME = DataAccessPolicy.__collection__
 
 
-async def retrieve_daps() -> List[str]:
+async def retrieve_daps() -> List[Dict]:
     """Retrieve a list of DAPs from metadata store.
 
     Returns:
-      A list of DAP IDs.
+      A list of DAP objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    daps = await collection.distinct("id")
+    daps = await collection.find().to_list(None)
     return daps
 
 
