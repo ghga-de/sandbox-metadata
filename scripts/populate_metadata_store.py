@@ -17,6 +17,7 @@
 
 """Populates the database with example data for each record type"""
 
+import os
 import json
 from pathlib import Path
 from typing import Literal, get_args
@@ -37,26 +38,25 @@ RecordTypes = Literal[
 
 
 def populate_record(
-    base_url: str, record_type: RecordTypes, exit_on_error: bool = True
+    base_url: str, directory: str, record_type: RecordTypes, exit_on_error: bool = True
 ) -> Response:
     """Populate the database with data for a specific record type"""
 
-    with open(
-        HERE.parent.resolve() / "examples" / f"{record_type}.json"
-    ) as records_file:
-        records = json.load(records_file)
+    file = os.path.join(directory, f"{record_type}.json")
+    if os.path.exists(file):
+        with open(file) as records_file:
+            records = json.load(records_file)
+        print(records)
+        route = f"{base_url}/{record_type}"
+        for record in records[record_type]:
+            response = requests.post(route, json=record)
+            if exit_on_error:
+                # If non-2xx status code, will raise an exception:
+                response.raise_for_status()
+        return response
 
-    route = f"{base_url}/{record_type}"
-    for record in records[record_type]:
-        response = requests.post(route, json=record)
-        if exit_on_error:
-            # If non-2xx status code, will raise an exception:
-            response.raise_for_status()
 
-    return response
-
-
-def main(base_url: str = "http://localhost:8080", exit_on_error: bool = True):
+def main(base_url: str = "http://localhost:8080", directory: str = os.getcwd(), exit_on_error: bool = True):
     """Populate the database with examples for all record types"""
 
     typer.echo("This will populate the database with examples for all record types.")
@@ -65,9 +65,13 @@ def main(base_url: str = "http://localhost:8080", exit_on_error: bool = True):
     for record_type in record_types:
         typer.echo(f"  - working on record type: {record_type}")
         response = populate_record(
-            base_url=base_url, record_type=record_type, exit_on_error=exit_on_error
+            base_url=base_url,
+            directory=directory,
+            record_type=record_type,
+            exit_on_error=exit_on_error
         )
-        typer.echo(f"  - done with status code: {response.status_code}")
+        if response:
+            typer.echo(f"  - done with status code: {response.status_code}")
 
     typer.echo("Done.")
 
