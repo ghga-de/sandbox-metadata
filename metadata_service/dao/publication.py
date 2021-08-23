@@ -18,10 +18,11 @@ from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import Publication
 
 COLLECTION_NAME = Publication.__collection__
+PREFIX = "PMID:"
 
 
 async def retrieve_publications() -> List[Dict]:
@@ -31,8 +32,10 @@ async def retrieve_publications() -> List[Dict]:
       A list of Publication objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    publications = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    publications = await collection.find().to_list(None)  # type: ignore
+    db_connect.close_db()
     return publications
 
 
@@ -47,8 +50,9 @@ async def get_publication(publication_id: str, embedded: bool = False) -> Dict:
       The Publication object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    publication = await collection.find_one({"id": publication_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    publication = await collection.find_one({"id": publication_id})  # type: ignore
     if not publication:
         raise HTTPException(
             status_code=404,
@@ -56,6 +60,7 @@ async def get_publication(publication_id: str, embedded: bool = False) -> Dict:
         )
     if embedded:
         publication = await embed_references(publication, Publication)
+    db_connect.close_db()
     return publication
 
 
@@ -69,10 +74,12 @@ async def add_publication(data: Dict) -> Dict:
       The added Publication object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
     publication_id = data["id"]
-    await collection.insert_one(data)
+    await collection.insert_one(data)  # type: ignore
     publication = await get_publication(publication_id)
+    db_connect.close_db()
     return publication
 
 
@@ -87,7 +94,9 @@ async def update_publication(publication_id: str, data: Dict) -> Dict:
       The updated Publication object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": publication_id}, {"$set": data})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": publication_id}, {"$set": data})  # type: ignore
     publication = await get_publication(publication_id)
+    db_connect.close_db()
     return publication

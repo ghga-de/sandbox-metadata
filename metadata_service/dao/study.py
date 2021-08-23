@@ -19,10 +19,11 @@ from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import Study
 
 COLLECTION_NAME = Study.__collection__
+PREFIX = "STU:"
 
 
 async def retrieve_studies() -> List[Dict]:
@@ -32,8 +33,10 @@ async def retrieve_studies() -> List[Dict]:
       A list of Study objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    studies = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    studies = await collection.find().to_list(None)  # type: ignore
+    db_connect.close_db()
     return studies
 
 
@@ -48,14 +51,16 @@ async def get_study(study_id: str, embedded: bool = False) -> Dict:
       The Study object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    study = await collection.find_one({"id": study_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    study = await collection.find_one({"id": study_id})  # type: ignore
     if not study:
         raise HTTPException(
             status_code=404, detail=f"{Study.__name__} with id '{study_id}' not found"
         )
     if embedded:
         study = await embed_references(study, Study)
+    db_connect.close_db()
     return study
 
 
@@ -69,10 +74,12 @@ async def add_study(data: Dict) -> Dict:
       The added Study object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    study_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    study_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    await collection.insert_one(data)  # type: ignore
     study = await get_study(study_id)
+    db_connect.close_db()
     return study
 
 
@@ -87,7 +94,9 @@ async def update_study(study_id: str, data: Dict) -> Dict:
       The updated Study object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": study_id}, {"$set": data})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": study_id}, {"$set": data})  # type: ignore
     study = await get_study(study_id)
+    db_connect.close_db()
     return study

@@ -18,10 +18,11 @@ from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessPolicy
 
 COLLECTION_NAME = DataAccessPolicy.__collection__
+PREFIX = "DAP:"
 
 
 async def retrieve_daps() -> List[Dict]:
@@ -31,8 +32,10 @@ async def retrieve_daps() -> List[Dict]:
       A list of DAP objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    daps = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    daps = await collection.find().to_list(None)  # type: ignore
+    db_connect.close_db()
     return daps
 
 
@@ -47,8 +50,9 @@ async def get_dap(dap_id: str, embedded=False) -> Dict:
       The DAP object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dap = await collection.find_one({"id": dap_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dap = await collection.find_one({"id": dap_id})  # type: ignore
     if not dap:
         raise HTTPException(
             status_code=404,
@@ -56,6 +60,7 @@ async def get_dap(dap_id: str, embedded=False) -> Dict:
         )
     if embedded:
         dap = await embed_references(dap, DataAccessPolicy)
+    db_connect.close_db()
     return dap
 
 
@@ -69,9 +74,11 @@ async def add_dap(data: Dict) -> Dict:
       The added DAP object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dap_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dap_id = db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    await collection.insert_one(data)  # type: ignore
+    db_connect.close_db()
     dap = await get_dap(dap_id)
     return dap
 

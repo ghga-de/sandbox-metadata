@@ -19,10 +19,11 @@ from typing import List, Dict
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessCommittee
 
 COLLECTION_NAME = DataAccessCommittee.__collection__
+PREFIX = "DAC:"
 
 
 async def retrieve_dacs() -> List[Dict]:
@@ -32,8 +33,10 @@ async def retrieve_dacs() -> List[Dict]:
       A list of DAC objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dacs = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dacs = await collection.find().to_list(None)  # type: ignore
+    db_connect.close_db()
     return dacs
 
 
@@ -48,8 +51,9 @@ async def get_dac(dac_id: str, embedded=False) -> Dict:
       The DAC object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dac = await collection.find_one({"id": dac_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dac = await collection.find_one({"id": dac_id})  # type: ignore
     if not dac:
         raise HTTPException(
             status_code=404,
@@ -57,6 +61,7 @@ async def get_dac(dac_id: str, embedded=False) -> Dict:
         )
     if embedded:
         dac = await embed_references(dac, DataAccessCommittee)
+    db_connect.close_db()
     return dac
 
 
@@ -70,10 +75,12 @@ async def add_dac(data: Dict) -> Dict:
       The added DAC object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dac_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dac_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    await collection.insert_one(data)  # type: ignore
     dac = await get_dac(dac_id)
+    db_connect.close_db()
     return dac
 
 

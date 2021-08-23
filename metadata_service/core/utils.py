@@ -12,10 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+Utils
+"""
 import logging
 from typing import Dict
 from pydantic import BaseModel
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 
 
 async def _get_reference(document_id: str, collection_name: str) -> Dict:
@@ -30,11 +33,14 @@ async def _get_reference(document_id: str, collection_name: str) -> Dict:
         The document corresponding to ``document_id``
 
     """
-    collection = await get_collection(collection_name)
-    doc = await collection.find_one({"id": document_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(name=collection_name)
+    doc = await collection.find_one({"id": document_id})  # type: ignore
     if not doc:
         logging.warning(
-            f"Reference with ID {document_id} not found in collection {collection_name}"
+            "Reference with ID %s not found in collection %s",
+            document_id,
+            collection_name,
         )
     return doc
 

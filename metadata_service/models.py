@@ -12,12 +12,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+"""
+Models
+"""
 from typing import Set, List, Optional, Union
 from pydantic import BaseModel
 
 
 class Publication(BaseModel):
+    """
+    Publication
+    """
+
     __references__: Set = set()
     __collection__: str = "publication"
     id: str
@@ -25,6 +31,10 @@ class Publication(BaseModel):
 
 
 class Experiment(BaseModel):
+    """
+    Experiment
+    """
+
     __references__: Set = set()
     __collection__: str = "experiment"
     id: str
@@ -33,6 +43,10 @@ class Experiment(BaseModel):
 
 
 class Study(BaseModel):
+    """
+    Study
+    """
+
     __references__: Set = {
         ("publications", Publication),
         ("has_experiment", Experiment),
@@ -47,6 +61,10 @@ class Study(BaseModel):
 
 
 class File(BaseModel):
+    """
+    File
+    """
+
     __references__: Set = set()
     __collection__: str = "file"
     id: str
@@ -59,6 +77,10 @@ class File(BaseModel):
 
 
 class DataAccessCommittee(BaseModel):
+    """
+    Data Access Committee
+    """
+
     __references__: Set = set()
     __collection__: str = "data_access_committee"
     id: str
@@ -69,6 +91,10 @@ class DataAccessCommittee(BaseModel):
 
 
 class DataAccessPolicy(BaseModel):
+    """
+    Data Access Policy
+    """
+
     __references__: Set = {("has_data_access_committee", DataAccessCommittee)}
     __collection__: str = "data_access_policy"
     id: str
@@ -79,6 +105,10 @@ class DataAccessPolicy(BaseModel):
 
 
 class Dataset(BaseModel):
+    """
+    Dataset
+    """
+
     __references__: Set = {
         ("files", File),
         ("has_study", Study),
