@@ -1,6 +1,6 @@
 # Transformed GHGA-compatible EGA JSON
 
-This folder consists of EGA metadata JSON transformed from [../original]().
+This folder consists of EGA metadata JSON transformed from the [original EGA JSON](../original/).
 
 To transform the original JSON to a GHGA compatible form:
 
