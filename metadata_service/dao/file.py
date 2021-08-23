@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Convenience methods for adding, updating, and retrieving File objects"""
 
 from typing import List, Dict
 from fastapi.exceptions import HTTPException
@@ -23,15 +24,15 @@ from metadata_service.models import File
 COLLECTION_NAME = File.__collection__
 
 
-async def retrieve_files() -> List[str]:
+async def retrieve_files() -> List[Dict]:
     """Retrieve a list of File IDs from metadata store.
 
     Returns:
-      A list of File IDs.
+      A list of File objects.
 
     """
     collection = await get_collection(COLLECTION_NAME)
-    files = await collection.distinct("id")
+    files = await collection.find().to_list(None)
     return files
 
 

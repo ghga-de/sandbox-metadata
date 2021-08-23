@@ -18,10 +18,13 @@
 """Populates the database with example data for each record type"""
 
 import json
+from pathlib import Path
 from typing import Literal, get_args
 import requests
 from requests.models import Response
 import typer
+
+HERE = Path(__file__).parent.resolve()
 
 RecordTypes = Literal[
     "studies",
@@ -38,7 +41,9 @@ def populate_record(
 ) -> Response:
     """Populate the database with data for a specific record type"""
 
-    with open(f"examples/{record_type}.json") as records_file:
+    with open(
+        HERE.parent.resolve() / "examples" / f"{record_type}.json"
+    ) as records_file:
         records = json.load(records_file)
 
     route = f"{base_url}/{record_type}"
@@ -51,7 +56,7 @@ def populate_record(
     return response
 
 
-def main(base_url: str = "http://localhost:8000", exit_on_error: bool = True):
+def main(base_url: str = "http://localhost:8080", exit_on_error: bool = True):
     """Populate the database with examples for all record types"""
 
     typer.echo("This will populate the database with examples for all record types.")
