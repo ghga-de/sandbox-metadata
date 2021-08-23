@@ -22,6 +22,9 @@ class Publication(BaseModel):
     __collection__: str = "publication"
     id: str
     title: Optional[str] = None
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
 
 
 class Experiment(BaseModel):
@@ -30,6 +33,9 @@ class Experiment(BaseModel):
     id: str
     name: Optional[str] = None
     instrument_model: Optional[str] = None
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
 
 
 class Study(BaseModel):
@@ -40,10 +46,13 @@ class Study(BaseModel):
     __collection__: str = "study"
     id: str
     title: Optional[str] = None
-    type: Optional[str] = None
+    type: Optional[Union[str, List]] = None
     abstract: Optional[str] = None
     publications: Optional[List[Union[str, Publication]]] = None
     has_experiment: Optional[Union[str, Experiment]] = None
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
 
 
 class File(BaseModel):
@@ -52,10 +61,13 @@ class File(BaseModel):
     id: str
     name: Optional[str]
     format: Optional[str]
-    type: Optional[str]
+    type: Optional[Union[str, List]]
     size: Optional[str]
     checksum: Optional[str]
     category: Optional[str]
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
 
 
 class DataAccessCommittee(BaseModel):
@@ -66,6 +78,9 @@ class DataAccessCommittee(BaseModel):
     description: Optional[str] = None
     main_contact: Optional[str] = None
     has_members: Optional[List[str]] = None
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
 
 
 class DataAccessPolicy(BaseModel):
@@ -76,7 +91,9 @@ class DataAccessPolicy(BaseModel):
     policy_text: Optional[str] = None
     policy_url: Optional[str] = None
     has_data_access_committee: Optional[Union[str, DataAccessCommittee]] = None
-
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
 
 class Dataset(BaseModel):
     __references__: Set = {
@@ -88,7 +105,10 @@ class Dataset(BaseModel):
     id: str
     title: Optional[str] = None
     description: Optional[str] = None
-    type: Optional[str] = None
+    type: Optional[Union[str, List]] = None
     files: Optional[List[Union[str, File]]] = None
     has_study: Optional[Union[str, Study]] = None
     has_data_access_policy: Optional[Union[str, DataAccessPolicy]] = None
+    xref: Optional[List[str]] = None
+    creation_date: Optional[str] = None
+    update_date: Optional[str] = None
