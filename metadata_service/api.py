@@ -18,7 +18,9 @@ Defines API endpoints.
 """
 
 from fastapi import FastAPI
+from ghga_service_chassis_lib.api import configure_app
 
+from metadata_service.config import get_config
 from metadata_service.database import DBConnect
 from metadata_service.routes.studies import studies_router
 from metadata_service.routes.datasets import dataset_router
@@ -35,6 +37,7 @@ app = FastAPI(
     title="Metadata Service API",
     version=__version__,
 )
+configure_app(app, config=get_config())
 
 app.include_router(studies_router)
 app.include_router(dataset_router)
