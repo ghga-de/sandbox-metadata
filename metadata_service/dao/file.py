@@ -14,7 +14,7 @@
 # limitations under the License.
 """Convenience methods for adding, updating, and retrieving File objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -24,7 +24,7 @@ from metadata_service.models import File
 COLLECTION_NAME = File.__collection__
 
 
-async def retrieve_files() -> List[Dict]:
+async def retrieve_files() -> List[File]:
     """Retrieve a list of File IDs from metadata store.
 
     Returns:
@@ -38,7 +38,7 @@ async def retrieve_files() -> List[Dict]:
     return files
 
 
-async def get_file(file_id: str, embedded: bool = False) -> Dict:
+async def get_file(file_id: str, embedded: bool = False) -> File:
     """Given a File ID, get the File object from metadata store.
 
     Args:
@@ -62,7 +62,7 @@ async def get_file(file_id: str, embedded: bool = False) -> Dict:
     return file
 
 
-async def add_file(data: Dict) -> Dict:
+async def add_file(data: File) -> File:
     """Add a File object to the metadata store.
 
     Args:
@@ -75,13 +75,13 @@ async def add_file(data: Dict) -> Dict:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     file_id = data["id"]  # type: ignore
-    await collection.insert_one(data)  # type: ignore
+    await collection.insert_one(data.dict())  # type: ignore
     file = await get_file(file_id)
     db_connect.close_db()
     return file
 
 
-async def update_file(file_id: str, data: Dict) -> Dict:
+async def update_file(file_id: str, data: File) -> File:
     """Given a File ID and data, update the File in metadata store.
 
     Args:
@@ -94,7 +94,7 @@ async def update_file(file_id: str, data: Dict) -> Dict:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": file_id}, {"$set": data})  # type: ignore
+    await collection.update_one({"id": file_id}, {"$set": data.dict()})  # type: ignore
     file = await get_file(file_id)
     db_connect.close_db()
     return file

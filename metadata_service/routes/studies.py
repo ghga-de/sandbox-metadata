@@ -15,7 +15,7 @@
 
 """Routes for Study objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.study import (
@@ -45,7 +45,7 @@ async def get_studies(study_id: str, embedded: bool = False):
 
 
 @studies_router.post("/studies", response_model=Study, summary="Add a Study")
-async def add_studies(data: Dict):
+async def add_studies(data: Study):
     """Add a Study to the metadata store."""
     study = await add_study(data)
     return study
@@ -54,7 +54,7 @@ async def add_studies(data: Dict):
 @studies_router.put(
     "/studies/{study_id}", response_model=Study, summary="Update a Study"
 )
-async def update_studies(study_id, data: dict):
+async def update_studies(study_id, data: Study):
     """Given a Study ID and data, update the Study in metadata store."""
     study = await update_study(study_id, data)
     return study

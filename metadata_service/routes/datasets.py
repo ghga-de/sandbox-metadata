@@ -14,7 +14,7 @@
 # limitations under the License.
 """Routes for Dataset objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.dataset import (
@@ -48,7 +48,7 @@ async def get_datasets(dataset_id: str, embedded: bool = False):
 
 
 @dataset_router.post("/datasets", response_model=Dataset, summary="Add a Dataset")
-async def add_datasets(data: Dict):
+async def add_datasets(data: Dataset):
     """Add a Dataset to the metadata store."""
     dataset = await add_dataset(data)
     return dataset
@@ -57,7 +57,7 @@ async def add_datasets(data: Dict):
 @dataset_router.put(
     "/datasets/{dataset_id}", response_model=Dataset, summary="Update a Dataset"
 )
-async def update_datasets(dataset_id, data: Dict):
+async def update_datasets(dataset_id, data: Dataset):
     """Given a Dataset ID and data, update the Dataset in metadata store."""
     dataset = await update_dataset(dataset_id, data)
     return dataset

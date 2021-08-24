@@ -14,7 +14,7 @@
 # limitations under the License.
 """Convenience methods for adding, updating, and retrieving Experiment objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -25,7 +25,7 @@ COLLECTION_NAME = Experiment.__collection__
 PREFIX = "EXP:"
 
 
-async def retrieve_experiments() -> List[Dict]:
+async def retrieve_experiments() -> List[Experiment]:
     """Retrieve a list of Experiments from metadata store.
 
     Returns:
@@ -39,7 +39,7 @@ async def retrieve_experiments() -> List[Dict]:
     return experiments
 
 
-async def get_experiment(experiment_id: str, embedded: bool = False) -> Dict:
+async def get_experiment(experiment_id: str, embedded: bool = False) -> Experiment:
     """Given an Experiment ID, get the Experiment object from metadata store.
 
     Args:
@@ -64,7 +64,7 @@ async def get_experiment(experiment_id: str, embedded: bool = False) -> Dict:
     return experiment
 
 
-async def add_experiment(data: Dict) -> Dict:
+async def add_experiment(data: Experiment) -> Experiment:
     """Add an Experiment object to the metadata store.
 
     Args:
@@ -77,13 +77,14 @@ async def add_experiment(data: Dict) -> Dict:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     experiment_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    await collection.insert_one(data)  # type: ignore
+    data["id"] = experiment_id
+    await collection.insert_one(data.dict())  # type: ignore
     experiment = await get_experiment(experiment_id)
     db_connect.close_db()
     return experiment
 
 
-async def update_experiment(experiment_id: str, data: Dict) -> Dict:
+async def update_experiment(experiment_id: str, data: Experiment) -> Experiment:
     """Given an Experiment ID and data, update the Experiment in metadata store.
 
     Args:
@@ -96,7 +97,7 @@ async def update_experiment(experiment_id: str, data: Dict) -> Dict:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": experiment_id}, {"$set": data})  # type: ignore
+    await collection.update_one({"id": experiment_id}, {"$set": data.dict()})  # type: ignore
     experiment = await get_experiment(experiment_id)
     db_connect.close_db()
     return experiment

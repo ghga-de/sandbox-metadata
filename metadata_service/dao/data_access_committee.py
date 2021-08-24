@@ -15,7 +15,7 @@
 
 """Convenience methods for adding, updating, and retrieving Data Access Committee objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -26,7 +26,7 @@ COLLECTION_NAME = DataAccessCommittee.__collection__
 PREFIX = "DAC:"
 
 
-async def retrieve_dacs() -> List[Dict]:
+async def retrieve_dacs() -> List[DataAccessCommittee]:
     """Retrieve a list of DACs from metadata store.
 
     Returns:
@@ -36,11 +36,11 @@ async def retrieve_dacs() -> List[Dict]:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dacs = await collection.find().to_list(None)  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     return dacs
 
 
-async def get_dac(dac_id: str, embedded=False) -> Dict:
+async def get_dac(dac_id: str, embedded=False) -> DataAccessCommittee:
     """Given a DAC ID, get the DAC object from metadata store.
 
     Args:
@@ -61,11 +61,11 @@ async def get_dac(dac_id: str, embedded=False) -> Dict:
         )
     if embedded:
         dac = await embed_references(dac, DataAccessCommittee)
-    db_connect.close_db()
+    await db_connect.close_db()
     return dac
 
 
-async def add_dac(data: Dict) -> Dict:
+async def add_dac(data: DataAccessCommittee) -> DataAccessCommittee:
     """Add a DAC object to the metadata store.
 
     Args:
@@ -78,13 +78,14 @@ async def add_dac(data: Dict) -> Dict:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dac_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    await collection.insert_one(data)  # type: ignore
+    data["id"] = dac_id
+    await collection.insert_one(data.dict())  # type: ignore
     dac = await get_dac(dac_id)
-    db_connect.close_db()
+    await db_connect.close_db()
     return dac
 
 
-async def update_dac(dac_id: str, data: Dict) -> Dict:
+async def update_dac(dac_id: str, data: DataAccessCommittee) -> DataAccessCommittee:
     """Given a DAC ID and data, update the DAC in metadata store.
 
     Args:
@@ -95,6 +96,11 @@ async def update_dac(dac_id: str, data: Dict) -> Dict:
       The updated DAC object
 
     """
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one(  # type: ignore
+        {"id": dac_id}, {"$set": data.dict(exclude_unset=True)}
+    )
     dac = await get_dac(dac_id)
-    dac.update(**data)
+    await db_connect.close_db()
     return dac

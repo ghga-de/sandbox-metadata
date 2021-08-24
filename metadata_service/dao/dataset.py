@@ -15,7 +15,7 @@
 
 """Convenience methods for adding, updating, and retrieving Dataset objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -26,7 +26,7 @@ COLLECTION_NAME = Dataset.__collection__
 PREFIX = "DAT:"
 
 
-async def retrieve_datasets() -> List[Dict]:
+async def retrieve_datasets() -> List[Dataset]:
     """Retrieve a list of Datasets from metadata store.
 
     Returns:
@@ -40,7 +40,7 @@ async def retrieve_datasets() -> List[Dict]:
     return datasets
 
 
-async def get_dataset(dataset_id: str, embedded=False) -> Dict:
+async def get_dataset(dataset_id: str, embedded=False) -> Dataset:
     """Given a Datset ID, get the Dataset object from metadata store.
 
     Args:
@@ -65,7 +65,7 @@ async def get_dataset(dataset_id: str, embedded=False) -> Dict:
     return dataset
 
 
-async def add_dataset(data: Dict) -> Dict:
+async def add_dataset(data: Dataset) -> Dataset:
     """Add a Dataset object to the metadata store.
 
     Args:
@@ -78,13 +78,14 @@ async def add_dataset(data: Dict) -> Dict:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dataset_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    await collection.insert_one(data)  # type: ignore
+    data["id"] = dataset_id
+    await collection.insert_one(data.dict())  # type: ignore
     db_connect.close_db()
     dataset = await get_dataset(dataset_id)
     return dataset
 
 
-async def update_dataset(dataset_id: str, data: Dict) -> Dict:
+async def update_dataset(dataset_id: str, data: Dataset) -> Dataset:
     """Given a Dataset ID and data, update the Dataset in metadata store.
 
     Args:
@@ -97,7 +98,7 @@ async def update_dataset(dataset_id: str, data: Dict) -> Dict:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": dataset_id}, {"$set": data})  # type: ignore
+    await collection.update_one({"id": dataset_id}, {"$set": data.dict()})  # type: ignore
     dataset = await get_dataset(dataset_id)
     db_connect.close_db()
     return dataset

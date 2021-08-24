@@ -14,7 +14,7 @@
 # limitations under the License.
 """Routes for Data Access Policy objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.data_access_policy import (
@@ -54,7 +54,7 @@ async def get_daps(data_access_policy_id: str, embedded: bool = False):
 @data_access_policy_router.post(
     "/data_access_policies", response_model=DataAccessPolicy, summary="Add a DAP"
 )
-async def add_daps(data: Dict):
+async def add_daps(data: DataAccessPolicy):
     """Add a DAP to the metadata store."""
     dap = await add_dap(data)
     return dap
@@ -65,7 +65,7 @@ async def add_daps(data: Dict):
     response_model=DataAccessPolicy,
     summary="Update a DAP",
 )
-async def update_daps(data_access_policy_id: str, data: Dict):
+async def update_daps(data_access_policy_id: str, data: DataAccessPolicy):
     """Given a DAP ID and data, update the DAP in metadata store."""
     dap = await update_dap(data_access_policy_id, data)
     return dap

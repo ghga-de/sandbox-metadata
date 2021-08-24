@@ -6,5 +6,8 @@ cd /workspace
 # install in edit mode
 pip install -e ".[all]"
 
+# load mongodb:
+python scripts/generate_sequence_for_collections.py
+
 # install pre-commit hooks to git:
 pre-commit install

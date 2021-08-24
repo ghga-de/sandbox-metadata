@@ -14,7 +14,7 @@
 # limitations under the License.
 """Convenience methods for adding, updating, and retrieving Data Access Policy objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -25,7 +25,7 @@ COLLECTION_NAME = DataAccessPolicy.__collection__
 PREFIX = "DAP:"
 
 
-async def retrieve_daps() -> List[Dict]:
+async def retrieve_daps() -> List[DataAccessPolicy]:
     """Retrieve a list of DAPs from metadata store.
 
     Returns:
@@ -39,7 +39,7 @@ async def retrieve_daps() -> List[Dict]:
     return daps
 
 
-async def get_dap(dap_id: str, embedded=False) -> Dict:
+async def get_dap(dap_id: str, embedded=False) -> DataAccessPolicy:
     """Given a DAP ID, get the DAP object from metadata store.
 
     Args:
@@ -64,7 +64,7 @@ async def get_dap(dap_id: str, embedded=False) -> Dict:
     return dap
 
 
-async def add_dap(data: Dict) -> Dict:
+async def add_dap(data: DataAccessPolicy) -> DataAccessPolicy:
     """Add a DAP object to the metadata store.
 
     Args:
@@ -77,23 +77,29 @@ async def add_dap(data: Dict) -> Dict:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dap_id = db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    await collection.insert_one(data)  # type: ignore
+    data["id"] = dap_id
+    await collection.insert_one(data.dict())  # type: ignore
     db_connect.close_db()
     dap = await get_dap(dap_id)
     return dap
 
 
-async def update_dap(dap_id: str, data: Dict) -> Dict:
-    """Given a DAP ID and data, update the DAP in metadata store.
+async def update_dap(dap_id: str, data: DataAccessPolicy) -> DataAccessPolicy:
+    """Given a dap ID and data, update the dap in metadata store.
 
     Args:
-        DAP_id: The DAP ID
+        dap_id: The DAP ID
         data: The DAP object
 
     Returns:
       The updated DAP object
 
     """
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one(  # type: ignore
+        {"id": dap_id}, {"$set": data.dict(exclude_unset=True)}
+    )
     dap = await get_dap(dap_id)
-    dap.update(**data)
+    await db_connect.close_db()
     return dap

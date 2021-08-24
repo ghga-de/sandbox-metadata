@@ -1,165 +1,165 @@
 {
-    "members": [
-        {
-            "id": "bacb9d66-9ce4-4e42-a813-e7efad374aa0",
-            "name": "Birte Zurek",
-            "email": "birte.zurek@med.uni-tuebingen.de",
-            "telephone": "+4970712972285",
-            "organization": "University of Tuebingen Institute of Medical Genetics and Applied Genomics"
-        },
-        {
-            "id": "8b913ce3-cc0d-4054-887c-96dc5799672a",
-            "name": "DKTK DAC",
-            "email": "daco-dkfz-b06x@dkfz-heidelberg.de",
-            "telephone": null,
-            "organization": "German Cancer Research Center (DKFZ)"
-        },
-        {
-            "id": "d7fa32ad-b40a-40e0-a09a-1ece5bd81168",
-            "name": "DACO B060x",
-            "email": "daco-dkfz-b06x@dkfz-heidelberg.de",
-            "telephone": null,
-            "organization": "German Cancer Research Center (DKFZ)"
-        },
-        {
-            "id": "a47cf387-fb28-48f4-91e7-faa1f18cf55f",
-            "name": "Matthias Schwab",
-            "email": "matthias.schwab@ikp-stuttgart.de",
-            "telephone": null,
-            "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany"
-        },
-        {
-            "id": "61663b14-c89c-440b-83e6-eb8eb1266335",
-            "name": "Elke Sch\u00e4ffeler",
-            "email": "elke.schaeffeler@ikp-stuttgart.de",
-            "telephone": null,
-            "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany"
-        },
-        {
-            "id": "9b92856a-4de2-4917-8014-0053ae8e15fd",
-            "name": "Jens Bedke",
-            "email": "jens.bedke@med.uni-tuebingen.de",
-            "telephone": null,
-            "organization": "Department of Urology, University Hospital Tuebingen, Tuebingen, Germany"
-        },
-        {
-            "id": "5208692b-3143-4288-91a4-692210b4d987",
-            "name": "Florian B\u00fcttner",
-            "email": "florian.buettner@ikp-stuttgart.de",
-            "telephone": null,
-            "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany"
-        },
-        {
-            "id": "c4b8000a-e53f-4f20-a878-7e11ecae2721",
-            "name": "Stefan Winter",
-            "email": "stefan.winter@ikp-stuttgart.de",
-            "telephone": null,
-            "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany"
-        },
-        {
-            "id": "a5fd9de8-8e0d-477b-9c94-7d1ead6d8ec8",
-            "name": "Arnulf Stenzl",
-            "email": "arnulf.stenzl@med.uni-tuebingen.de",
-            "telephone": null,
-            "organization": "Department of Urology, University Hospital Tuebingen, Tuebingen, Germany"
-        },
-        {
-            "id": "01f42268-6a4a-4526-ad65-ed75098c328e",
-            "name": "Dr. Matthias Schlesner",
-            "email": "m.schlesner@dkfz-heidelberg.de",
-            "telephone": null,
-            "organization": "German Cancer Research Center (DKFZ)"
-        },
-        {
-            "id": "a0b45b03-3cfe-48b3-96a4-beae68ed09c9",
-            "name": "Omics &amp; Datamanagment Core Facility",
-            "email": "odcf-service@dkfz-heidelberg.de",
-            "telephone": null,
-            "organization": "German Cancer Research Center (DKFZ)"
-        },
-        {
-            "id": "427410eb-1dd2-4068-8491-59a42ef8e4f0",
-            "name": "Katja Beck",
-            "email": "hipo_daco@dkfz-heidelberg.de",
-            "telephone": null,
-            "organization": "German Cancer Research Center (DKFZ)"
-        },
-        {
-            "id": "7d7816cb-083b-428c-9395-4f1e66ecec13",
-            "name": "Stefan Duensing",
-            "email": "stefan.duensing@med.uni-heidelberg.de",
-            "telephone": "+496221566255",
-            "organization": "University of Heidelberg"
-        },
-        {
-            "id": "7e2e718f-69ee-453e-8856-c51e187e5683",
-            "name": "Stephan Ossowski",
-            "email": "stephan.ossowski@med.uni-tuebingen.de",
-            "telephone": "070712972323",
-            "organization": "Institute of Medical Genetics and Applied Genomics - Universit\u00e4t Klinikum T\u00fcbingen "
-        },
-        {
-            "id": "21209b42-7ec4-49df-9d36-39bc68187bbb",
-            "name": "Boutros, Prof. Dr. Michael",
-            "email": "m.boutros@dkfz-heidelberg.de",
-            "telephone": "00496221421951",
-            "organization": "Deutsches Krebsforschungszentrum DKFZ"
-        },
-        {
-            "id": "dde9978d-d09c-4aa9-baf1-ff8ee76f9281",
-            "name": "Ebert, Prof. Dr. Matthias",
-            "email": "matthias.ebert@medma.uni-heidelberg.de",
-            "telephone": "00496213833284",
-            "organization": "Universit\u00e4tsmedizin Mannheim"
-        },
-        {
-            "id": "40428387-b0ac-4403-a372-5be36a9832f1",
-            "name": "Betge, Dr. Johannes",
-            "email": "j.betge@dkfz-heidelberg.de",
-            "telephone": "00496221421957",
-            "organization": "Deutsches Krebsforschungszentrum DKFZ"
-        },
-        {
-            "id": "259b245c-b0bb-4492-a795-3ef4542945f2",
-            "name": "Paulina Richter-Pechanska",
-            "email": "paulina.richter-pechanska@med.uni-heidelberg.de",
-            "telephone": "+496221564579",
-            "organization": "University Hospital in Heidelberg, Germany"
-        },
-        {
-            "id": "155cced9-62e5-43e4-82c6-2150f06ed010",
-            "name": "Andreas Kulozik",
-            "email": "andreas.kulozik@med.uni-heidelberg.de",
-            "telephone": "+496221564500",
-            "organization": "University of Heidelberg"
-        },
-        {
-            "id": "7c26647d-a53a-412b-8986-2e56dec526b4",
-            "name": "Jan Korbel",
-            "email": "korbel@embl.de",
-            "telephone": "+4962213878822",
-            "organization": "European Molecular Biology Laboratory (EMBL)"
-        },
-        {
-            "id": "967aa4f2-d5ac-4bd6-92e6-82d7ff375d36",
-            "name": "Matthias Ebert",
-            "email": "matthias.ebert@medma.uni-heidelberg.de",
-            "telephone": "+496213833284",
-            "organization": "Heidelberg University"
-        },
-        {
-            "id": "0781d9f1-1330-4bf0-85b1-df5ffc7e53c6",
-            "name": "Michael Boutros",
-            "email": "m.boutros@dkfz.de",
-            "telephone": "+496221421950",
-            "organization": "German Cancer Research Center (DKFZ)"
-        },
-        {
-            "id": "2bb3e559-2eb7-4a94-b507-b77bd2efd3cb",
-            "name": "Eva Kathrin Roth",
-            "email": "eva.roth@med.uni-heidelberg.de",
-            "telephone": "+4962215636967",
-            "organization": "Department of Pediatric Oncology, Hematology and Immunology and Hopp Children\u2019s Cancer Center at the NCT Heidelberg (KiTZ), University of Heidelberg, Heidelberg, Germany\u2028"
-        }
-    ]
+  "members": [
+    {
+      "email": "birte.zurek@med.uni-tuebingen.de",
+      "id": "d2ed958e-52b8-4ae2-88b7-7ab380ff5904",
+      "name": "Birte Zurek",
+      "organization": "University of Tuebingen Institute of Medical Genetics and Applied Genomics",
+      "telephone": "+4970712972285"
+    },
+    {
+      "email": "daco-dkfz-b06x@dkfz-heidelberg.de",
+      "id": "9fa667b3-17e0-4c1d-a060-884302c1706a",
+      "name": "DKTK DAC",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "daco-dkfz-b06x@dkfz-heidelberg.de",
+      "id": "86dd6d1c-61ed-48bd-b89c-604fe20c5812",
+      "name": "DACO B060x",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "matthias.schwab@ikp-stuttgart.de",
+      "id": "0d410b06-d3ab-42bc-85ae-e3ac2eb7c9e6",
+      "name": "Matthias Schwab",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "elke.schaeffeler@ikp-stuttgart.de",
+      "id": "b6de703c-0b6b-4dc2-8d21-a522421b075e",
+      "name": "Elke Sch\u00e4ffeler",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "jens.bedke@med.uni-tuebingen.de",
+      "id": "b1149f5e-cff7-464b-ac42-60879694d2d1",
+      "name": "Jens Bedke",
+      "organization": "Department of Urology, University Hospital Tuebingen, Tuebingen, Germany",
+      "telephone": null
+    },
+    {
+      "email": "florian.buettner@ikp-stuttgart.de",
+      "id": "abdf153b-0a48-45d2-bf61-2ff46c558955",
+      "name": "Florian B\u00fcttner",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "stefan.winter@ikp-stuttgart.de",
+      "id": "1bac4a84-e17a-4ff6-8731-5c9d1c1aed97",
+      "name": "Stefan Winter",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "arnulf.stenzl@med.uni-tuebingen.de",
+      "id": "43e1a271-dbdd-4673-a51a-2dd83c09829c",
+      "name": "Arnulf Stenzl",
+      "organization": "Department of Urology, University Hospital Tuebingen, Tuebingen, Germany",
+      "telephone": null
+    },
+    {
+      "email": "m.schlesner@dkfz-heidelberg.de",
+      "id": "d1f9683d-9f93-4d39-a3eb-def9ecb35da9",
+      "name": "Dr. Matthias Schlesner",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "odcf-service@dkfz-heidelberg.de",
+      "id": "20aa57b6-de01-4edf-b486-2ceb65ea018a",
+      "name": "Omics &amp; Datamanagment Core Facility",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "hipo_daco@dkfz-heidelberg.de",
+      "id": "c3fab377-4a59-4df4-8e07-ac703c353c87",
+      "name": "Katja Beck",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "stefan.duensing@med.uni-heidelberg.de",
+      "id": "c6d04b2b-e8d4-4847-b0cc-9748247dd8e6",
+      "name": "Stefan Duensing",
+      "organization": "University of Heidelberg",
+      "telephone": "+496221566255"
+    },
+    {
+      "email": "stephan.ossowski@med.uni-tuebingen.de",
+      "id": "5339261c-e2ed-4599-b7f3-73195489d0bc",
+      "name": "Stephan Ossowski",
+      "organization": "Institute of Medical Genetics and Applied Genomics - Universit\u00e4t Klinikum T\u00fcbingen ",
+      "telephone": "070712972323"
+    },
+    {
+      "email": "m.boutros@dkfz-heidelberg.de",
+      "id": "c32964f9-7e11-4e3d-95d5-3b1bb862d500",
+      "name": "Boutros, Prof. Dr. Michael",
+      "organization": "Deutsches Krebsforschungszentrum DKFZ",
+      "telephone": "00496221421951"
+    },
+    {
+      "email": "matthias.ebert@medma.uni-heidelberg.de",
+      "id": "d30ccf59-3aa2-4895-9d29-cd17b51cfdf2",
+      "name": "Ebert, Prof. Dr. Matthias",
+      "organization": "Universit\u00e4tsmedizin Mannheim",
+      "telephone": "00496213833284"
+    },
+    {
+      "email": "j.betge@dkfz-heidelberg.de",
+      "id": "21526f1b-497d-4693-aafd-351588f551da",
+      "name": "Betge, Dr. Johannes",
+      "organization": "Deutsches Krebsforschungszentrum DKFZ",
+      "telephone": "00496221421957"
+    },
+    {
+      "email": "paulina.richter-pechanska@med.uni-heidelberg.de",
+      "id": "6664ecc4-9be4-47da-bc64-b6ea3de66b65",
+      "name": "Paulina Richter-Pechanska",
+      "organization": "University Hospital in Heidelberg, Germany",
+      "telephone": "+496221564579"
+    },
+    {
+      "email": "andreas.kulozik@med.uni-heidelberg.de",
+      "id": "3011429e-f74a-4afb-b1fa-c6ac44ed55a2",
+      "name": "Andreas Kulozik",
+      "organization": "University of Heidelberg",
+      "telephone": "+496221564500"
+    },
+    {
+      "email": "korbel@embl.de",
+      "id": "5f7944a3-4479-49f1-a397-323d976a3451",
+      "name": "Jan Korbel",
+      "organization": "European Molecular Biology Laboratory (EMBL)",
+      "telephone": "+4962213878822"
+    },
+    {
+      "email": "matthias.ebert@medma.uni-heidelberg.de",
+      "id": "a48873d7-ada6-4492-87a1-024ba7c16d11",
+      "name": "Matthias Ebert",
+      "organization": "Heidelberg University",
+      "telephone": "+496213833284"
+    },
+    {
+      "email": "m.boutros@dkfz.de",
+      "id": "59a1fea7-c964-48ab-bf67-b8b89b9c0182",
+      "name": "Michael Boutros",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": "+496221421950"
+    },
+    {
+      "email": "eva.roth@med.uni-heidelberg.de",
+      "id": "d69aff7a-d8a5-4c78-a83d-aeb82acc0584",
+      "name": "Eva Kathrin Roth",
+      "organization": "Department of Pediatric Oncology, Hematology and Immunology and Hopp Children\u2019s Cancer Center at the NCT Heidelberg (KiTZ), University of Heidelberg, Heidelberg, Germany \u2028",
+      "telephone": "+4962215636967"
+    }
+  ]
 }

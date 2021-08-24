@@ -26,7 +26,7 @@ class Publication(BaseModel):
 
     __references__: Set = set()
     __collection__: str = "publication"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     xref: Optional[List[str]] = None
     creation_date: Optional[str] = None
@@ -40,7 +40,7 @@ class Experiment(BaseModel):
 
     __references__: Set = set()
     __collection__: str = "experiment"
-    id: str
+    id: Optional[str] = None
     name: Optional[str] = None
     instrument_model: Optional[str] = None
     xref: Optional[List[str]] = None
@@ -58,7 +58,7 @@ class Study(BaseModel):
         ("has_experiment", Experiment),
     }
     __collection__: str = "study"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     type: Optional[Union[str, List]] = None
     abstract: Optional[str] = None
@@ -95,7 +95,7 @@ class DataAccessCommittee(BaseModel):
 
     __references__: Set = set()
     __collection__: str = "data_access_committee"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None
     main_contact: Optional[str] = None
@@ -112,7 +112,7 @@ class DataAccessPolicy(BaseModel):
 
     __references__: Set = {("has_data_access_committee", DataAccessCommittee)}
     __collection__: str = "data_access_policy"
-    id: str
+    id: Optional[str] = None
     description: Optional[str] = None
     policy_text: Optional[str] = None
     policy_url: Optional[str] = None
@@ -133,7 +133,7 @@ class Dataset(BaseModel):
         ("has_data_access_policy", DataAccessPolicy),
     }
     __collection__: str = "dataset"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None
     type: Optional[Union[str, List]] = None

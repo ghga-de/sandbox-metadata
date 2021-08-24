@@ -15,7 +15,7 @@
 
 """Convenience methods for adding, updating, and retrieving Study objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
@@ -26,7 +26,7 @@ COLLECTION_NAME = Study.__collection__
 PREFIX = "STU:"
 
 
-async def retrieve_studies() -> List[Dict]:
+async def retrieve_studies() -> List[Study]:
     """Retrieve a list of Studies from metadata store.
 
     Returns:
@@ -35,12 +35,13 @@ async def retrieve_studies() -> List[Dict]:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    studies = await collection.find().to_list(None)  # type: ignore
-    db_connect.close_db()
+    studies_dict = await collection.find().to_list(None)  # type: ignore
+    studies = [Study(**study_dict) for study_dict in studies_dict]
+    await db_connect.close_db()
     return studies
 
 
-async def get_study(study_id: str, embedded: bool = False) -> Dict:
+async def get_study(study_id: str, embedded: bool = False) -> Study:
     """Given a Study ID, get the Study object from metadata store.
 
     Args:
@@ -53,18 +54,19 @@ async def get_study(study_id: str, embedded: bool = False) -> Dict:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    study = await collection.find_one({"id": study_id})  # type: ignore
-    if not study:
+    study_dict = await collection.find_one({"id": study_id})  # type: ignore
+    if not study_dict:
         raise HTTPException(
             status_code=404, detail=f"{Study.__name__} with id '{study_id}' not found"
         )
     if embedded:
-        study = await embed_references(study, Study)
-    db_connect.close_db()
+        study = await embed_references(study_dict, Study)
+    study = Study(**study_dict)
+    await db_connect.close_db()
     return study
 
 
-async def add_study(data: Dict) -> Dict:
+async def add_study(data: Study) -> Study:
     """Add a Study object to the metadata store.
 
     Args:
@@ -77,13 +79,15 @@ async def add_study(data: Dict) -> Dict:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     study_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    await collection.insert_one(data)  # type: ignore
+    print(data)
+    data.id = study_id
+    await collection.insert_one(data.dict())  # type: ignore
     study = await get_study(study_id)
-    db_connect.close_db()
+    await db_connect.close_db()
     return study
 
 
-async def update_study(study_id: str, data: Dict) -> Dict:
+async def update_study(study_id: str, data: Study) -> Study:
     """Given a Study ID and data, update the Study in metadata store.
 
     Args:
@@ -96,7 +100,9 @@ async def update_study(study_id: str, data: Dict) -> Dict:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": study_id}, {"$set": data})  # type: ignore
+    await collection.update_one(  # type: ignore
+        {"id": study_id}, {"$set": data.dict(exclude_unset=True)}
+    )
     study = await get_study(study_id)
-    db_connect.close_db()
+    await db_connect.close_db()
     return study
