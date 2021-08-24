@@ -19,22 +19,6 @@ docker build -t sandbox-metadata:dev -f .devcontainer/Dockerfile .
 docker run --rm -it -u vscode -v "${PWD}:/workspace" sandbox-metadata:dev bash
 ```
 
-## Bootstrapping the metadata store
-
-The metadata-store is a MongoDB instance that holds GHGA metadata records.
-
-Each type of metadata record (Dataset, Study, etc.) is stored as a separate collection in the metadata-store.
-
-To pre-load metadata records into a fresh instance of MongoDB:
-
-```sh
-# load GHGA metadata records
-python scripts/populate_metadata_store.py --base-url http://localhost:8000 --directory examples
-
-# load GHGA metadata records translated from EGA
-python scripts/populate_metadata_store.py --base-url http://localhost:8000 --directory ega-examples/transformed
-```
-
 
 ## Running the application
 
@@ -51,3 +35,20 @@ uvicorn metadata_service.main:app --reload
 ```
 
 You can visit the API by navigating to [http://localhost:8000/docs]()
+
+
+## Bootstrapping the metadata store
+
+The metadata-store is a MongoDB instance that holds GHGA metadata records.
+
+Each type of metadata record (Dataset, Study, etc.) is stored as a separate collection in the metadata-store.
+
+To pre-load metadata records into a fresh instance of MongoDB:
+
+```sh
+# load GHGA metadata records
+python scripts/populate_metadata_store.py --base-url http://localhost:8000 --directory examples
+
+# load GHGA metadata records translated from EGA
+python scripts/populate_metadata_store.py --base-url http://localhost:8000 --directory ega-examples/transformed
+```
