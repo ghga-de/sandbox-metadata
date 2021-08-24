@@ -46,7 +46,6 @@ def populate_record(
     if os.path.exists(file):
         with open(file) as records_file:
             records = json.load(records_file)
-        print(records)
         route = f"{base_url}/{record_type}"
         for record in records[record_type]:
             response = requests.post(route, json=record)
