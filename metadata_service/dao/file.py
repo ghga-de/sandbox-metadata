@@ -74,7 +74,7 @@ async def add_file(data: File) -> File:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    file_id = data.id  # type: ignore
+    file_id = data.id
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     file = await get_file(file_id)

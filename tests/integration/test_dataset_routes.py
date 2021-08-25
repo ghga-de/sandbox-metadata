@@ -29,7 +29,6 @@ def test_add_dataset_route(initialize_test_db, api_client):
     )
     assert response.status_code == 200
     dataset = response.json()
-    print(dataset)
     assert "title" in dataset and dataset["title"] == "Test Dataset"
 
     response = api_client.get("/datasets/DAT:1234567")

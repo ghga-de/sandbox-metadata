@@ -78,8 +78,6 @@ async def add_dac(data: DataAccessCommittee) -> DataAccessCommittee:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dac_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    print(data)
-    print(dac_id)
     data.id = dac_id
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()

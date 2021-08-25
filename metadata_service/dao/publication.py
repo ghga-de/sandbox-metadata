@@ -77,8 +77,6 @@ async def add_publication(data: Publication) -> Publication:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     publication_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    print(publication_id)
-    print(data)
     data.id = publication_id
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
