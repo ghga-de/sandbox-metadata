@@ -36,7 +36,7 @@ async def retrieve_datasets() -> List[Dataset]:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     datasets = await collection.find().to_list(None)  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     return datasets
 
 
@@ -61,7 +61,7 @@ async def get_dataset(dataset_id: str, embedded=False) -> Dataset:
         )
     if embedded:
         dataset = await embed_references(dataset, Dataset)
-    db_connect.close_db()
+    await db_connect.close_db()
     return dataset
 
 
@@ -78,9 +78,9 @@ async def add_dataset(data: Dataset) -> Dataset:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dataset_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    data["id"] = dataset_id
+    data.id = dataset_id
     await collection.insert_one(data.dict())  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     dataset = await get_dataset(dataset_id)
     return dataset
 
@@ -99,6 +99,6 @@ async def update_dataset(dataset_id: str, data: Dataset) -> Dataset:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     await collection.update_one({"id": dataset_id}, {"$set": data.dict()})  # type: ignore
+    await db_connect.close_db()
     dataset = await get_dataset(dataset_id)
-    db_connect.close_db()
     return dataset

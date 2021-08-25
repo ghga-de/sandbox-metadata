@@ -35,7 +35,7 @@ async def retrieve_experiments() -> List[Experiment]:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     experiments = await collection.find().to_list(None)  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     return experiments
 
 
@@ -60,7 +60,7 @@ async def get_experiment(experiment_id: str, embedded: bool = False) -> Experime
         )
     if embedded:
         experiment = await embed_references(experiment, Experiment)
-    db_connect.close_db()
+    await db_connect.close_db()
     return experiment
 
 
@@ -77,10 +77,10 @@ async def add_experiment(data: Experiment) -> Experiment:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     experiment_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    data["id"] = experiment_id
+    data.id = experiment_id
     await collection.insert_one(data.dict())  # type: ignore
+    await db_connect.close_db()
     experiment = await get_experiment(experiment_id)
-    db_connect.close_db()
     return experiment
 
 
@@ -98,6 +98,6 @@ async def update_experiment(experiment_id: str, data: Experiment) -> Experiment:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     await collection.update_one({"id": experiment_id}, {"$set": data.dict()})  # type: ignore
+    await db_connect.close_db()
     experiment = await get_experiment(experiment_id)
-    db_connect.close_db()
     return experiment

@@ -78,10 +78,12 @@ async def add_dac(data: DataAccessCommittee) -> DataAccessCommittee:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dac_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    data["id"] = dac_id
+    print(data)
+    print(dac_id)
+    data.id = dac_id
     await collection.insert_one(data.dict())  # type: ignore
-    dac = await get_dac(dac_id)
     await db_connect.close_db()
+    dac = await get_dac(dac_id)
     return dac
 
 
@@ -101,6 +103,6 @@ async def update_dac(dac_id: str, data: DataAccessCommittee) -> DataAccessCommit
     await collection.update_one(  # type: ignore
         {"id": dac_id}, {"$set": data.dict(exclude_unset=True)}
     )
-    dac = await get_dac(dac_id)
     await db_connect.close_db()
+    dac = await get_dac(dac_id)
     return dac

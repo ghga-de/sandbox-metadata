@@ -35,7 +35,7 @@ async def retrieve_daps() -> List[DataAccessPolicy]:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     daps = await collection.find().to_list(None)  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     return daps
 
 
@@ -60,7 +60,7 @@ async def get_dap(dap_id: str, embedded=False) -> DataAccessPolicy:
         )
     if embedded:
         dap = await embed_references(dap, DataAccessPolicy)
-    db_connect.close_db()
+    await db_connect.close_db()
     return dap
 
 
@@ -76,10 +76,10 @@ async def add_dap(data: DataAccessPolicy) -> DataAccessPolicy:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    dap_id = db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    data["id"] = dap_id
+    dap_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    data.id = dap_id
     await collection.insert_one(data.dict())  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     dap = await get_dap(dap_id)
     return dap
 
@@ -100,6 +100,6 @@ async def update_dap(dap_id: str, data: DataAccessPolicy) -> DataAccessPolicy:
     await collection.update_one(  # type: ignore
         {"id": dap_id}, {"$set": data.dict(exclude_unset=True)}
     )
-    dap = await get_dap(dap_id)
     await db_connect.close_db()
+    dap = await get_dap(dap_id)
     return dap

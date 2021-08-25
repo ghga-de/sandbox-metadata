@@ -27,6 +27,7 @@ CollectionTypes = Literal[
     "publication",
     "dataset",
     "file",
+    "experiment",
     "data_access_policy",
     "data_access_committee",
 ]

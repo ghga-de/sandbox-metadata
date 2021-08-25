@@ -79,11 +79,10 @@ async def add_study(data: Study) -> Study:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     study_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
-    print(data)
     data.id = study_id
     await collection.insert_one(data.dict())  # type: ignore
-    study = await get_study(study_id)
     await db_connect.close_db()
+    study = await get_study(study_id)
     return study
 
 
@@ -103,6 +102,6 @@ async def update_study(study_id: str, data: Study) -> Study:
     await collection.update_one(  # type: ignore
         {"id": study_id}, {"$set": data.dict(exclude_unset=True)}
     )
-    study = await get_study(study_id)
     await db_connect.close_db()
+    study = await get_study(study_id)
     return study

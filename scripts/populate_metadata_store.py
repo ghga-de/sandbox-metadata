@@ -19,21 +19,19 @@
 
 import os
 import json
-from pathlib import Path
 from typing import Literal, get_args
 import requests
 from requests.models import Response
 import typer
 
-HERE = Path(__file__).parent.resolve()
-
 RecordTypes = Literal[
     "studies",
-    "publications",
     "datasets",
     "files",
-    "data_access_policies",
+    "experiments",
     "data_access_committees",
+    "publications",
+    "data_access_policies",
 ]
 
 
@@ -53,9 +51,14 @@ def populate_record(
                 # If non-2xx status code, will raise an exception:
                 response.raise_for_status()
         return response
+    return None
 
 
-def main(base_url: str = "http://localhost:8080", directory: str = os.getcwd(), exit_on_error: bool = True):
+def main(
+    base_url: str = "http://localhost:8080",
+    directory: str = os.getcwd(),
+    exit_on_error: bool = True,
+):
     """Populate the database with examples for all record types"""
 
     typer.echo("This will populate the database with examples for all record types.")
@@ -67,7 +70,7 @@ def main(base_url: str = "http://localhost:8080", directory: str = os.getcwd(), 
             base_url=base_url,
             directory=directory,
             record_type=record_type,
-            exit_on_error=exit_on_error
+            exit_on_error=exit_on_error,
         )
         if response:
             typer.echo(f"  - done with status code: {response.status_code}")

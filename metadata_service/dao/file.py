@@ -34,7 +34,7 @@ async def retrieve_files() -> List[File]:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     files = await collection.find().to_list(None)  # type: ignore
-    db_connect.close_db()
+    await db_connect.close_db()
     return files
 
 
@@ -58,7 +58,7 @@ async def get_file(file_id: str, embedded: bool = False) -> File:
         )
     if embedded:
         file = await embed_references(file, File)
-    db_connect.close_db()
+    await db_connect.close_db()
     return file
 
 
@@ -74,10 +74,10 @@ async def add_file(data: File) -> File:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    file_id = data["id"]  # type: ignore
+    file_id = data.id  # type: ignore
     await collection.insert_one(data.dict())  # type: ignore
+    await db_connect.close_db()
     file = await get_file(file_id)
-    db_connect.close_db()
     return file
 
 
@@ -95,6 +95,6 @@ async def update_file(file_id: str, data: File) -> File:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     await collection.update_one({"id": file_id}, {"$set": data.dict()})  # type: ignore
+    await db_connect.close_db()
     file = await get_file(file_id)
-    db_connect.close_db()
     return file
