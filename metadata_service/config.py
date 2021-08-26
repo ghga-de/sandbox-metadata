@@ -20,7 +20,7 @@ from ghga_service_chassis_lib.config import config_from_yaml
 from ghga_service_chassis_lib.api import ApiConfigBase
 
 
-@config_from_yaml(prefix="metadata_service")
+@config_from_yaml(prefix="sandbox_metadata")
 class Config(ApiConfigBase):
     """Config parameters and their defaults."""
 
