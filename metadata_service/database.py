@@ -75,8 +75,27 @@ class DBConnect:
             The generated ID
 
         """
+        await self._check_collection_counter(collection_name)
         collection = await self.get_collection(COUNTER)
         document = await collection.find_one({"_id": collection_name})  # type: ignore
         collection.update_one({"_id": collection_name}, {"$inc": {"value": 1}})  # type: ignore
         await self.close_db()
         return f"{prefix}:{(document['value'] + 1):07}"
+
+    async def _check_collection_counter(self, collection_name: str):
+        """
+        Check whether counter for a given collection exists.
+        """
+        db_connect = DBConnect()
+        collection = await db_connect.get_collection(name=COUNTER)
+        docs = await collection.find({"_id": collection_name}).to_list(None)  # type: ignore
+        if not docs:
+            await self._initialize_collection_counter(collection_name)
+
+    async def _initialize_collection_counter(self, collection_name: str):
+        """
+        Initialize a counter for a given collection.
+        """
+        db_connect = DBConnect()
+        collection = await db_connect.get_collection(name=COUNTER)
+        collection.insert_one({"_id": collection_name, "value": 0})  # type: ignore
