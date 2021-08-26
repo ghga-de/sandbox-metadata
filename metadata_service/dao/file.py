@@ -12,7 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Convenience methods for adding, updating, and retrieving File objects"""
+"""
+Convenience methods for adding, updating, and retrieving File objects
+"""
 
 from typing import List
 from fastapi.exceptions import HTTPException
@@ -25,10 +27,11 @@ COLLECTION_NAME = File.__collection__
 
 
 async def retrieve_files() -> List[File]:
-    """Retrieve a list of File IDs from metadata store.
+    """
+    Retrieve a list of File IDs from metadata store.
 
     Returns:
-      A list of File objects.
+        A list of File objects.
 
     """
     db_connect = DBConnect()
@@ -39,14 +42,15 @@ async def retrieve_files() -> List[File]:
 
 
 async def get_file(file_id: str, embedded: bool = False) -> File:
-    """Given a File ID, get the File object from metadata store.
+    """
+    Given a File ID, get the File object from metadata store.
 
     Args:
         file_id: The File ID
         embedded: Whether or not to embed references. ``False``, by default.
 
     Returns:
-      The File object
+        The File object
 
     """
     db_connect = DBConnect()
@@ -63,13 +67,14 @@ async def get_file(file_id: str, embedded: bool = False) -> File:
 
 
 async def add_file(data: File) -> File:
-    """Add a File object to the metadata store.
+    """
+    Add a File object to the metadata store.
 
     Args:
         data: The File object
 
     Returns:
-      The added File object
+        The added File object
 
     """
     db_connect = DBConnect()
@@ -82,14 +87,15 @@ async def add_file(data: File) -> File:
 
 
 async def update_file(file_id: str, data: File) -> File:
-    """Given a File ID and data, update the File in metadata store.
+    """
+    Given a File ID and data, update the File in metadata store.
 
     Args:
         file_id: The File ID
         data: The File object
 
     Returns:
-      The updated File object
+        The updated File object
 
     """
     db_connect = DBConnect()

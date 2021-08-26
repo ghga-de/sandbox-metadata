@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Routes for Study objects"""
+"""Routes for interacting with Study records"""
 
 from typing import List
 from fastapi import APIRouter
@@ -32,21 +32,27 @@ studies_router = APIRouter()
 
 @studies_router.get("/studies", response_model=List[Study], summary="Get all Studies")
 async def get_all_studies():
-    """Retrieve a list of Study IDs from metadata store."""
+    """
+    Retrieve a list of Study records from metadata store.
+    """
     studies = await retrieve_studies()
     return studies
 
 
 @studies_router.get("/studies/{study_id}", response_model=Study, summary="Get a Study")
 async def get_studies(study_id: str, embedded: bool = False):
-    """Given a Study ID, get the DAP from metadata store."""
+    """
+    Given a Study ID, get the DAP record from metadata store.
+    """
     study = await get_study(study_id, embedded)
     return study
 
 
 @studies_router.post("/studies", response_model=Study, summary="Add a Study")
 async def add_studies(data: Study):
-    """Add a Study to the metadata store."""
+    """
+    Add a Study record to the metadata store.
+    """
     study = await add_study(data)
     return study
 
@@ -55,6 +61,8 @@ async def add_studies(data: Study):
     "/studies/{study_id}", response_model=Study, summary="Update a Study"
 )
 async def update_studies(study_id, data: Study):
-    """Given a Study ID and data, update the Study in metadata store."""
+    """
+    Given a Study ID and data, update the Study record in metadata store.
+    """
     study = await update_study(study_id, data)
     return study

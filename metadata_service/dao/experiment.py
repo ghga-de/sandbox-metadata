@@ -22,14 +22,15 @@ from metadata_service.database import DBConnect
 from metadata_service.models import Experiment
 
 COLLECTION_NAME = Experiment.__collection__
-PREFIX = "EXP:"
+PREFIX = "EXP"
 
 
 async def retrieve_experiments() -> List[Experiment]:
-    """Retrieve a list of Experiments from metadata store.
+    """
+    Retrieve a list of Experiments from metadata store.
 
     Returns:
-      A list of Experiment objects.
+        A list of Experiment objects.
 
     """
     db_connect = DBConnect()
@@ -40,7 +41,8 @@ async def retrieve_experiments() -> List[Experiment]:
 
 
 async def get_experiment(experiment_id: str, embedded: bool = False) -> Experiment:
-    """Given an Experiment ID, get the Experiment object from metadata store.
+    """
+    Given an Experiment ID, get the Experiment object from metadata store.
 
     Args:
         experiment_id: The Experiment ID
@@ -65,13 +67,14 @@ async def get_experiment(experiment_id: str, embedded: bool = False) -> Experime
 
 
 async def add_experiment(data: Experiment) -> Experiment:
-    """Add an Experiment object to the metadata store.
+    """
+    Add an Experiment object to the metadata store.
 
     Args:
         data: The Experiment object
 
     Returns:
-      The added Experiment object
+        The added Experiment object
 
     """
     db_connect = DBConnect()
@@ -85,14 +88,15 @@ async def add_experiment(data: Experiment) -> Experiment:
 
 
 async def update_experiment(experiment_id: str, data: Experiment) -> Experiment:
-    """Given an Experiment ID and data, update the Experiment in metadata store.
+    """
+    Given an Experiment ID and data, update the Experiment in metadata store.
 
     Args:
         experiment_id: The Experiment ID
         data: The Experiment object
 
     Returns:
-      The updated Experiment object
+        The updated Experiment object
 
     """
     db_connect = DBConnect()

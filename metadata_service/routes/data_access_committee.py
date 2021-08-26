@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Routes for Data Access Committee objects"""
+"""
+Routes for interacting with Data Access Committee records
+"""
 
 from typing import List
 from fastapi import APIRouter
@@ -36,7 +38,9 @@ data_access_committee_router = APIRouter()
     summary="Get all DACs",
 )
 async def get_all_dacs():
-    """Retrieve a list of DAC IDs from metadata store."""
+    """
+    Retrieve a list of DAC records from the metadata store.
+    """
     dacs = await retrieve_dacs()
     return dacs
 
@@ -47,7 +51,9 @@ async def get_all_dacs():
     summary="Get a DAC",
 )
 async def get_dacs(data_access_committee_id: str, embedded: bool = False):
-    """Given a DAC ID, get the DAC from metadata store."""
+    """
+    Given a DAC ID, get the DAC record from the metadata store.
+    """
     dac = await get_dac(data_access_committee_id, embedded)
     return dac
 
@@ -56,7 +62,9 @@ async def get_dacs(data_access_committee_id: str, embedded: bool = False):
     "/data_access_committees", response_model=DataAccessCommittee, summary="Add a DAC"
 )
 async def add_dacs(data: DataAccessCommittee):
-    """Add a DAC to the metadata store."""
+    """
+    Add a DAC record to the metadata store.
+    """
     dac = await add_dac(data)
     return dac
 
@@ -67,6 +75,8 @@ async def add_dacs(data: DataAccessCommittee):
     summary="Update a DAC",
 )
 async def update_dacs(data_access_committee_id: str, data: DataAccessCommittee):
-    """Given a DAC ID and data, update the DAC in metadata store."""
+    """
+    Given a DAC ID and data, update the DAC record in metadata store.
+    """
     dac = await update_dac(data_access_committee_id, data)
     return dac

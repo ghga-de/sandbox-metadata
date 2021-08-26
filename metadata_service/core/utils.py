@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Utils
+Core uilities for the functionality of Metadata Service API.
 """
 import logging
 from typing import Dict
@@ -34,7 +34,7 @@ async def _get_reference(document_id: str, collection_name: str) -> Dict:
 
     """
     db_connect = DBConnect()
-    collection = await db_connect.get_collection(name=collection_name)
+    collection = await db_connect.get_collection(collection_name)
     doc = await collection.find_one({"id": document_id})  # type: ignore
     if not doc:
         logging.warning(

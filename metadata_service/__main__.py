@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Entrypoint of the package"""
+"""
+Entrypoint of the metadata_service package.
+"""
 
 from typing import Optional
 import typer
@@ -22,14 +24,23 @@ from metadata_service.config import get_config
 from metadata_service.api import app  # noqa: F401 pylint: disable=unused-import
 
 
-def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
-    """Starts backend server"""
+def run(
+    config: Optional[str] = typer.Option(None, help="Path to config yaml.")
+) -> None:
+    """
+    Start the backend server.
+
+    Args:
+        config: The path to the application configuration
+
+    """
     run_server(app="metadata_service.__main__:app", config=get_config())
-    print(config)
 
 
-def run_cli():
-    """Run the command line interface"""
+def run_cli() -> None:
+    """
+    Command line interface for running the server.
+    """
     typer.run(run)
 
 

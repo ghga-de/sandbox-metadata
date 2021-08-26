@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Convenience methods for adding, updating, and retrieving Data Access Committee objects"""
+"""
+Convenience methods for adding, updating, and retrieving Data Access Committee records
+"""
 
 from typing import List
 from fastapi.exceptions import HTTPException
@@ -23,11 +25,12 @@ from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessCommittee
 
 COLLECTION_NAME = DataAccessCommittee.__collection__
-PREFIX = "DAC:"
+PREFIX = "DAC"
 
 
 async def retrieve_dacs() -> List[DataAccessCommittee]:
-    """Retrieve a list of DACs from metadata store.
+    """
+    Retrieve a list of DACs from the metadata store.
 
     Returns:
       A list of DAC objects.
@@ -40,8 +43,9 @@ async def retrieve_dacs() -> List[DataAccessCommittee]:
     return dacs
 
 
-async def get_dac(dac_id: str, embedded=False) -> DataAccessCommittee:
-    """Given a DAC ID, get the DAC object from metadata store.
+async def get_dac(dac_id: str, embedded: bool = False) -> DataAccessCommittee:
+    """
+    Given a DAC ID, get the DAC object from metadata store.
 
     Args:
         dac_id: The DAC ID
@@ -66,7 +70,8 @@ async def get_dac(dac_id: str, embedded=False) -> DataAccessCommittee:
 
 
 async def add_dac(data: DataAccessCommittee) -> DataAccessCommittee:
-    """Add a DAC object to the metadata store.
+    """
+    Add a DAC object to the metadata store.
 
     Args:
         data: The DAC object
@@ -86,7 +91,8 @@ async def add_dac(data: DataAccessCommittee) -> DataAccessCommittee:
 
 
 async def update_dac(dac_id: str, data: DataAccessCommittee) -> DataAccessCommittee:
-    """Given a DAC ID and data, update the DAC in metadata store.
+    """
+    Given a DAC ID and data, update the DAC in metadata store.
 
     Args:
         dac_id: The DAC ID

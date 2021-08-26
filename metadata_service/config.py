@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Configuration parsing"""
+"""
+This module provides Configuration for the API
+"""
 
 from functools import lru_cache
 from ghga_service_chassis_lib.config import config_from_yaml
@@ -22,7 +24,9 @@ from ghga_service_chassis_lib.api import ApiConfigBase
 
 @config_from_yaml(prefix="sandbox_metadata")
 class Config(ApiConfigBase):
-    """Config parameters and their defaults."""
+    """
+    Config class that extends ghga_service_chassis_lib.api.ApiConfigBase
+    """
 
     # config parameter needed for the api server
     # are inherited from ApiConfigBase
@@ -31,6 +35,9 @@ class Config(ApiConfigBase):
 
 
 @lru_cache
-def get_config():
-    """Get config parameter."""
+def get_config() -> Config:
+    """
+    Get the Config object that encapsulates all the
+    configuration for this application.
+    """
     return Config()

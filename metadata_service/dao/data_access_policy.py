@@ -12,7 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Convenience methods for adding, updating, and retrieving Data Access Policy objects"""
+"""
+Convenience methods for adding, updating, and retrieving Data Access Policy records.
+"""
 
 from typing import List
 from fastapi.exceptions import HTTPException
@@ -22,14 +24,15 @@ from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessPolicy
 
 COLLECTION_NAME = DataAccessPolicy.__collection__
-PREFIX = "DAP:"
+PREFIX = "DAP"
 
 
 async def retrieve_daps() -> List[DataAccessPolicy]:
-    """Retrieve a list of DAPs from metadata store.
+    """
+    Retrieve a list of DAPs from metadata store.
 
     Returns:
-      A list of DAP objects.
+        A list of DAP objects.
 
     """
     db_connect = DBConnect()
@@ -39,15 +42,16 @@ async def retrieve_daps() -> List[DataAccessPolicy]:
     return daps
 
 
-async def get_dap(dap_id: str, embedded=False) -> DataAccessPolicy:
-    """Given a DAP ID, get the DAP object from metadata store.
+async def get_dap(dap_id: str, embedded: bool = False) -> DataAccessPolicy:
+    """
+    Given a DAP ID, get the DAP object from metadata store.
 
     Args:
         dap_id: The DAP ID
         embedded: Whether or not to embed references. ``False``, by default.
 
     Returns:
-      The DAP object
+        The DAP object
 
     """
     db_connect = DBConnect()
@@ -65,13 +69,14 @@ async def get_dap(dap_id: str, embedded=False) -> DataAccessPolicy:
 
 
 async def add_dap(data: DataAccessPolicy) -> DataAccessPolicy:
-    """Add a DAP object to the metadata store.
+    """
+    Add a DAP object to the metadata store.
 
     Args:
         data: The DAP object
 
     Returns:
-      The added DAP object
+        The added DAP object
 
     """
     db_connect = DBConnect()
@@ -85,14 +90,15 @@ async def add_dap(data: DataAccessPolicy) -> DataAccessPolicy:
 
 
 async def update_dap(dap_id: str, data: DataAccessPolicy) -> DataAccessPolicy:
-    """Given a dap ID and data, update the dap in metadata store.
+    """
+    Given a dap ID and data, update the dap in metadata store.
 
     Args:
         dap_id: The DAP ID
         data: The DAP object
 
     Returns:
-      The updated DAP object
+        The updated DAP object
 
     """
     db_connect = DBConnect()

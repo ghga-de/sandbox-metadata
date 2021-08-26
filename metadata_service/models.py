@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Models
+This module contains Pydantic models for the different metadata objects.
 """
 from typing import Set, List, Optional, Union
 from pydantic import BaseModel
