@@ -14,7 +14,7 @@
 # limitations under the License.
 """Routes for Experiment objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.experiment import (
@@ -52,7 +52,7 @@ async def get_experiments(experiment_id: str, embedded: bool = False):
 @experiment_router.post(
     "/experiments", response_model=Experiment, summary="Add an Experiment"
 )
-async def add_experiments(data: Dict):
+async def add_experiments(data: Experiment):
     """Add an Experiment to the metadata store."""
     experiment = await add_experiment(data)
     return experiment
@@ -63,7 +63,7 @@ async def add_experiments(data: Dict):
     response_model=Experiment,
     summary="Update an Experiment",
 )
-async def update_experiments(experiment_id: str, data: dict):
+async def update_experiments(experiment_id: str, data: Experiment):
     """Given an Experiment ID and data, update the Experiment in metadata store."""
     experiment = await update_experiment(experiment_id, data)
     return experiment

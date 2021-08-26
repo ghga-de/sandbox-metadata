@@ -15,7 +15,7 @@
 
 """Routes for Publication objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.publication import (
@@ -53,7 +53,7 @@ async def get_publications(publication_id: str, embedded: bool = False):
 @publication_router.post(
     "/publications", response_model=Publication, summary="Add a Publication"
 )
-async def add_publications(data: Dict):
+async def add_publications(data: Publication):
     """Add a Publication to the metadata store."""
     publication = await add_publication(data)
     return publication
@@ -64,7 +64,7 @@ async def add_publications(data: Dict):
     response_model=Publication,
     summary="Update a Publication",
 )
-async def update_publications(publication_id: str, data: dict):
+async def update_publications(publication_id: str, data: Publication):
     """Given a Publication ID and data, update the Publication in metadata store."""
     publication = await update_publication(publication_id, data)
     return publication

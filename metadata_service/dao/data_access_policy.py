@@ -14,29 +14,32 @@
 # limitations under the License.
 """Convenience methods for adding, updating, and retrieving Data Access Policy objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessPolicy
 
 COLLECTION_NAME = DataAccessPolicy.__collection__
+PREFIX = "DAP:"
 
 
-async def retrieve_daps() -> List[Dict]:
+async def retrieve_daps() -> List[DataAccessPolicy]:
     """Retrieve a list of DAPs from metadata store.
 
     Returns:
       A list of DAP objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    daps = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    daps = await collection.find().to_list(None)  # type: ignore
+    await db_connect.close_db()
     return daps
 
 
-async def get_dap(dap_id: str, embedded=False) -> Dict:
+async def get_dap(dap_id: str, embedded=False) -> DataAccessPolicy:
     """Given a DAP ID, get the DAP object from metadata store.
 
     Args:
@@ -47,8 +50,9 @@ async def get_dap(dap_id: str, embedded=False) -> Dict:
       The DAP object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dap = await collection.find_one({"id": dap_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dap = await collection.find_one({"id": dap_id})  # type: ignore
     if not dap:
         raise HTTPException(
             status_code=404,
@@ -56,10 +60,11 @@ async def get_dap(dap_id: str, embedded=False) -> Dict:
         )
     if embedded:
         dap = await embed_references(dap, DataAccessPolicy)
+    await db_connect.close_db()
     return dap
 
 
-async def add_dap(data: Dict) -> Dict:
+async def add_dap(data: DataAccessPolicy) -> DataAccessPolicy:
     """Add a DAP object to the metadata store.
 
     Args:
@@ -69,24 +74,32 @@ async def add_dap(data: Dict) -> Dict:
       The added DAP object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dap_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dap_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    data.id = dap_id
+    await collection.insert_one(data.dict())  # type: ignore
+    await db_connect.close_db()
     dap = await get_dap(dap_id)
     return dap
 
 
-async def update_dap(dap_id: str, data: Dict) -> Dict:
-    """Given a DAP ID and data, update the DAP in metadata store.
+async def update_dap(dap_id: str, data: DataAccessPolicy) -> DataAccessPolicy:
+    """Given a dap ID and data, update the dap in metadata store.
 
     Args:
-        DAP_id: The DAP ID
+        dap_id: The DAP ID
         data: The DAP object
 
     Returns:
       The updated DAP object
 
     """
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one(  # type: ignore
+        {"id": dap_id}, {"$set": data.dict(exclude_unset=True)}
+    )
+    await db_connect.close_db()
     dap = await get_dap(dap_id)
-    dap.update(**data)
     return dap

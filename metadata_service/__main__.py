@@ -17,15 +17,15 @@
 
 from typing import Optional
 import typer
-import uvicorn
 from ghga_service_chassis_lib.api import run_server
 from metadata_service.config import get_config
-from metadata_service.api import app
+from metadata_service.api import app  # noqa: F401 pylint: disable=unused-import
 
 
 def run(config: Optional[str] = typer.Option(None, help="Path to config yaml.")):
     """Starts backend server"""
     run_server(app="metadata_service.__main__:app", config=get_config())
+    print(config)
 
 
 def run_cli():

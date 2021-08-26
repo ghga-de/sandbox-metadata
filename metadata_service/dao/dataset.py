@@ -15,29 +15,32 @@
 
 """Convenience methods for adding, updating, and retrieving Dataset objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import Dataset
 
 COLLECTION_NAME = Dataset.__collection__
+PREFIX = "DAT:"
 
 
-async def retrieve_datasets() -> List[Dict]:
+async def retrieve_datasets() -> List[Dataset]:
     """Retrieve a list of Datasets from metadata store.
 
     Returns:
       A list of Dataset objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    datasets = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    datasets = await collection.find().to_list(None)  # type: ignore
+    await db_connect.close_db()
     return datasets
 
 
-async def get_dataset(dataset_id: str, embedded=False) -> Dict:
+async def get_dataset(dataset_id: str, embedded=False) -> Dataset:
     """Given a Datset ID, get the Dataset object from metadata store.
 
     Args:
@@ -48,8 +51,9 @@ async def get_dataset(dataset_id: str, embedded=False) -> Dict:
       The Dataset object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dataset = await collection.find_one({"id": dataset_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dataset = await collection.find_one({"id": dataset_id})  # type: ignore
     if not dataset:
         raise HTTPException(
             status_code=404,
@@ -57,10 +61,11 @@ async def get_dataset(dataset_id: str, embedded=False) -> Dict:
         )
     if embedded:
         dataset = await embed_references(dataset, Dataset)
+    await db_connect.close_db()
     return dataset
 
 
-async def add_dataset(data: Dict) -> Dict:
+async def add_dataset(data: Dataset) -> Dataset:
     """Add a Dataset object to the metadata store.
 
     Args:
@@ -70,14 +75,17 @@ async def add_dataset(data: Dict) -> Dict:
       The added Dataset object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    dataset_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    dataset_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    data.id = dataset_id
+    await collection.insert_one(data.dict())  # type: ignore
+    await db_connect.close_db()
     dataset = await get_dataset(dataset_id)
     return dataset
 
 
-async def update_dataset(dataset_id: str, data: Dict) -> Dict:
+async def update_dataset(dataset_id: str, data: Dataset) -> Dataset:
     """Given a Dataset ID and data, update the Dataset in metadata store.
 
     Args:
@@ -88,7 +96,9 @@ async def update_dataset(dataset_id: str, data: Dict) -> Dict:
       The updated Dataset object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": dataset_id}, {"$set": data})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": dataset_id}, {"$set": data.dict()})  # type: ignore
+    await db_connect.close_db()
     dataset = await get_dataset(dataset_id)
     return dataset

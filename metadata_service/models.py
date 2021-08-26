@@ -12,15 +12,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+"""
+Models
+"""
 from typing import Set, List, Optional, Union
 from pydantic import BaseModel
 
 
 class Publication(BaseModel):
+    """
+    Publication
+    """
+
     __references__: Set = set()
     __collection__: str = "publication"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     xref: Optional[List[str]] = None
     creation_date: Optional[str] = None
@@ -28,9 +34,13 @@ class Publication(BaseModel):
 
 
 class Experiment(BaseModel):
+    """
+    Experiment
+    """
+
     __references__: Set = set()
     __collection__: str = "experiment"
-    id: str
+    id: Optional[str] = None
     name: Optional[str] = None
     instrument_model: Optional[str] = None
     xref: Optional[List[str]] = None
@@ -39,12 +49,16 @@ class Experiment(BaseModel):
 
 
 class Study(BaseModel):
+    """
+    Study
+    """
+
     __references__: Set = {
         ("publications", Publication),
         ("has_experiment", Experiment),
     }
     __collection__: str = "study"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     type: Optional[Union[str, List]] = None
     abstract: Optional[str] = None
@@ -56,6 +70,10 @@ class Study(BaseModel):
 
 
 class File(BaseModel):
+    """
+    File
+    """
+
     __references__: Set = set()
     __collection__: str = "file"
     id: str
@@ -71,9 +89,13 @@ class File(BaseModel):
 
 
 class DataAccessCommittee(BaseModel):
+    """
+    Data Access Committee
+    """
+
     __references__: Set = set()
     __collection__: str = "data_access_committee"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None
     main_contact: Optional[str] = None
@@ -84,9 +106,13 @@ class DataAccessCommittee(BaseModel):
 
 
 class DataAccessPolicy(BaseModel):
+    """
+    Data Access Policy
+    """
+
     __references__: Set = {("has_data_access_committee", DataAccessCommittee)}
     __collection__: str = "data_access_policy"
-    id: str
+    id: Optional[str] = None
     description: Optional[str] = None
     policy_text: Optional[str] = None
     policy_url: Optional[str] = None
@@ -95,14 +121,19 @@ class DataAccessPolicy(BaseModel):
     creation_date: Optional[str] = None
     update_date: Optional[str] = None
 
+
 class Dataset(BaseModel):
+    """
+    Dataset
+    """
+
     __references__: Set = {
         ("files", File),
         ("has_study", Study),
         ("has_data_access_policy", DataAccessPolicy),
     }
     __collection__: str = "dataset"
-    id: str
+    id: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None
     type: Optional[Union[str, List]] = None

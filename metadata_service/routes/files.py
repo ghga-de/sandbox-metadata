@@ -14,7 +14,7 @@
 # limitations under the License.
 """Routes for File objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.file import retrieve_files, get_file, add_file, update_file
@@ -39,14 +39,14 @@ async def get_files(file_id: str, embedded: bool = False):
 
 
 @file_router.post("/files", response_model=File, summary="Add a File")
-async def add_files(data: Dict):
+async def add_files(data: File):
     """Add a File to the metadata store."""
     experiment = await add_file(data)
     return experiment
 
 
 @file_router.put("/files/{file_id}", response_model=File, summary="Update a File")
-async def update_files(file_id: str, data: dict):
+async def update_files(file_id: str, data: File):
     """Given a File ID and data, update the File object in metadata store."""
     file = await update_file(file_id, data)
     return file

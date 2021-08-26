@@ -14,29 +14,32 @@
 # limitations under the License.
 """Convenience methods for adding, updating, and retrieving Experiment objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import Experiment
 
 COLLECTION_NAME = Experiment.__collection__
+PREFIX = "EXP:"
 
 
-async def retrieve_experiments() -> List[Dict]:
+async def retrieve_experiments() -> List[Experiment]:
     """Retrieve a list of Experiments from metadata store.
 
     Returns:
       A list of Experiment objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    experiments = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    experiments = await collection.find().to_list(None)  # type: ignore
+    await db_connect.close_db()
     return experiments
 
 
-async def get_experiment(experiment_id: str, embedded: bool = False) -> Dict:
+async def get_experiment(experiment_id: str, embedded: bool = False) -> Experiment:
     """Given an Experiment ID, get the Experiment object from metadata store.
 
     Args:
@@ -47,8 +50,9 @@ async def get_experiment(experiment_id: str, embedded: bool = False) -> Dict:
         The Experiment object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    experiment = await collection.find_one({"id": experiment_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    experiment = await collection.find_one({"id": experiment_id})  # type: ignore
     if not experiment:
         raise HTTPException(
             status_code=404,
@@ -56,10 +60,11 @@ async def get_experiment(experiment_id: str, embedded: bool = False) -> Dict:
         )
     if embedded:
         experiment = await embed_references(experiment, Experiment)
+    await db_connect.close_db()
     return experiment
 
 
-async def add_experiment(data: Dict) -> Dict:
+async def add_experiment(data: Experiment) -> Experiment:
     """Add an Experiment object to the metadata store.
 
     Args:
@@ -69,14 +74,17 @@ async def add_experiment(data: Dict) -> Dict:
       The added Experiment object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    experiment_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    experiment_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    data.id = experiment_id
+    await collection.insert_one(data.dict())  # type: ignore
+    await db_connect.close_db()
     experiment = await get_experiment(experiment_id)
     return experiment
 
 
-async def update_experiment(experiment_id: str, data: Dict) -> Dict:
+async def update_experiment(experiment_id: str, data: Experiment) -> Experiment:
     """Given an Experiment ID and data, update the Experiment in metadata store.
 
     Args:
@@ -87,7 +95,9 @@ async def update_experiment(experiment_id: str, data: Dict) -> Dict:
       The updated Experiment object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": experiment_id}, {"$set": data})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": experiment_id}, {"$set": data.dict()})  # type: ignore
+    await db_connect.close_db()
     experiment = await get_experiment(experiment_id)
     return experiment

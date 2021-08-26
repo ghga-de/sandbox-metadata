@@ -15,7 +15,7 @@
 
 """Routes for Data Access Committee objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi import APIRouter
 
 from metadata_service.dao.data_access_committee import (
@@ -55,7 +55,7 @@ async def get_dacs(data_access_committee_id: str, embedded: bool = False):
 @data_access_committee_router.post(
     "/data_access_committees", response_model=DataAccessCommittee, summary="Add a DAC"
 )
-async def add_dacs(data: Dict):
+async def add_dacs(data: DataAccessCommittee):
     """Add a DAC to the metadata store."""
     dac = await add_dac(data)
     return dac
@@ -66,7 +66,7 @@ async def add_dacs(data: Dict):
     response_model=DataAccessCommittee,
     summary="Update a DAC",
 )
-async def update_dacs(data_access_committee_id: str, data: Dict):
+async def update_dacs(data_access_committee_id: str, data: DataAccessCommittee):
     """Given a DAC ID and data, update the DAC in metadata store."""
     dac = await update_dac(data_access_committee_id, data)
     return dac

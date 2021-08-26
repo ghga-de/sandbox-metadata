@@ -14,29 +14,32 @@
 # limitations under the License.
 """Convenience methods for adding, updating, and retrieving Publication objects"""
 
-from typing import List, Dict
+from typing import List
 from fastapi.exceptions import HTTPException
 
 from metadata_service.core.utils import embed_references
-from metadata_service.database import get_collection
+from metadata_service.database import DBConnect
 from metadata_service.models import Publication
 
 COLLECTION_NAME = Publication.__collection__
+PREFIX = "PMID:"
 
 
-async def retrieve_publications() -> List[Dict]:
+async def retrieve_publications() -> List[Publication]:
     """Retrieve a list of Publications from metadata store.
 
     Returns:
       A list of Publication objects.
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    publications = await collection.find().to_list(None)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    publications = await collection.find().to_list(None)  # type: ignore
+    await db_connect.close_db()
     return publications
 
 
-async def get_publication(publication_id: str, embedded: bool = False) -> Dict:
+async def get_publication(publication_id: str, embedded: bool = False) -> Publication:
     """Given a Publication ID, get the Publication object from metadata store.
 
     Args:
@@ -47,8 +50,9 @@ async def get_publication(publication_id: str, embedded: bool = False) -> Dict:
       The Publication object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    publication = await collection.find_one({"id": publication_id})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    publication = await collection.find_one({"id": publication_id})  # type: ignore
     if not publication:
         raise HTTPException(
             status_code=404,
@@ -56,10 +60,11 @@ async def get_publication(publication_id: str, embedded: bool = False) -> Dict:
         )
     if embedded:
         publication = await embed_references(publication, Publication)
+    await db_connect.close_db()
     return publication
 
 
-async def add_publication(data: Dict) -> Dict:
+async def add_publication(data: Publication) -> Publication:
     """Add a Publication object to the metadata store.
 
     Args:
@@ -69,14 +74,17 @@ async def add_publication(data: Dict) -> Dict:
       The added Publication object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    publication_id = data["id"]
-    await collection.insert_one(data)
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    publication_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
+    data.id = publication_id
+    await collection.insert_one(data.dict())  # type: ignore
+    await db_connect.close_db()
     publication = await get_publication(publication_id)
     return publication
 
 
-async def update_publication(publication_id: str, data: Dict) -> Dict:
+async def update_publication(publication_id: str, data: Publication) -> Publication:
     """Given a Publication ID and data, update the Publication in metadata store.
 
     Args:
@@ -87,7 +95,9 @@ async def update_publication(publication_id: str, data: Dict) -> Dict:
       The updated Publication object
 
     """
-    collection = await get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": publication_id}, {"$set": data})
+    db_connect = DBConnect()
+    collection = await db_connect.get_collection(COLLECTION_NAME)
+    await collection.update_one({"id": publication_id}, {"$set": data.dict()})  # type: ignore
+    await db_connect.close_db()
     publication = await get_publication(publication_id)
     return publication
