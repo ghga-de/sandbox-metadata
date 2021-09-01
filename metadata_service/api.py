@@ -39,7 +39,7 @@ app = FastAPI(
     version=__version__,
     openapi_url="/openapi.json",
     docs_url="/docs",
-    root_path="/",
+    root_path="/"
 )
 configure_app(app, config=get_config())
 
