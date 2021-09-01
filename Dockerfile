@@ -24,4 +24,6 @@ RUN useradd --create-home appuser
 WORKDIR /home/appuser
 USER appuser
 
-ENTRYPOINT ["uvicorn", "--host", "0.0.0.0", "metadata_service.api:app", "--reload"]
+EXPOSE 8080
+
+ENTRYPOINT [ "metadata-service" ]
