@@ -36,6 +36,8 @@ from metadata_service import __version__
 app = FastAPI(
     title="Metadata Service API",
     version=__version__,
+    openapi_url="/metadata/docs/openapi.json",
+    docs_url="/metadata/docs"
 )
 configure_app(app, config=get_config())
 
