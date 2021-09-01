@@ -87,7 +87,7 @@ class DBConnect:
         Check whether counter for a given collection exists.
         """
         db_connect = DBConnect()
-        collection = await db_connect.get_collection(name=COUNTER)
+        collection = await db_connect.get_collection(collection_name=COUNTER)
         docs = await collection.find({"_id": collection_name}).to_list(None)  # type: ignore
         if not docs:
             await self._initialize_collection_counter(collection_name)
@@ -97,5 +97,5 @@ class DBConnect:
         Initialize a counter for a given collection.
         """
         db_connect = DBConnect()
-        collection = await db_connect.get_collection(name=COUNTER)
+        collection = await db_connect.get_collection(collection_name=COUNTER)
         collection.insert_one({"_id": collection_name, "value": 0})  # type: ignore
