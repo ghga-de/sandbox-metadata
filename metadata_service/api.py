@@ -14,7 +14,8 @@
 # limitations under the License.
 
 """
-Defines API endpoints.
+This module define the API endpoints that collectively
+form the Metadata Service API.
 """
 
 from fastapi import FastAPI

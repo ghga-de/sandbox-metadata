@@ -1,7 +1,4 @@
-# Sandbox Metadata Service API
-
-Metadata Service that provides an API access layer on top of GHGA metadata.
-
+# Setup and Installation
 
 ## Setting up the dev environment
 

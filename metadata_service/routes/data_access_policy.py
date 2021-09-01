@@ -12,7 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Routes for Data Access Policy objects"""
+
+"""
+Routes for interacting with Data Access Policy records
+"""
 
 from typing import List
 from fastapi import APIRouter
@@ -35,7 +38,9 @@ data_access_policy_router = APIRouter()
     summary="Get all DAPs",
 )
 async def get_all_daps():
-    """Retrieve a list of DAP IDs from metadata store."""
+    """
+    Retrieve a list of DAP records from the metadata store.
+    """
     daps = await retrieve_daps()
     return daps
 
@@ -46,7 +51,9 @@ async def get_all_daps():
     summary="Get a DAP",
 )
 async def get_daps(data_access_policy_id: str, embedded: bool = False):
-    """Given a DAP ID, get the DAP from metadata store."""
+    """
+    Given a DAP ID, get the DAP record from the metadata store.
+    """
     dap = await get_dap(data_access_policy_id, embedded)
     return dap
 
@@ -55,7 +62,9 @@ async def get_daps(data_access_policy_id: str, embedded: bool = False):
     "/data_access_policies", response_model=DataAccessPolicy, summary="Add a DAP"
 )
 async def add_daps(data: DataAccessPolicy):
-    """Add a DAP to the metadata store."""
+    """
+    Add a DAP record to the metadata store.
+    """
     dap = await add_dap(data)
     return dap
 
@@ -66,6 +75,8 @@ async def add_daps(data: DataAccessPolicy):
     summary="Update a DAP",
 )
 async def update_daps(data_access_policy_id: str, data: DataAccessPolicy):
-    """Given a DAP ID and data, update the DAP in metadata store."""
+    """
+    Given a DAP ID and data, update the DAP record in metadata store.
+    """
     dap = await update_dap(data_access_policy_id, data)
     return dap

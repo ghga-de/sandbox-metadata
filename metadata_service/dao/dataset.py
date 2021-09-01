@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Convenience methods for adding, updating, and retrieving Dataset objects"""
+"""
+Convenience methods for adding, updating, and retrieving Dataset records
+"""
 
 from typing import List
 from fastapi.exceptions import HTTPException
@@ -23,14 +25,15 @@ from metadata_service.database import DBConnect
 from metadata_service.models import Dataset
 
 COLLECTION_NAME = Dataset.__collection__
-PREFIX = "DAT:"
+PREFIX = "DAT"
 
 
 async def retrieve_datasets() -> List[Dataset]:
-    """Retrieve a list of Datasets from metadata store.
+    """
+    Retrieve a list of Datasets from metadata store.
 
     Returns:
-      A list of Dataset objects.
+        A list of Dataset objects.
 
     """
     db_connect = DBConnect()
@@ -40,15 +43,16 @@ async def retrieve_datasets() -> List[Dataset]:
     return datasets
 
 
-async def get_dataset(dataset_id: str, embedded=False) -> Dataset:
-    """Given a Datset ID, get the Dataset object from metadata store.
+async def get_dataset(dataset_id: str, embedded: bool = False) -> Dataset:
+    """
+    Given a Datset ID, get the Dataset object from metadata store.
 
     Args:
         dataset_id: The Dataset ID
         embedded: Whether or not to embed references. ``False``, by default.
 
     Returns:
-      The Dataset object
+        The Dataset object
 
     """
     db_connect = DBConnect()
@@ -66,13 +70,14 @@ async def get_dataset(dataset_id: str, embedded=False) -> Dataset:
 
 
 async def add_dataset(data: Dataset) -> Dataset:
-    """Add a Dataset object to the metadata store.
+    """
+    Add a Dataset object to the metadata store.
 
     Args:
         data: The Dataset object
 
     Returns:
-      The added Dataset object
+        The added Dataset object
 
     """
     db_connect = DBConnect()
@@ -86,14 +91,15 @@ async def add_dataset(data: Dataset) -> Dataset:
 
 
 async def update_dataset(dataset_id: str, data: Dataset) -> Dataset:
-    """Given a Dataset ID and data, update the Dataset in metadata store.
+    """
+    Given a Dataset ID and data, update the Dataset in metadata store.
 
     Args:
         dataset_id: The Dataset ID
         data: The Dataset object
 
     Returns:
-      The updated Dataset object
+        The updated Dataset object
 
     """
     db_connect = DBConnect()

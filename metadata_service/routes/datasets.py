@@ -12,7 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Routes for Dataset objects"""
+
+"""
+Routes for interacting with Dataset records
+"""
 
 from typing import List
 from fastapi import APIRouter
@@ -33,7 +36,9 @@ dataset_router = APIRouter()
     "/datasets", response_model=List[Dataset], summary="Get all Datasets"
 )
 async def get_all_datasets():
-    """Retrieve a list of Dataset IDs from metadata store."""
+    """
+    Retrieve a list of Dataset records from the metadata store.
+    """
     datasets = await retrieve_datasets()
     return datasets
 
@@ -42,14 +47,18 @@ async def get_all_datasets():
     "/datasets/{dataset_id}", response_model=Dataset, summary="Get a Dataset"
 )
 async def get_datasets(dataset_id: str, embedded: bool = False):
-    """Given a Dataset ID, get the Dataset from metadata store."""
+    """
+    Given a Dataset ID, get the Dataset record from the metadata store.
+    """
     dataset = await get_dataset(dataset_id, embedded)
     return dataset
 
 
 @dataset_router.post("/datasets", response_model=Dataset, summary="Add a Dataset")
 async def add_datasets(data: Dataset):
-    """Add a Dataset to the metadata store."""
+    """
+    Add a Dataset record to the metadata store.
+    """
     dataset = await add_dataset(data)
     return dataset
 
@@ -58,6 +67,8 @@ async def add_datasets(data: Dataset):
     "/datasets/{dataset_id}", response_model=Dataset, summary="Update a Dataset"
 )
 async def update_datasets(dataset_id, data: Dataset):
-    """Given a Dataset ID and data, update the Dataset in metadata store."""
+    """
+    Given a Dataset ID and data, update the Dataset record in metadata store.
+    """
     dataset = await update_dataset(dataset_id, data)
     return dataset

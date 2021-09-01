@@ -12,7 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Routes for File objects"""
+
+"""
+Routes for interacting with File records.
+"""
 
 from typing import List
 from fastapi import APIRouter
@@ -26,27 +29,35 @@ file_router = APIRouter()
 
 @file_router.get("/files", response_model=List[File], summary="Get all Files")
 async def get_all_files():
-    """Retrieve a list of File IDs from metadata store."""
+    """
+    Retrieve a list of File records from the metadata store.
+    """
     files = await retrieve_files()
     return files
 
 
 @file_router.get("/files/{file_id}", response_model=File, summary="Get a File")
 async def get_files(file_id: str, embedded: bool = False):
-    """Given a File ID, get the File object from metadata store."""
+    """
+    Given a File ID, get the File record from the metadata store.
+    """
     file = await get_file(file_id, embedded)
     return file
 
 
 @file_router.post("/files", response_model=File, summary="Add a File")
 async def add_files(data: File):
-    """Add a File to the metadata store."""
+    """
+    Add a File record to the metadata store.
+    """
     experiment = await add_file(data)
     return experiment
 
 
 @file_router.put("/files/{file_id}", response_model=File, summary="Update a File")
 async def update_files(file_id: str, data: File):
-    """Given a File ID and data, update the File object in metadata store."""
+    """
+    Given a File ID and data, update the File record in metadata store.
+    """
     file = await update_file(file_id, data)
     return file

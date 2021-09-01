@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Convenience methods for adding, updating, and retrieving Study objects"""
+"""
+Convenience methods for adding, updating, and retrieving Study objects
+"""
 
 from typing import List
 from fastapi.exceptions import HTTPException
@@ -23,14 +25,15 @@ from metadata_service.database import DBConnect
 from metadata_service.models import Study
 
 COLLECTION_NAME = Study.__collection__
-PREFIX = "STU:"
+PREFIX = "STU"
 
 
 async def retrieve_studies() -> List[Study]:
-    """Retrieve a list of Studies from metadata store.
+    """
+    Retrieve a list of Studies from metadata store.
 
     Returns:
-      A list of Study objects.
+        A list of Study objects.
 
     """
     db_connect = DBConnect()
@@ -42,14 +45,15 @@ async def retrieve_studies() -> List[Study]:
 
 
 async def get_study(study_id: str, embedded: bool = False) -> Study:
-    """Given a Study ID, get the Study object from metadata store.
+    """
+    Given a Study ID, get the Study object from metadata store.
 
     Args:
         study_id: The Study ID
         embedded: Whether or not to embed references. ``False``, by default.
 
     Returns:
-      The Study object
+        The Study object
 
     """
     db_connect = DBConnect()
@@ -67,13 +71,14 @@ async def get_study(study_id: str, embedded: bool = False) -> Study:
 
 
 async def add_study(data: Study) -> Study:
-    """Add a Study object to the metadata store.
+    """
+    Add a Study object to the metadata store.
 
     Args:
         data: The Study object
 
     Returns:
-      The added Study object
+        The added Study object
 
     """
     db_connect = DBConnect()
@@ -87,14 +92,15 @@ async def add_study(data: Study) -> Study:
 
 
 async def update_study(study_id: str, data: Study) -> Study:
-    """Given a Study ID and data, update the Study in metadata store.
+    """
+    Given a Study ID and data, update the Study in metadata store.
 
     Args:
         study_id: The Study ID
         data: The Study object
 
     Returns:
-      The updated Study object
+        The updated Study object
 
     """
     db_connect = DBConnect()

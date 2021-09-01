@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Routes for Publication objects"""
+"""
+Routes for interacting with Publication records
+"""
 
 from typing import List
 from fastapi import APIRouter
@@ -34,7 +36,9 @@ publication_router = APIRouter()
     "/publications", response_model=List[Publication], summary="Get all Publications"
 )
 async def get_all_publications():
-    """Retrieve a list of Publication IDs from metadata store."""
+    """
+    Retrieve a list of Publication records from the metadata store.
+    """
     publications = await retrieve_publications()
     return publications
 
@@ -45,7 +49,9 @@ async def get_all_publications():
     summary="Get a Publication",
 )
 async def get_publications(publication_id: str, embedded: bool = False):
-    """Given a Publication ID, get the Publication from metadata store."""
+    """
+    Given a Publication ID, get the Publication record from metadata store.
+    """
     publication = await get_publication(publication_id, embedded)
     return publication
 
@@ -54,7 +60,9 @@ async def get_publications(publication_id: str, embedded: bool = False):
     "/publications", response_model=Publication, summary="Add a Publication"
 )
 async def add_publications(data: Publication):
-    """Add a Publication to the metadata store."""
+    """
+    Add a Publication record to the metadata store.
+    """
     publication = await add_publication(data)
     return publication
 
@@ -65,6 +73,8 @@ async def add_publications(data: Publication):
     summary="Update a Publication",
 )
 async def update_publications(publication_id: str, data: Publication):
-    """Given a Publication ID and data, update the Publication in metadata store."""
+    """
+    Given a Publication ID and data, update the Publication record in metadata store.
+    """
     publication = await update_publication(publication_id, data)
     return publication
