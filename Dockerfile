@@ -24,6 +24,4 @@ RUN useradd --create-home appuser
 WORKDIR /home/appuser
 USER appuser
 
-EXPOSE 8080
-
 ENTRYPOINT [ "metadata-service" ]
