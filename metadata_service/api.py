@@ -34,14 +34,18 @@ from metadata_service.routes.health import health_router
 from metadata_service import __version__
 
 
+CONFIG = get_config()
+
+
 app = FastAPI(
     title="Metadata Service API",
     version=__version__,
-    openapi_url="/metadata/openapi.json",
-    docs_url="/docs",
+    root_path=CONFIG.fastapi_options["root_path"],
+    openapi_url=CONFIG.fastapi_options["openapi_url"],
+    docs_url=CONFIG.fastapi_options["docs_url"],
 )
 
-configure_app(app, config=get_config())
+configure_app(app, config=CONFIG)
 
 app.include_router(studies_router)
 app.include_router(dataset_router)
