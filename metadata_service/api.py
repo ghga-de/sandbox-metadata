@@ -37,10 +37,10 @@ from metadata_service import __version__
 app = FastAPI(
     title="Metadata Service API",
     version=__version__,
-    openapi_url="/openapi.json",
+    openapi_url="/metadata/openapi.json",
     docs_url="/docs",
-    root_path="/"
 )
+
 configure_app(app, config=get_config())
 
 app.include_router(studies_router)
