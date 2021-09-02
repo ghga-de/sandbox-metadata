@@ -30,9 +30,13 @@ class Config(ApiConfigBase):
 
     # config parameter needed for the api server
     # are inherited from ApiConfigBase
-    host: str = "0.0.0.0"
     db_url: str = "mongodb://localhost:27017"
     db_name: str = "metadata"
+    fastapi_options: dict = {
+        "root_path": "/",
+        "openapi_url": "/openapi.json",
+        "docs_url": "/docs",
+    }
 
 
 @lru_cache
