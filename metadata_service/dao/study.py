@@ -20,7 +20,7 @@ Convenience methods for adding, updating, and retrieving Study objects
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import Study
 
@@ -85,6 +85,9 @@ async def add_study(data: Study) -> Study:
     collection = await db_connect.get_collection(COLLECTION_NAME)
     study_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
     data.id = study_id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     study = await get_study(study_id)
@@ -105,9 +108,14 @@ async def update_study(study_id: str, data: Study) -> Study:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one(  # type: ignore
-        {"id": study_id}, {"$set": data.dict(exclude_unset=True)}
-    )
+    data.id = study_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": study_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     study = await get_study(study_id)
     return study

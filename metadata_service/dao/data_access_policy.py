@@ -19,7 +19,7 @@ Convenience methods for adding, updating, and retrieving Data Access Policy reco
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessPolicy
 
@@ -83,6 +83,9 @@ async def add_dap(data: DataAccessPolicy) -> DataAccessPolicy:
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dap_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
     data.id = dap_id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     dap = await get_dap(dap_id)
@@ -103,9 +106,14 @@ async def update_dap(dap_id: str, data: DataAccessPolicy) -> DataAccessPolicy:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one(  # type: ignore
-        {"id": dap_id}, {"$set": data.dict(exclude_unset=True)}
-    )
+    data.id = dap_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": dap_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     dap = await get_dap(dap_id)
     return dap

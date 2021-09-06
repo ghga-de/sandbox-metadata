@@ -20,7 +20,7 @@ Convenience methods for adding, updating, and retrieving Dataset records
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import Dataset
 
@@ -84,6 +84,9 @@ async def add_dataset(data: Dataset) -> Dataset:
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dataset_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
     data.id = dataset_id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     dataset = await get_dataset(dataset_id)
@@ -104,7 +107,14 @@ async def update_dataset(dataset_id: str, data: Dataset) -> Dataset:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": dataset_id}, {"$set": data.dict()})  # type: ignore
+    data.id = dataset_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": dataset_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     dataset = await get_dataset(dataset_id)
     return dataset

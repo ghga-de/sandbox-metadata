@@ -19,7 +19,7 @@ Convenience methods for adding, updating, and retrieving Publication objects
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import Publication
 
@@ -83,6 +83,9 @@ async def add_publication(data: Publication) -> Publication:
     collection = await db_connect.get_collection(COLLECTION_NAME)
     publication_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
     data.id = publication_id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     publication = await get_publication(publication_id)
@@ -103,7 +106,14 @@ async def update_publication(publication_id: str, data: Publication) -> Publicat
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": publication_id}, {"$set": data.dict()})  # type: ignore
+    data.id = publication_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": publication_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     publication = await get_publication(publication_id)
     return publication
