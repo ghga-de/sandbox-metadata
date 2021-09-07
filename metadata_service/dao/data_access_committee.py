@@ -20,7 +20,7 @@ Convenience methods for adding, updating, and retrieving Data Access Committee r
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import DataAccessCommittee
 
@@ -84,6 +84,9 @@ async def add_dac(data: DataAccessCommittee) -> DataAccessCommittee:
     collection = await db_connect.get_collection(COLLECTION_NAME)
     dac_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
     data.id = dac_id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     dac = await get_dac(dac_id)
@@ -104,9 +107,14 @@ async def update_dac(dac_id: str, data: DataAccessCommittee) -> DataAccessCommit
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one(  # type: ignore
-        {"id": dac_id}, {"$set": data.dict(exclude_unset=True)}
-    )
+    data.id = dac_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": dac_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     dac = await get_dac(dac_id)
     return dac

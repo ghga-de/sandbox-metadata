@@ -17,7 +17,7 @@
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import Experiment
 
@@ -81,6 +81,9 @@ async def add_experiment(data: Experiment) -> Experiment:
     collection = await db_connect.get_collection(COLLECTION_NAME)
     experiment_id = await db_connect.get_next_id(COLLECTION_NAME, PREFIX)
     data.id = experiment_id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     experiment = await get_experiment(experiment_id)
@@ -101,7 +104,14 @@ async def update_experiment(experiment_id: str, data: Experiment) -> Experiment:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": experiment_id}, {"$set": data.dict()})  # type: ignore
+    data.id = experiment_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": experiment_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     experiment = await get_experiment(experiment_id)
     return experiment

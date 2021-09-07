@@ -16,6 +16,7 @@
 Core uilities for the functionality of Metadata Service API.
 """
 import logging
+import datetime
 from typing import Dict
 from pydantic import BaseModel
 from metadata_service.database import DBConnect
@@ -82,3 +83,14 @@ async def embed_references(parent_document: Dict, document_type: BaseModel) -> D
                     f"Unexpected value type for field {field} in parent object {parent_document}"
                 )
     return parent_document
+
+
+async def get_timestamp() -> str:
+    """
+    Get the current timestamp in UTC according to ISO 8601
+
+    Returns:
+        The timestamp as a string
+
+    """
+    return datetime.datetime.isoformat(datetime.datetime.utcnow())

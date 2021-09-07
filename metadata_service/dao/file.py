@@ -19,7 +19,7 @@ Convenience methods for adding, updating, and retrieving File objects
 from typing import List
 from fastapi.exceptions import HTTPException
 
-from metadata_service.core.utils import embed_references
+from metadata_service.core.utils import embed_references, get_timestamp
 from metadata_service.database import DBConnect
 from metadata_service.models import File
 
@@ -80,6 +80,9 @@ async def add_file(data: File) -> File:
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
     file_id = data.id
+    timestamp = await get_timestamp()
+    data.creation_date = timestamp
+    data.update_date = timestamp
     await collection.insert_one(data.dict())  # type: ignore
     await db_connect.close_db()
     file = await get_file(file_id)
@@ -100,7 +103,14 @@ async def update_file(file_id: str, data: File) -> File:
     """
     db_connect = DBConnect()
     collection = await db_connect.get_collection(COLLECTION_NAME)
-    await collection.update_one({"id": file_id}, {"$set": data.dict()})  # type: ignore
+    data.id = file_id
+    if data.creation_date:
+        data.creation_date = None
+    timestamp = await get_timestamp()
+    data.update_date = timestamp
+    await collection.update_one(
+        {"id": file_id}, {"$set": data.dict(exclude_none=True)}
+    )  # type: ignore
     await db_connect.close_db()
     file = await get_file(file_id)
     return file
