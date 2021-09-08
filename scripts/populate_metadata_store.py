@@ -82,6 +82,8 @@ def main(
         )
         if response:
             typer.echo(f"  - done with status code: {response.status_code}")
+        else:
+            typer.echo("  - skipped")
 
     typer.echo("Done.")
 
