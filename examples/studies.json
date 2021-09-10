@@ -18,7 +18,7 @@
             "abstract": "Whole exome sequencing of an individual with an uncharacterized disease",
             "publications": [
                 "PMID:0000003",
-                "DOI:00001234"
+                "PMID:0000004"
             ],
             "has_experiment": "EXP:0000002"
         }
