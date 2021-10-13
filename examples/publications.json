@@ -1,0 +1,20 @@
+{
+    "publications": [
+        {
+            "id": "PMID:0000001",
+            "title": "A publication associated with STU:0000001"
+        },
+        {
+            "id": "PMID:0000002",
+            "title": "A publication associated with STU:0000001"
+        },
+        {
+            "id": "PMID:0000003",
+            "title": "A publication associated with STU:0000002"
+        },
+        {
+            "id": "PMID:0000004",
+            "title": "A publication associated with STU:0000002"
+        }
+    ]
+}

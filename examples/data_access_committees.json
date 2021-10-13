@@ -1,0 +1,18 @@
+{
+    "data_access_committees": [
+        {
+            "id": "DAC:0000001",
+            "title": "GHGA Consortium",
+            "description": "The German Human Genome-Phenome Archive Consortium",
+            "main_contact": "foo@ghga.de",
+            "has_members": ["foo@ghga.de", "bar@ghga.de"]
+        },
+        {
+            "id": "DAC:0000002",
+            "title": "NFDI Consortium",
+            "dsecription": "The Nationale Forschungsdateninfrastruktur (NFDI) Consortium",
+            "main_contact": "abc@nfdi.de",
+            "has_members": ["abc@nfdi.de", "def@nfdi.de"]
+        }
+    ]
+}

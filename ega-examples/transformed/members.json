@@ -1,0 +1,165 @@
+{
+  "members": [
+    {
+      "email": "birte.zurek@med.uni-tuebingen.de",
+      "id": "d2ed958e-52b8-4ae2-88b7-7ab380ff5904",
+      "name": "Birte Zurek",
+      "organization": "University of Tuebingen Institute of Medical Genetics and Applied Genomics",
+      "telephone": "+4970712972285"
+    },
+    {
+      "email": "daco-dkfz-b06x@dkfz-heidelberg.de",
+      "id": "9fa667b3-17e0-4c1d-a060-884302c1706a",
+      "name": "DKTK DAC",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "daco-dkfz-b06x@dkfz-heidelberg.de",
+      "id": "86dd6d1c-61ed-48bd-b89c-604fe20c5812",
+      "name": "DACO B060x",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "matthias.schwab@ikp-stuttgart.de",
+      "id": "0d410b06-d3ab-42bc-85ae-e3ac2eb7c9e6",
+      "name": "Matthias Schwab",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "elke.schaeffeler@ikp-stuttgart.de",
+      "id": "b6de703c-0b6b-4dc2-8d21-a522421b075e",
+      "name": "Elke Sch\u00e4ffeler",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "jens.bedke@med.uni-tuebingen.de",
+      "id": "b1149f5e-cff7-464b-ac42-60879694d2d1",
+      "name": "Jens Bedke",
+      "organization": "Department of Urology, University Hospital Tuebingen, Tuebingen, Germany",
+      "telephone": null
+    },
+    {
+      "email": "florian.buettner@ikp-stuttgart.de",
+      "id": "abdf153b-0a48-45d2-bf61-2ff46c558955",
+      "name": "Florian B\u00fcttner",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "stefan.winter@ikp-stuttgart.de",
+      "id": "1bac4a84-e17a-4ff6-8731-5c9d1c1aed97",
+      "name": "Stefan Winter",
+      "organization": "Dr Margarete Fischer-Bosch-Institute of Clinical Pharmacology, Stuttgart, Germany",
+      "telephone": null
+    },
+    {
+      "email": "arnulf.stenzl@med.uni-tuebingen.de",
+      "id": "43e1a271-dbdd-4673-a51a-2dd83c09829c",
+      "name": "Arnulf Stenzl",
+      "organization": "Department of Urology, University Hospital Tuebingen, Tuebingen, Germany",
+      "telephone": null
+    },
+    {
+      "email": "m.schlesner@dkfz-heidelberg.de",
+      "id": "d1f9683d-9f93-4d39-a3eb-def9ecb35da9",
+      "name": "Dr. Matthias Schlesner",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "odcf-service@dkfz-heidelberg.de",
+      "id": "20aa57b6-de01-4edf-b486-2ceb65ea018a",
+      "name": "Omics &amp; Datamanagment Core Facility",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "hipo_daco@dkfz-heidelberg.de",
+      "id": "c3fab377-4a59-4df4-8e07-ac703c353c87",
+      "name": "Katja Beck",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": null
+    },
+    {
+      "email": "stefan.duensing@med.uni-heidelberg.de",
+      "id": "c6d04b2b-e8d4-4847-b0cc-9748247dd8e6",
+      "name": "Stefan Duensing",
+      "organization": "University of Heidelberg",
+      "telephone": "+496221566255"
+    },
+    {
+      "email": "stephan.ossowski@med.uni-tuebingen.de",
+      "id": "5339261c-e2ed-4599-b7f3-73195489d0bc",
+      "name": "Stephan Ossowski",
+      "organization": "Institute of Medical Genetics and Applied Genomics - Universit\u00e4t Klinikum T\u00fcbingen ",
+      "telephone": "070712972323"
+    },
+    {
+      "email": "m.boutros@dkfz-heidelberg.de",
+      "id": "c32964f9-7e11-4e3d-95d5-3b1bb862d500",
+      "name": "Boutros, Prof. Dr. Michael",
+      "organization": "Deutsches Krebsforschungszentrum DKFZ",
+      "telephone": "00496221421951"
+    },
+    {
+      "email": "matthias.ebert@medma.uni-heidelberg.de",
+      "id": "d30ccf59-3aa2-4895-9d29-cd17b51cfdf2",
+      "name": "Ebert, Prof. Dr. Matthias",
+      "organization": "Universit\u00e4tsmedizin Mannheim",
+      "telephone": "00496213833284"
+    },
+    {
+      "email": "j.betge@dkfz-heidelberg.de",
+      "id": "21526f1b-497d-4693-aafd-351588f551da",
+      "name": "Betge, Dr. Johannes",
+      "organization": "Deutsches Krebsforschungszentrum DKFZ",
+      "telephone": "00496221421957"
+    },
+    {
+      "email": "paulina.richter-pechanska@med.uni-heidelberg.de",
+      "id": "6664ecc4-9be4-47da-bc64-b6ea3de66b65",
+      "name": "Paulina Richter-Pechanska",
+      "organization": "University Hospital in Heidelberg, Germany",
+      "telephone": "+496221564579"
+    },
+    {
+      "email": "andreas.kulozik@med.uni-heidelberg.de",
+      "id": "3011429e-f74a-4afb-b1fa-c6ac44ed55a2",
+      "name": "Andreas Kulozik",
+      "organization": "University of Heidelberg",
+      "telephone": "+496221564500"
+    },
+    {
+      "email": "korbel@embl.de",
+      "id": "5f7944a3-4479-49f1-a397-323d976a3451",
+      "name": "Jan Korbel",
+      "organization": "European Molecular Biology Laboratory (EMBL)",
+      "telephone": "+4962213878822"
+    },
+    {
+      "email": "matthias.ebert@medma.uni-heidelberg.de",
+      "id": "a48873d7-ada6-4492-87a1-024ba7c16d11",
+      "name": "Matthias Ebert",
+      "organization": "Heidelberg University",
+      "telephone": "+496213833284"
+    },
+    {
+      "email": "m.boutros@dkfz.de",
+      "id": "59a1fea7-c964-48ab-bf67-b8b89b9c0182",
+      "name": "Michael Boutros",
+      "organization": "German Cancer Research Center (DKFZ)",
+      "telephone": "+496221421950"
+    },
+    {
+      "email": "eva.roth@med.uni-heidelberg.de",
+      "id": "d69aff7a-d8a5-4c78-a83d-aeb82acc0584",
+      "name": "Eva Kathrin Roth",
+      "organization": "Department of Pediatric Oncology, Hematology and Immunology and Hopp Children\u2019s Cancer Center at the NCT Heidelberg (KiTZ), University of Heidelberg, Heidelberg, Germany \u2028",
+      "telephone": "+4962215636967"
+    }
+  ]
+}

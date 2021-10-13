@@ -1,0 +1,14 @@
+
+port: 8080
+log_level: debug
+auto_reload: true
+db_url: mongodb://db:27017
+db_name: metadata
+cors_allowed_origins: ["*"]
+cors_allow_credentials: true
+cors_allowed_methods: ["*"]
+cors_allowed_headers: ["*"]
+fastapi_options:
+  root_path: "/"
+  openapi_url: "/openapi.json"
+  docs_url: "/docs"

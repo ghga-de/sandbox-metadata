@@ -1,0 +1,26 @@
+{
+    "studies": [
+        {
+            "id": "STU:0000001",
+            "title": "Whole Genome Sequencing of an individual",
+            "type": "genomic",
+            "abstract": "Whole genome sequencing of an individual with an uncharacterized disease",
+            "publications": [
+                "PMID:0000001",
+                "PMID:0000002"
+            ],
+            "has_experiment": "EXP:0000001"
+        },
+        {
+            "id": "STU:0000002",
+            "title": "Whole Exome Sequencing of an individual",
+            "type": "genomic",
+            "abstract": "Whole exome sequencing of an individual with an uncharacterized disease",
+            "publications": [
+                "PMID:0000003",
+                "PMID:0000004"
+            ],
+            "has_experiment": "EXP:0000002"
+        }
+    ]
+}
