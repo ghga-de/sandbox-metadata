@@ -1,3 +1,9 @@
+**Depreciation Note:   
+Please note, this repo was part of an implementation study and is not longer maintained.
+Please do not use for production.** 
+
+---
+
 # Sandbox Metadata Service API
 
 Metadata Service that provides an API access layer on top of GHGA metadata.
